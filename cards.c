@@ -1,42 +1,7 @@
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <time.h>
-#include <stdlib.h>
 
+#include "cards.h"
 
-
-#define CARDLENGTH 2
-typedef enum suits {Clubs, Diamonds, Hearts, Spades} suits;
-typedef struct card{
-//Nomenclature taken from: https://en.wikipedia.org/wiki/Standard_52-card_deck
-
-	/* short uint rank; */
-	int rank;
-
-	//Suit: Clubs ♣, Diamonds ♦, Hearts ♥, Spades ♠
-	suits suit;
-}card;
-
-
-#define SUITAMOUNT 4
-#define DECKLENGTH 13
-#define CARDSINADECK DECKLENGTH*SUITAMOUNT
-typedef struct deck {
-	card *cards[CARDSINADECK];
-
-} deck;
-
-#define DECKAMOUNT 8
-#define CARDSINASHOE DECKAMOUNT*CARDSINADECK
-typedef struct shoe {
-	uint topOfShoe;
-
-	card *cards[CARDSINASHOE];
-
-} shoe;
-
-card *createCard(int rankNumer, suits suitType)
+static card *createCard(int rankNumer, suits suitType)
 {
 	card *newCard = (card *) malloc(sizeof(card));
 	newCard->rank = rankNumer;
@@ -45,7 +10,7 @@ card *createCard(int rankNumer, suits suitType)
 	return newCard;
 }
 
-deck createDeckOfCards()
+static deck createDeckOfCards()
 {
 	deck deckOfCards;
 
@@ -63,7 +28,7 @@ deck createDeckOfCards()
 	return deckOfCards;
 }
 
-shoe createShoeFromDecks(deck deckOfCards)
+static shoe createShoeFromDecks(deck deckOfCards)
 {
 	shoe shoeOfCards;
 	for (int nShoe =0; nShoe < DECKAMOUNT; nShoe++) {
@@ -82,7 +47,7 @@ shoe createShoeFromDecks(deck deckOfCards)
 
 //Fisher-Yates shuffle:
 //https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
-void cardShuffle(card *cards[], uint amountOfCards)
+static void cardShuffle(card *cards[], uint amountOfCards)
 {
 	/* printf("%d\n", cards[0]->rank); */
 	int rankNumer, randomPosition;
@@ -96,8 +61,8 @@ void cardShuffle(card *cards[], uint amountOfCards)
 	/* printf("%d\n", cards[0]->rank); */
 }
 
-void main()
-/* deck getShuffledShoe() */
+/* void main() */
+shoe getShuffledShoe()
 {
 
 	srand(time(NULL));   // Initialization, should only be called once.
@@ -132,4 +97,8 @@ void main()
 		/* printf("%d %d \n", deckOfCards.cards[rankNumer]->rank,deckOfCards.cards[rankNumer]->suit ); */
 		free(deckOfCards.cards[rankNumer]);
 	}
+
+
+	printf("%d %d \n", shoeOfCards.cards[0]->rank,shoeOfCards.cards[0]->suit);
+	return shoeOfCards;
 }
