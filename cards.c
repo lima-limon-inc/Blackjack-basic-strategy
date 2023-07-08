@@ -49,8 +49,7 @@ deck createDeckOfCards()
 {
 	deck deckOfCards;
 
-	for ( int suitType = Clubs; suitType <= Spades; suitType++) {
-
+	for ( suits suitType = Clubs; suitType <= Spades; suitType++) {
 
 		uint offset = DECKLENGTH * suitType;
 		for (int rankNumer = 0; rankNumer < DECKLENGTH ; rankNumer++) {
@@ -121,8 +120,8 @@ void main() {
 	cardShuffle(shoeOfCards.cards, amountOfCards);
 
 	/* printf("\n"); */
-	/* for (int rankNumer = 0; rankNumer < CARDSINASHOE; rankNumer++) { */
-	/* 	/1* printf("%d \n", rankNumer); *1/ */
-	/* 	printf("%d %d \n", shoeOfCards.cards[rankNumer]->rank,shoeOfCards.cards[rankNumer]->suit ); */
-	/* } */
+	for (int rankNumer = 0; rankNumer < CARDSINASHOE; rankNumer++) {
+		/* printf("%d \n", rankNumer); */
+		printf("%d %d \n", shoeOfCards.cards[rankNumer]->rank,shoeOfCards.cards[rankNumer]->suit );
+	}
 }
