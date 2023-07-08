@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <time.h>
+#include <stdlib.h>
+
 
 
 #define CARDLENGTH 2
@@ -13,7 +16,6 @@ typedef struct card{
 
 	//Suit: Clubs ♣, Diamonds ♦, Hearts ♥, Spades ♠
 	suits suit;
-	
 }card;
 
 
@@ -58,7 +60,7 @@ deck createDeckOfCards()
 			deckOfCards.cards[posInArray] = newCard;
 		}
 	}
-	
+
 	return deckOfCards;
 }
 
@@ -73,15 +75,31 @@ shoe createShoeFromDecks(deck deckOfCards)
 
 			card *cardptr = deckOfCards.cards[rankNumer];
 			shoeOfCards.cards[posInArray] = cardptr;
-
-
 		}
 	}
 
 	return shoeOfCards;
 }
 
+//Fisher-Yates shuffle:
+//https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
+void cardShuffle(card *cards[], uint amountOfCards)
+{
+	printf("%d\n", cards[0]->rank);
+	int rankNumer, randomPosition;
+	card *tmp;
+	for (rankNumer = amountOfCards - 1; rankNumer > 0; rankNumer--) {
+		randomPosition = rand() % (rankNumer + 1);
+		tmp = cards[randomPosition];
+		cards[randomPosition] = cards[rankNumer];
+		cards[rankNumer] = tmp;
+	}
+	printf("%d\n", cards[0]->rank);
+}
+
 void main() {
+
+	srand(time(NULL));   // Initialization, should only be called once.
 	deck deckOfCards;
 	deckOfCards = createDeckOfCards();
 
@@ -92,6 +110,17 @@ void main() {
 
 	shoe shoeOfCards;
 	shoeOfCards = createShoeFromDecks(deckOfCards);
+	for (int rankNumer = 0; rankNumer < CARDSINASHOE; rankNumer++) {
+		/* printf("%d \n", rankNumer); */
+		printf("%d %d \n", shoeOfCards.cards[rankNumer]->rank,shoeOfCards.cards[rankNumer]->suit );
+	}
+
+	uint amountOfCards;
+	amountOfCards = sizeof(shoeOfCards.cards) / sizeof(card);
+
+	cardShuffle(shoeOfCards.cards, amountOfCards);
+
+	printf("\n");
 	for (int rankNumer = 0; rankNumer < CARDSINASHOE; rankNumer++) {
 		/* printf("%d \n", rankNumer); */
 		printf("%d %d \n", shoeOfCards.cards[rankNumer]->rank,shoeOfCards.cards[rankNumer]->suit );
