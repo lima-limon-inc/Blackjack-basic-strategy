@@ -25,7 +25,7 @@ typedef struct deck {
 
 }deck;
 
-void main()
+deck* createDeckOfCards()
 {
 	deck* deckOfCards = malloc(sizeof(deck));
 
@@ -36,4 +36,13 @@ void main()
 			deckOfCards->cards[rankNumer].suit = suitType;
 		}
 	}
+	
+	return deckOfCards;
+}
+
+void main() {
+	deck* deckOfCards;
+
+	deckOfCards = createDeckOfCards();
+	printf("%d", deckOfCards->cards[4].rank);
 }
