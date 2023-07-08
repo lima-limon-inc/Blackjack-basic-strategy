@@ -96,7 +96,9 @@ void cardShuffle(card *cards[], uint amountOfCards)
 	/* printf("%d\n", cards[0]->rank); */
 }
 
-void main() {
+void main()
+/* deck getShuffledShoe() */
+{
 
 	srand(time(NULL));   // Initialization, should only be called once.
 	deck deckOfCards;
@@ -118,10 +120,16 @@ void main() {
 	amountOfCards = sizeof(shoeOfCards.cards) / sizeof(card);
 
 	cardShuffle(shoeOfCards.cards, amountOfCards);
+	/* free(deckOfCards.cards); */
 
 	/* printf("\n"); */
-	for (int rankNumer = 0; rankNumer < CARDSINASHOE; rankNumer++) {
+	/* for (int rankNumer = 0; rankNumer < CARDSINASHOE; rankNumer++) { */
+	/* 	/1* printf("%d \n", rankNumer); *1/ */
+	/* 	printf("%d %d \n", shoeOfCards.cards[rankNumer]->rank,shoeOfCards.cards[rankNumer]->suit ); */
+	/* } */
+	for (int rankNumer = 0; rankNumer < CARDSINADECK; rankNumer++) {
 		/* printf("%d \n", rankNumer); */
-		printf("%d %d \n", shoeOfCards.cards[rankNumer]->rank,shoeOfCards.cards[rankNumer]->suit );
+		/* printf("%d %d \n", deckOfCards.cards[rankNumer]->rank,deckOfCards.cards[rankNumer]->suit ); */
+		free(deckOfCards.cards[rankNumer]);
 	}
 }
