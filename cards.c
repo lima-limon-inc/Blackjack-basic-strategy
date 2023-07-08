@@ -84,6 +84,7 @@ shoe getShuffledShoe()
 	uint amountOfCards;
 	amountOfCards = sizeof(shoeOfCards.cards) / sizeof(card);
 
+	printf("%d %d \n", shoeOfCards.cards[0]->rank,shoeOfCards.cards[0]->suit);
 	cardShuffle(shoeOfCards.cards, amountOfCards);
 	/* free(deckOfCards.cards); */
 
@@ -92,11 +93,11 @@ shoe getShuffledShoe()
 	/* 	/1* printf("%d \n", rankNumer); *1/ */
 	/* 	printf("%d %d \n", shoeOfCards.cards[rankNumer]->rank,shoeOfCards.cards[rankNumer]->suit ); */
 	/* } */
-	for (int rankNumer = 0; rankNumer < CARDSINADECK; rankNumer++) {
-		/* printf("%d \n", rankNumer); */
-		/* printf("%d %d \n", deckOfCards.cards[rankNumer]->rank,deckOfCards.cards[rankNumer]->suit ); */
-		free(deckOfCards.cards[rankNumer]);
-	}
+	/* for (int rankNumer = 0; rankNumer < CARDSINADECK; rankNumer++) { */
+	/* 	/1* printf("%d \n", rankNumer); *1/ */
+	/* 	/1* printf("%d %d \n", deckOfCards.cards[rankNumer]->rank,deckOfCards.cards[rankNumer]->suit ); *1/ */
+	/* 	free(deckOfCards.cards[rankNumer]); */
+	/* } */
 
 
 	printf("%d %d \n", shoeOfCards.cards[0]->rank,shoeOfCards.cards[0]->suit);
