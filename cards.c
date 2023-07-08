@@ -25,15 +25,16 @@ typedef struct deck {
 
 }deck;
 
-deck* createDeckOfCards()
+deck createDeckOfCards()
 {
-	deck* deckOfCards = malloc(sizeof(deck));
+	deck deckOfCards;
 
 	for ( int suitType = Clubs; suitType <= Spades; suitType++) {
 
 		for (int rankNumer = 0 + 13 * suitType; rankNumer <= DECKLENGTH + 13 * suitType; rankNumer++) {
-			deckOfCards->cards[rankNumer].rank = rankNumer;
-			deckOfCards->cards[rankNumer].suit = suitType;
+			card tmp = {.rank = rankNumer, .suit = suitType};
+			deckOfCards.cards[rankNumer].rank = rankNumer;
+			deckOfCards.cards[rankNumer].suit = suitType;
 		}
 	}
 	
@@ -41,8 +42,8 @@ deck* createDeckOfCards()
 }
 
 void main() {
-	deck* deckOfCards;
+	deck deckOfCards;
 
 	deckOfCards = createDeckOfCards();
-	printf("%d", deckOfCards->cards[4].rank);
+	printf("%d", deckOfCards.cards[4].rank);
 }
