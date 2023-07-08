@@ -19,11 +19,29 @@ typedef struct card{
 
 #define SUITAMOUNT 4
 #define DECKLENGTH 13
-#define DECKAMOUNT 8
+#define CARDSINADECK DECKLENGTH*SUITAMOUNT
 typedef struct deck {
-	card cards[DECKAMOUNT * DECKLENGTH * SUITAMOUNT];
+	card *cards[CARDSINADECK];
 
-}deck;
+} deck;
+
+#define DECKAMOUNT 8
+#define CARDSINASHOE DECKAMOUNT*CARDSINADECK
+typedef struct shoe {
+	uint topOfShoe;
+
+	card *cards[CARDSINASHOE];
+
+} shoe;
+
+card *createCard(int rankNumer, suits suitType)
+{
+	card *newCard = (card *) malloc(sizeof(card));
+	newCard->rank = rankNumer;
+	newCard->suit = suitType;
+
+	return newCard;
+}
 
 deck createDeckOfCards()
 {
@@ -31,19 +49,51 @@ deck createDeckOfCards()
 
 	for ( int suitType = Clubs; suitType <= Spades; suitType++) {
 
-		for (int rankNumer = 0 + 13 * suitType; rankNumer <= DECKLENGTH + 13 * suitType; rankNumer++) {
-			card tmp = {.rank = rankNumer, .suit = suitType};
-			deckOfCards.cards[rankNumer].rank = rankNumer;
-			deckOfCards.cards[rankNumer].suit = suitType;
+
+		uint offset = DECKLENGTH * suitType;
+		for (int rankNumer = 0; rankNumer < DECKLENGTH ; rankNumer++) {
+			uint posInArray = rankNumer + offset;
+
+			card *newCard = createCard(rankNumer + 1, suitType);
+			deckOfCards.cards[posInArray] = newCard;
 		}
 	}
 	
 	return deckOfCards;
 }
 
+shoe createShoeFromDecks(deck deckOfCards)
+{
+	shoe shoeOfCards;
+	for (int nShoe =0; nShoe < DECKAMOUNT; nShoe++) {
+
+		uint offset = CARDSINADECK * nShoe;
+		for (int rankNumer = 0; rankNumer < CARDSINADECK; rankNumer++) {
+			uint posInArray = rankNumer + offset;
+
+			card *cardptr = deckOfCards.cards[rankNumer];
+			shoeOfCards.cards[posInArray] = cardptr;
+
+
+		}
+	}
+
+	return shoeOfCards;
+}
+
 void main() {
 	deck deckOfCards;
-
 	deckOfCards = createDeckOfCards();
-	printf("%d", deckOfCards.cards[4].rank);
+
+	for (int rankNumer = 0; rankNumer < CARDSINADECK; rankNumer++) {
+		/* printf("%d \n", rankNumer); */
+		printf("%d %d \n", deckOfCards.cards[rankNumer]->rank,deckOfCards.cards[rankNumer]->suit );
+	}
+
+	shoe shoeOfCards;
+	shoeOfCards = createShoeFromDecks(deckOfCards);
+	for (int rankNumer = 0; rankNumer < CARDSINASHOE; rankNumer++) {
+		/* printf("%d \n", rankNumer); */
+		printf("%d %d \n", shoeOfCards.cards[rankNumer]->rank,shoeOfCards.cards[rankNumer]->suit );
+	}
 }
