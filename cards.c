@@ -85,7 +85,7 @@ shoe createShoeFromDecks(deck deckOfCards)
 //https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
 void cardShuffle(card *cards[], uint amountOfCards)
 {
-	printf("%d\n", cards[0]->rank);
+	/* printf("%d\n", cards[0]->rank); */
 	int rankNumer, randomPosition;
 	card *tmp;
 	for (rankNumer = amountOfCards - 1; rankNumer > 0; rankNumer--) {
@@ -94,7 +94,7 @@ void cardShuffle(card *cards[], uint amountOfCards)
 		cards[randomPosition] = cards[rankNumer];
 		cards[rankNumer] = tmp;
 	}
-	printf("%d\n", cards[0]->rank);
+	/* printf("%d\n", cards[0]->rank); */
 }
 
 void main() {
@@ -103,26 +103,26 @@ void main() {
 	deck deckOfCards;
 	deckOfCards = createDeckOfCards();
 
-	for (int rankNumer = 0; rankNumer < CARDSINADECK; rankNumer++) {
-		/* printf("%d \n", rankNumer); */
-		printf("%d %d \n", deckOfCards.cards[rankNumer]->rank,deckOfCards.cards[rankNumer]->suit );
-	}
+	/* for (int rankNumer = 0; rankNumer < CARDSINADECK; rankNumer++) { */
+	/* 	/1* printf("%d \n", rankNumer); *1/ */
+	/* 	printf("%d %d \n", deckOfCards.cards[rankNumer]->rank,deckOfCards.cards[rankNumer]->suit ); */
+	/* } */
 
 	shoe shoeOfCards;
 	shoeOfCards = createShoeFromDecks(deckOfCards);
-	for (int rankNumer = 0; rankNumer < CARDSINASHOE; rankNumer++) {
-		/* printf("%d \n", rankNumer); */
-		printf("%d %d \n", shoeOfCards.cards[rankNumer]->rank,shoeOfCards.cards[rankNumer]->suit );
-	}
+	/* for (int rankNumer = 0; rankNumer < CARDSINASHOE; rankNumer++) { */
+	/* 	/1* printf("%d \n", rankNumer); *1/ */
+	/* 	printf("%d %d \n", shoeOfCards.cards[rankNumer]->rank,shoeOfCards.cards[rankNumer]->suit ); */
+	/* } */
 
 	uint amountOfCards;
 	amountOfCards = sizeof(shoeOfCards.cards) / sizeof(card);
 
 	cardShuffle(shoeOfCards.cards, amountOfCards);
 
-	printf("\n");
-	for (int rankNumer = 0; rankNumer < CARDSINASHOE; rankNumer++) {
-		/* printf("%d \n", rankNumer); */
-		printf("%d %d \n", shoeOfCards.cards[rankNumer]->rank,shoeOfCards.cards[rankNumer]->suit );
-	}
+	/* printf("\n"); */
+	/* for (int rankNumer = 0; rankNumer < CARDSINASHOE; rankNumer++) { */
+	/* 	/1* printf("%d \n", rankNumer); *1/ */
+	/* 	printf("%d %d \n", shoeOfCards.cards[rankNumer]->rank,shoeOfCards.cards[rankNumer]->suit ); */
+	/* } */
 }
