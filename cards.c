@@ -4,6 +4,7 @@
 
 
 #define CARDLENGTH 2
+typedef enum suits {Clubs, Diamonds, Hearts, Spades} suits;
 typedef struct card{
 //Nomenclature taken from: https://en.wikipedia.org/wiki/Standard_52-card_deck
 
@@ -11,7 +12,8 @@ typedef struct card{
 	int rank;
 
 	//Suit: (C)lubs ♣, (D)iamonds ♦, (H)earts ♥, (S)pades ♠
-	char suit[CARDLENGTH];
+	/* char suit[CARDLENGTH]; */
+	suits suit;
 	
 }card;
 
@@ -29,7 +31,8 @@ void main()
 	card cards;
 
 	cards.rank = 4;
-	strcpy(cards.suit, "f");
+	/* strcpy(cards.suit, "f"); */
+	cards.suit = Clubs;
 
 	/* printf("Hello world \n"); */
 	/* printf("Nombre: %s \n", cards.suit); */
@@ -46,47 +49,49 @@ void main()
 
 	/* uint amountOfCards = sizeof(*deckOfCards)/sizeof(deckOfCards->cards[0]); */
 	/* printf("Nombre: %d \n", amountOfCards); */
-	for (int j = 0; j < SUITAMOUNT; j++) {
+	for ( int suitType = Clubs; suitType <= Spades; suitType++) {
 
-		char suitType[CARDLENGTH];
-		switch (j) {
-			case 0:
-				strcpy(suitType, "C");
-				break;
-			case 1:
-				strcpy(suitType, "D");
-				break;
-			case 2:
-				strcpy(suitType, "H");
-				break;
-			case 3:
-				strcpy(suitType, "S");
-				break;
-		}
-		printf("%d\n", j);
-		printf("%s\n", suitType);
+		/* char suitType[CARDLENGTH]; */
+		/* switch (j) { */
+		/* 	case 0: */
+		/* 		strcpy(suitType, "C"); */
+		/* 		break; */
+		/* 	case 1: */
+		/* 		strcpy(suitType, "D"); */
+		/* 		break; */
+		/* 	case 2: */
+		/* 		strcpy(suitType, "H"); */
+		/* 		break; */
+		/* 	case 3: */
+		/* 		strcpy(suitType, "S"); */
+		/* 		break; */
+		/* } */
+		/* printf("%d\n", j); */
+		/* printf("%s\n", suitType); */
 
-		for (int i = 0 + 13 * j; i <= DECKLENGTH + 13 * j; i++) {
-			printf("%d\n", i);
+		for (int rankNumer = 0 + 13 * suitType; rankNumer <= DECKLENGTH + 13 * suitType; rankNumer++) {
+			printf("%d\n", rankNumer);
 			/* printf("Hello world \n"); */
-			deckOfCards->cards[i].rank = i;
+			deckOfCards->cards[rankNumer].rank = rankNumer;
+			deckOfCards->cards[rankNumer].suit = suitType;
 			/* deckOfCards->cards[i].suit = suitType; */
-			strcpy(deckOfCards->cards[i].suit, suitType);
+			/* strcpy(deckOfCards->cards[i].suit, suitType); */
 			/* strcpy(deckOfCards->cards[i].suit, "a"); */
 
 		}
 	}
 
-	printf("Nombre: %d \n", deckOfCards->cards[0].rank);
-	printf("Nombre: %s \n", deckOfCards->cards[0].suit);
-	printf("Nombre: %s \n", deckOfCards->cards[1].suit);
-	printf("Nombre: %s \n", deckOfCards->cards[2].suit);
-	printf("Nombre: %s \n", deckOfCards->cards[3].suit);
-	printf("Nombre: %s \n", deckOfCards->cards[4].suit);
-	printf("Nombre: %s \n", deckOfCards->cards[5].suit);
-	printf("Nombre: %s \n", deckOfCards->cards[13].suit);
-	printf("Nombre: %s \n", deckOfCards->cards[14].suit);
-	printf("Nombre: %s \n", deckOfCards->cards[52].suit);
+	printf("Nombre: %d \n", deckOfCards->cards[5].rank);
+	printf("Nombre: %d \n", deckOfCards->cards[0].suit);
+	printf("Nombre: %d \n", deckOfCards->cards[1].suit);
+	printf("Nombre: %d \n", deckOfCards->cards[2].suit);
+	printf("Nombre: %d \n", deckOfCards->cards[3].suit);
+	printf("Nombre: %d \n", deckOfCards->cards[4].suit);
+	printf("Nombre: %d \n", deckOfCards->cards[5].suit);
+	printf("Nombre: %d \n", deckOfCards->cards[13].suit);
+	printf("Nombre: %d \n", deckOfCards->cards[14].suit);
+	printf("Nombre: %d \n", deckOfCards->cards[35].suit);
+	printf("Nombre: %d \n", deckOfCards->cards[52].suit);
 
 
 
