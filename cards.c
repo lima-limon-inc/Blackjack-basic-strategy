@@ -1,14 +1,5 @@
 #include "cards.h"
 
-static card *createCard(int rankNumer, suits suitType)
-{
-	card *newCard = (card *) malloc(sizeof(card));
-	newCard->rank = rankNumer;
-	newCard->suit = suitType;
-
-	return newCard;
-}
-
 static deck createDeckOfCards()
 {
 	deck deckOfCards;
@@ -71,18 +62,18 @@ shoe getShuffledShoe()
 
 	shoe shoeOfCards = createShoeFromDecks(&deckOfCards);
 
-	for (int i = 0; i < CARDSINASHOE; i++ ) {
-		printf("%d %d \n", shoeOfCards.cards[i]->rank,shoeOfCards.cards[i]->suit);
-	}
+	/* for (int i = 0; i < CARDSINASHOE; i++ ) { */
+	/* 	printf("%d %d \n", shoeOfCards.cards[i]->rank,shoeOfCards.cards[i]->suit); */
+	/* } */
 
 	uint amountOfCards = sizeof(shoeOfCards.cards) / sizeof(card);
 
 	cardShuffle(shoeOfCards.cards, amountOfCards);
 
-	printf("\n");
-	for (int i = 0; i < CARDSINASHOE; i++ ) {
-		printf("%d %d \n", shoeOfCards.cards[i]->rank,shoeOfCards.cards[i]->suit);
-	}
+	/* printf("\n"); */
+	/* for (int i = 0; i < CARDSINASHOE; i++ ) { */
+	/* 	printf("%d %d \n", shoeOfCards.cards[i]->rank,shoeOfCards.cards[i]->suit); */
+	/* } */
 
-	/* return shoeOfCards; */
+	return shoeOfCards;
 }
