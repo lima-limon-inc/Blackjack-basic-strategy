@@ -2,7 +2,6 @@ CC = gcc
 CFLAGS = -W -Wall -Werror
 
 run: build
-	clear
 	./main.out
 
 cards.o: cards.c
@@ -11,5 +10,9 @@ cards.o: cards.c
 main.o: main.c
 	$(CC) $(CFLAGS) -c main.c
 
-build: cards.o main.o
-	$(CC) $(CFLAGS) -o main.out cards.o main.o
+cardArithmetic.o: cardArithmetic.c
+	$(CC) $(CFLAGS) -c cardArithmetic.c
+
+build: cards.o cardArithmetic.o main.o 
+	clear
+	$(CC) $(CFLAGS) -o main.out cards.o cardArithmetic.o main.o

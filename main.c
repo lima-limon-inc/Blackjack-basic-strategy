@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "cards.h"
+#include "cardArithmetic.h"
 
 int main()
 {
@@ -7,5 +8,8 @@ int main()
 	shoe shoeOfCards;
 	shoeOfCards = getShuffledShoe();
 
-	printf("%d %d \n", shoeOfCards.cards[0]->rank,shoeOfCards.cards[0]->suit);
+	int amountOfCards = sizeof(shoeOfCards.cards) / sizeof(card);
+	sumCards(shoeOfCards.cards, amountOfCards);
+
+	/* printf("%d %d \n", shoeOfCards.cards[0]->rank,shoeOfCards.cards[0]->suit); */
 }

@@ -32,7 +32,7 @@ typedef struct deck {
 typedef struct shoe {
 	uint topOfShoe;
 
-	card * cards[CARDSINASHOE];
+	card *cards[CARDSINASHOE];
 
 } shoe;
 
