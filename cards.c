@@ -10,7 +10,6 @@ static deck createDeckOfCards()
 		for (int rankNumer = 0; rankNumer < DECKLENGTH ; rankNumer++) {
 			uint posInArray = rankNumer + offset;
 
-			/* card *newCard = createCard(rankNumer + 1, suitType); */
 			card newCard = { .rank = rankNumer + 1, .suit = suitType };
 			deckOfCards.cards[posInArray] = newCard;
 		}
@@ -28,6 +27,7 @@ static shoe createShoeFromDecks(deck *deckOfCards)
 		for (int rankNumer = 0; rankNumer < CARDSINADECK; rankNumer++) {
 			uint posInArray = rankNumer + offset;
 
+			//We add a pointer to the card in the deck to the shoe
 			card *cardptr = &deckOfCards->cards[rankNumer];
 			shoeOfCards.cards[posInArray] = cardptr;
 		}
