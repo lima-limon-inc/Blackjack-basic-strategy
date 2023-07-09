@@ -21,20 +21,27 @@ typedef struct card{
 
 #define SUITAMOUNT 4
 #define DECKLENGTH 13
-#define CARDSINADECK DECKLENGTH*SUITAMOUNT
+#define CARDSINADECK (DECKLENGTH * SUITAMOUNT)
 typedef struct deck {
-	card *cards[CARDSINADECK];
+	card cards[CARDSINADECK];
 
 } deck;
 
 #define DECKAMOUNT 8
-#define CARDSINASHOE DECKAMOUNT*CARDSINADECK
+#define CARDSINASHOE (DECKAMOUNT * CARDSINADECK)
 typedef struct shoe {
 	uint topOfShoe;
 
-	card *cards[CARDSINASHOE];
+	card * cards[CARDSINASHOE];
 
 } shoe;
+
+/* typedef struct shoe { */
+/* 	uint topOfShoe; */
+
+/* 	card *cards[CARDSINASHOE]; */
+
+/* } shoe; */
 
 shoe getShuffledShoe();
 

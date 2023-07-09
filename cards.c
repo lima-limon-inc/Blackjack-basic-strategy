@@ -19,7 +19,8 @@ static deck createDeckOfCards()
 		for (int rankNumer = 0; rankNumer < DECKLENGTH ; rankNumer++) {
 			uint posInArray = rankNumer + offset;
 
-			card *newCard = createCard(rankNumer + 1, suitType);
+			/* card *newCard = createCard(rankNumer + 1, suitType); */
+			card newCard = { .rank = rankNumer + 1, .suit = suitType };
 			deckOfCards.cards[posInArray] = newCard;
 		}
 	}
@@ -27,7 +28,7 @@ static deck createDeckOfCards()
 	return deckOfCards;
 }
 
-static shoe createShoeFromDecks(deck deckOfCards)
+static shoe createShoeFromDecks(deck *deckOfCards)
 {
 	shoe shoeOfCards;
 	for (int nShoe =0; nShoe < DECKAMOUNT; nShoe++) {
@@ -36,7 +37,7 @@ static shoe createShoeFromDecks(deck deckOfCards)
 		for (int rankNumer = 0; rankNumer < CARDSINADECK; rankNumer++) {
 			uint posInArray = rankNumer + offset;
 
-			card *cardptr = deckOfCards.cards[rankNumer];
+			card *cardptr = &deckOfCards->cards[rankNumer];
 			shoeOfCards.cards[posInArray] = cardptr;
 		}
 	}
@@ -48,7 +49,6 @@ static shoe createShoeFromDecks(deck deckOfCards)
 //https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
 static void cardShuffle(card *cards[], uint amountOfCards)
 {
-	/* printf("%d\n", cards[0]->rank); */
 	int rankNumer, randomPosition;
 	card *tmp;
 	for (rankNumer = amountOfCards - 1; rankNumer > 0; rankNumer--) {
@@ -57,48 +57,32 @@ static void cardShuffle(card *cards[], uint amountOfCards)
 		cards[randomPosition] = cards[rankNumer];
 		cards[rankNumer] = tmp;
 	}
-	/* printf("%d\n", cards[0]->rank); */
 }
 
-/* void main() */
 shoe getShuffledShoe()
 {
 
 	srand(time(NULL));   // Initialization, should only be called once.
-	deck deckOfCards;
-	deckOfCards = createDeckOfCards();
+	deck deckOfCards = createDeckOfCards();
 
-	/* for (int rankNumer = 0; rankNumer < CARDSINADECK; rankNumer++) { */
-	/* 	/1* printf("%d \n", rankNumer); *1/ */
-	/* 	printf("%d %d \n", deckOfCards.cards[rankNumer]->rank,deckOfCards.cards[rankNumer]->suit ); */
+	/* for (int i = 0; i < CARDSINADECK; i++ ) { */
+	/* 	printf("%d %d \n", deckOfCards.cards[i].rank,deckOfCards.cards[i].suit); */
 	/* } */
 
-	shoe shoeOfCards;
-	shoeOfCards = createShoeFromDecks(deckOfCards);
-	/* for (int rankNumer = 0; rankNumer < CARDSINASHOE; rankNumer++) { */
-	/* 	/1* printf("%d \n", rankNumer); *1/ */
-	/* 	printf("%d %d \n", shoeOfCards.cards[rankNumer]->rank,shoeOfCards.cards[rankNumer]->suit ); */
-	/* } */
+	shoe shoeOfCards = createShoeFromDecks(&deckOfCards);
 
-	uint amountOfCards;
-	amountOfCards = sizeof(shoeOfCards.cards) / sizeof(card);
+	for (int i = 0; i < CARDSINASHOE; i++ ) {
+		printf("%d %d \n", shoeOfCards.cards[i]->rank,shoeOfCards.cards[i]->suit);
+	}
 
-	printf("%d %d \n", shoeOfCards.cards[0]->rank,shoeOfCards.cards[0]->suit);
+	uint amountOfCards = sizeof(shoeOfCards.cards) / sizeof(card);
+
 	cardShuffle(shoeOfCards.cards, amountOfCards);
-	/* free(deckOfCards.cards); */
 
-	/* printf("\n"); */
-	/* for (int rankNumer = 0; rankNumer < CARDSINASHOE; rankNumer++) { */
-	/* 	/1* printf("%d \n", rankNumer); *1/ */
-	/* 	printf("%d %d \n", shoeOfCards.cards[rankNumer]->rank,shoeOfCards.cards[rankNumer]->suit ); */
-	/* } */
-	/* for (int rankNumer = 0; rankNumer < CARDSINADECK; rankNumer++) { */
-	/* 	/1* printf("%d \n", rankNumer); *1/ */
-	/* 	/1* printf("%d %d \n", deckOfCards.cards[rankNumer]->rank,deckOfCards.cards[rankNumer]->suit ); *1/ */
-	/* 	free(deckOfCards.cards[rankNumer]); */
-	/* } */
+	printf("\n");
+	for (int i = 0; i < CARDSINASHOE; i++ ) {
+		printf("%d %d \n", shoeOfCards.cards[i]->rank,shoeOfCards.cards[i]->suit);
+	}
 
-
-	printf("%d %d \n", shoeOfCards.cards[0]->rank,shoeOfCards.cards[0]->suit);
-	return shoeOfCards;
+	/* return shoeOfCards; */
 }
