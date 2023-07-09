@@ -1,4 +1,3 @@
-
 #include "cards.h"
 
 static card *createCard(int rankNumer, suits suitType)

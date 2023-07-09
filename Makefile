@@ -1,4 +1,5 @@
 run: build
+	clear
 	./main.out
 
 cards.o: cards.c
