@@ -3,7 +3,7 @@
 #include <stdbool.h>
 #include "cards.h"
 
-int sumCards(card *cards[], int amountOfCards)
+int sumCards(const card *cards[], int amountOfCards)
 {
 	int sum = 0;
 	bool foundAnAce = false;

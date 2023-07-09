@@ -9,7 +9,8 @@ int main()
 	shoeOfCards = getShuffledShoe();
 
 	int amountOfCards = sizeof(shoeOfCards.cards) / sizeof(card);
-	sumCards(shoeOfCards.cards, amountOfCards);
+	int result = sumCards(shoeOfCards.cards, amountOfCards);
 
-	/* printf("%d %d \n", shoeOfCards.cards[0]->rank,shoeOfCards.cards[0]->suit); */
+	printf("%d \n", result);
+	printf("%ld \n", sizeof(int));
 }
