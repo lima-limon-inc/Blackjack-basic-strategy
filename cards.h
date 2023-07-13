@@ -30,21 +30,15 @@ typedef struct deck {
 #define DECKAMOUNT 8
 #define CARDSINASHOE (DECKAMOUNT * CARDSINADECK)
 typedef struct shoe {
+	deck *originalDeck;
+
 	uint topOfShoe;
 
 	card *cards[CARDSINASHOE];
 
 } shoe;
 
-typedef struct deckAndShoe {
-	//This contains all the pointers to the cards present in the shoe item
-	deck *pokerDeck;
-
-	shoe *pokerShoe;
-
-} deckAndShoe;
-
-deckAndShoe* createPokerGame();
-void destroyPokerGame(deckAndShoe *oldPokerGame);
+shoe* createShuffledShoe();
+void destroyShoe(shoe *shoePtr);
 
 #endif

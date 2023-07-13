@@ -10,11 +10,11 @@
 int main()
 {
 	printf("Hello world \n");
-	deckAndShoe *newPokerGame;
-	newPokerGame = createPokerGame();
+	shoe *pokerShoe;
+	pokerShoe = createShuffledShoe();
 
-	int amountOfCards = sizeof(newPokerGame->pokerShoe->cards) / sizeof(card);
-	int result = sumCards(newPokerGame->pokerShoe->cards, amountOfCards);
+	int amountOfCards = sizeof(pokerShoe->cards) / sizeof(card);
+	int result = sumCards(pokerShoe->cards, amountOfCards);
 
 	printf("%d \n", result);
 	/* printf("%ld \n", sizeof(int)); */
@@ -26,6 +26,6 @@ int main()
 	/* while (true) { */
 	/* } */
 
-	destroyPokerGame(newPokerGame);
+	destroyShoe(pokerShoe);
 	killPlayer(player1);
 }

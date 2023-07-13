@@ -16,6 +16,9 @@ cardArithmetic.o: cardArithmetic.c
 player.o: player.c
 	$(CC) $(CFLAGS) -c player.c
 
-build: cards.o cardArithmetic.o player.o main.o 
+dealer.o: dealer.c
+	$(CC) $(CFLAGS) -c dealer.c
+
+build: cards.o cardArithmetic.o player.o dealer.o main.o 
 	clear
-	$(CC) $(CFLAGS) -o main.out cards.o cardArithmetic.o player.o main.o
+	$(CC) $(CFLAGS) -o main.out cards.o cardArithmetic.o player.o dealer.o main.o

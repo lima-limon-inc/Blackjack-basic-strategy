@@ -53,8 +53,10 @@ static void cardShuffle(card *cards[], uint amountOfCards)
 	}
 }
 
-static shoe *getShuffledShoe(deck *deckOfCards)
+shoe *createShuffledShoe()
 {
+	deck *deckOfCards = createDeckOfCards();
+
 	shoe *shoeOfCards = createShoeFromDecks(deckOfCards);
 
 	/* for (int i = 0; i < CARDSINASHOE; i++ ) { */
@@ -69,31 +71,13 @@ static shoe *getShuffledShoe(deck *deckOfCards)
 	/* for (int i = 0; i < CARDSINASHOE; i++ ) { */
 	/* 	printf("%d %d \n", shoeOfCards->cards[i]->rank,shoeOfCards->cards[i]->suit); */
 	/* } */
+	shoeOfCards->originalDeck = deckOfCards;
+	shoeOfCards->topOfShoe = 0;
 
 	return shoeOfCards;
 }
 
-deckAndShoe *createPokerGame() {
-	deck *deckOfCards = createDeckOfCards();
-
-	/* for (int i = 0; i < CARDSINADECK; i++ ) { */
-	/* 	printf("%d %d \n", deckOfCards->cards[i].rank,deckOfCards->cards[i].suit); */
-	/* } */
-
-	shoe *shuffledShoe = getShuffledShoe(deckOfCards);
-
-	deckAndShoe *newPokerGame;
-	newPokerGame = (deckAndShoe *) malloc(sizeof(shuffledShoe) + 
-						sizeof(deckOfCards)); 
-
-	newPokerGame->pokerDeck = deckOfCards;
-	newPokerGame->pokerShoe = shuffledShoe;
-
-	return newPokerGame;
-}
-
-void destroyPokerGame(deckAndShoe *oldPokerGame){
-	free(oldPokerGame->pokerDeck);
-	free(oldPokerGame->pokerShoe);
-	free(oldPokerGame);
+void destroyShoe(shoe *shoePtr){
+	free(shoePtr->originalDeck);
+	free(shoePtr);
 }
