@@ -36,15 +36,15 @@ typedef struct shoe {
 
 } shoe;
 
-typedef struct pokerGame {
+typedef struct deckAndShoe {
 	//This contains all the pointers to the cards present in the shoe item
 	deck *pokerDeck;
 
 	shoe *pokerShoe;
 
-} pokerGame;
+} deckAndShoe;
 
-pokerGame* createPokerGame();
-void destroyPokerGame(pokerGame *oldPokerGame);
+deckAndShoe* createPokerGame();
+void destroyPokerGame(deckAndShoe *oldPokerGame);
 
 #endif

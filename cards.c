@@ -73,7 +73,7 @@ static shoe *getShuffledShoe(deck *deckOfCards)
 	return shoeOfCards;
 }
 
-pokerGame *createPokerGame() {
+deckAndShoe *createPokerGame() {
 	deck *deckOfCards = createDeckOfCards();
 
 	/* for (int i = 0; i < CARDSINADECK; i++ ) { */
@@ -82,8 +82,8 @@ pokerGame *createPokerGame() {
 
 	shoe *shuffledShoe = getShuffledShoe(deckOfCards);
 
-	pokerGame *newPokerGame;
-	newPokerGame = (pokerGame *) malloc(sizeof(shuffledShoe) + 
+	deckAndShoe *newPokerGame;
+	newPokerGame = (deckAndShoe *) malloc(sizeof(shuffledShoe) + 
 						sizeof(deckOfCards)); 
 
 	newPokerGame->pokerDeck = deckOfCards;
@@ -92,7 +92,7 @@ pokerGame *createPokerGame() {
 	return newPokerGame;
 }
 
-void destroyPokerGame(pokerGame *oldPokerGame){
+void destroyPokerGame(deckAndShoe *oldPokerGame){
 	free(oldPokerGame->pokerDeck);
 	free(oldPokerGame->pokerShoe);
 	free(oldPokerGame);

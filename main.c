@@ -10,7 +10,7 @@
 int main()
 {
 	printf("Hello world \n");
-	pokerGame *newPokerGame;
+	deckAndShoe *newPokerGame;
 	newPokerGame = createPokerGame();
 
 	int amountOfCards = sizeof(newPokerGame->pokerShoe->cards) / sizeof(card);
