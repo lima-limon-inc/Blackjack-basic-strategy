@@ -13,15 +13,19 @@ int main()
 	pokerGame *newPokerGame;
 	newPokerGame = createPokerGame();
 
-	/* int amountOfCards = sizeof(newPokerGame->pokerShoe->cards) / sizeof(card); */
-	/* int result = sumCards(newPokerGame->pokerShoe->cards, amountOfCards); */
+	int amountOfCards = sizeof(newPokerGame->pokerShoe->cards) / sizeof(card);
+	int result = sumCards(newPokerGame->pokerShoe->cards, amountOfCards);
 
-	printf("%d \n", newPokerGame->pokerShoe->cards[0]->rank);
+	printf("%d \n", result);
 	/* printf("%ld \n", sizeof(int)); */
 
-	/* player *player1 = createPlayer("Hi",  3); */
-	/* printf("%d \n", player1->funds); */
-	/* printf("%s \n", player1->name); */
+	player *player1 = createPlayer("Hi",  3);
+	printf("%s \n", player1->name);
+	printf("%d \n", player1->funds);
+	printf("%d \n", player1->cardsInHand);
 	/* while (true) { */
 	/* } */
+
+	destroyPokerGame(newPokerGame);
+	killPlayer(player1);
 }
