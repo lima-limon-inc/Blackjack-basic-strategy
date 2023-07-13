@@ -36,12 +36,13 @@ typedef struct shoe {
 
 } shoe;
 
-/* typedef struct shoe { */
-/* 	uint topOfShoe; */
+typedef struct pokerGame {
+	//This contains all the pointers to the cards present in the shoe item
+	deck *pokerDeck;
 
-/* 	card *cards[CARDSINASHOE]; */
+	shoe *pokerShoe;
 
-/* } shoe; */
+} pokerGame;
 
 shoe *getShuffledShoe();
 
