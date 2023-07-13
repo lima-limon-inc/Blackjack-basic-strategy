@@ -6,74 +6,24 @@
 #include "player.h"
 #include "dealer.h"
 
-
+//TODO: Make dinamic
+#define PLAYERAMOUNT 5
 
 int main()
 {
 	printf("Hello world \n");
-	/* shoe *pokerShoe; */
-	/* pokerShoe = createShuffledShoe(); */
-
-	/* int amountOfCards = sizeof(pokerShoe->cards) / sizeof(card); */
-	/* int result = sumCards(pokerShoe->cards, amountOfCards); */
-
-	/* printf("%d \n", result); */
-	/* printf("%ld \n", sizeof(int)); */
-
 	dealer *dealer1 = createDealer(1000);
 
+	player *player1 = createPlayer("Player 1",  100);
+	/* player *player2 = createPlayer("Player 2",  100); */
+	/* player *player3 = createPlayer("Player 3",  100); */
+	/* player *player4 = createPlayer("Player 4",  100); */
+	/* player *player5 = createPlayer("Player 5",  100); */
 
-	card *newCard = dealACard(dealer1);
+	/* player *everyPlayer[] = { player1, player2, player3, player4, player5 } */
 
 
-	player *player1 = createPlayer("Hi",  3);
-	/* printf("%s \n", player1->name); */
-	/* printf("%d \n", dealer1->pokerShoe->topOfShoe); */
-	/* printf("%d \n", dealer1->pokerShoe->topOfShoe); */
-	/* printf("%d \n", player1->cardsInHand); */
 
-	/* printf("%d \n", newCard->rank); */
-	/* printf("%d \n", newCard->suit); */
-	/* while (true) { */
-	/* } */
-
-	/* destroyShoe(pokerShoe); */
-	
-	/* receiveCard(player1, newCard); */
-	/* receiveCard(player1, newCard); */
-	/* receiveCard(player1, newCard); */
-	/* receiveCard(player1, newCard); */
-	/* receiveCard(player1, newCard); */
-	/* receiveCard(player1, newCard); */
-	/* receiveCard(player1, newCard); */
-	/* receiveCard(player1, newCard); */
-	/* receiveCard(player1, newCard); */
-	/* receiveCard(player1, newCard); */
-	/* receiveCard(player1, newCard); */
-	/* receiveCard(player1, newCard); */
-	receiveCard(player1, newCard);
-	removeCards(player1);
-	receiveCard(player1, newCard);
-	removeCards(player1);
-	receiveCard(player1, newCard);
-	removeCards(player1);
-	receiveCard(player1, newCard);
-	removeCards(player1);
-	receiveCard(player1, newCard);
-	removeCards(player1);
-	receiveCard(player1, newCard);
-	removeCards(player1);
-	receiveCard(player1, newCard);
-	removeCards(player1);
-	receiveCard(player1, newCard);
-	removeCards(player1);
-	receiveCard(player1, newCard);
-	removeCards(player1);
-	receiveCard(player1, newCard);
-	removeCards(player1);
-	receiveCard(player1, newCard);
-	removeCards(player1);
-	receiveCard(player1, newCard);
 
 	/* playerPtr->cardsInHand */
 	for (int i = 0; i < player1->cardsInHand; i++) {

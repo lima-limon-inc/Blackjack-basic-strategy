@@ -97,6 +97,4 @@ card *getCardAtTheTop(shoe *shoePtr) {
 	shoePtr->topOfShoe += 1;
 
 	return cardAtTheTop;
-
-	
 }

@@ -1,6 +1,8 @@
 CC = gcc
 CFLAGS = -W -Wall -Werror
 
+OBJECTFILES = cards.o cardArithmetic.o player.o dealer.o pokerTable.o main.o
+
 run: build
 	./main.out
 
@@ -19,6 +21,9 @@ player.o: player.c
 dealer.o: dealer.c
 	$(CC) $(CFLAGS) -c dealer.c
 
-build: cards.o cardArithmetic.o player.o dealer.o main.o 
+pokerTable.o: pokerTable.c
+	$(CC) $(CFLAGS) -c pokerTable.c
+
+build: $(OBJECTFILES)
 	clear
-	$(CC) $(CFLAGS) -o main.out cards.o cardArithmetic.o player.o dealer.o main.o
+	$(CC) $(CFLAGS) -o main.out $(OBJECTFILES)
