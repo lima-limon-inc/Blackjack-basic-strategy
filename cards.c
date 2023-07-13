@@ -42,6 +42,7 @@ static shoe *createShoeFromDecks(deck *deckOfCards)
 //https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
 static void cardShuffle(card *cards[], uint amountOfCards)
 {
+	srand(time(NULL));   // Initialization, should only be called once.
 	int rankNumer, randomPosition;
 	card *tmp;
 	for (rankNumer = amountOfCards - 1; rankNumer > 0; rankNumer--) {
@@ -52,16 +53,8 @@ static void cardShuffle(card *cards[], uint amountOfCards)
 	}
 }
 
-shoe *getShuffledShoe()
+static shoe *getShuffledShoe(deck *deckOfCards)
 {
-
-	srand(time(NULL));   // Initialization, should only be called once.
-	deck *deckOfCards = createDeckOfCards();
-
-	/* for (int i = 0; i < CARDSINADECK; i++ ) { */
-	/* 	printf("%d %d \n", deckOfCards->cards[i].rank,deckOfCards->cards[i].suit); */
-	/* } */
-
 	shoe *shoeOfCards = createShoeFromDecks(deckOfCards);
 
 	/* for (int i = 0; i < CARDSINASHOE; i++ ) { */
@@ -78,4 +71,23 @@ shoe *getShuffledShoe()
 	/* } */
 
 	return shoeOfCards;
+}
+
+pokerGame *createPokerGame() {
+	deck *deckOfCards = createDeckOfCards();
+
+	/* for (int i = 0; i < CARDSINADECK; i++ ) { */
+	/* 	printf("%d %d \n", deckOfCards->cards[i].rank,deckOfCards->cards[i].suit); */
+	/* } */
+
+	shoe *shuffledShoe = getShuffledShoe(deckOfCards);
+
+	pokerGame *newPokerGame;
+	newPokerGame = (pokerGame *) malloc(sizeof(shuffledShoe) + 
+						sizeof(deckOfCards)); 
+
+	newPokerGame->pokerDeck = deckOfCards;
+	newPokerGame->pokerShoe = shuffledShoe;
+
+	return newPokerGame;
 }

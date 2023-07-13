@@ -44,6 +44,6 @@ typedef struct pokerGame {
 
 } pokerGame;
 
-shoe *getShuffledShoe();
+pokerGame* createPokerGame();
 
 #endif
