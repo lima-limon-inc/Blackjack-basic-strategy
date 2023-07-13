@@ -39,6 +39,9 @@ typedef struct shoe {
 } shoe;
 
 shoe* createShuffledShoe();
+
 void destroyShoe(shoe *shoePtr);
+
+card *getCardAtTheTop(shoe *shoePtr);
 
 #endif

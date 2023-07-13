@@ -4,6 +4,7 @@
 #include "cards.h"
 #include "cardArithmetic.h"
 #include "player.h"
+#include "dealer.h"
 
 
 
@@ -19,10 +20,20 @@ int main()
 	printf("%d \n", result);
 	/* printf("%ld \n", sizeof(int)); */
 
+	dealer *dealer1 = createDealer(1000, pokerShoe);
+
+
+	card *newCard = dealACard(dealer1);
+
+
 	player *player1 = createPlayer("Hi",  3);
-	printf("%s \n", player1->name);
-	printf("%d \n", player1->funds);
-	printf("%d \n", player1->cardsInHand);
+	/* printf("%s \n", player1->name); */
+	printf("%d \n", pokerShoe->topOfShoe);
+	printf("%d \n", dealer1->pokerShoe->topOfShoe);
+	/* printf("%d \n", player1->cardsInHand); */
+
+	printf("%d \n", newCard->rank);
+	/* printf("%d \n", newCard->suit); */
 	/* while (true) { */
 	/* } */
 

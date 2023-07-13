@@ -81,3 +81,22 @@ void destroyShoe(shoe *shoePtr){
 	free(shoePtr->originalDeck);
 	free(shoePtr);
 }
+
+card *getCardAtTheTop(shoe *shoePtr) {
+	//If the deck has no cards remaining, restart the topOfShoe index and
+	//reshuffle the deck
+	if (shoePtr->topOfShoe > CARDSINASHOE) {
+		shoePtr->topOfShoe = 0;
+
+		//TODO: Make it a struct item instead of macro
+		cardShuffle(shoePtr->cards, CARDSINASHOE);
+	}
+
+	card *cardAtTheTop = shoePtr->cards[shoePtr->topOfShoe];
+
+	shoePtr->topOfShoe += 1;
+
+	return cardAtTheTop;
+
+	
+}

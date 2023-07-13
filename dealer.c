@@ -1,6 +1,6 @@
 #include "dealer.h"
 
-dealer *createDealer(shoe *givenPokerShoe, int initialFunds){
+dealer *createDealer(int initialFunds, shoe *givenPokerShoe){
 	dealer *newDealer;
 	newDealer = (dealer *) malloc (sizeof(dealer));
 
@@ -14,3 +14,7 @@ void killDealer(dealer *dealerPtr){
 	free (dealerPtr);
 }
 
+card *dealACard(const dealer *dealerPtr){
+	card *cardAtTheTop = getCardAtTheTop(dealerPtr->pokerShoe);
+	return cardAtTheTop;
+}

@@ -13,7 +13,10 @@ typedef struct dealer{
 
 }dealer;
 
-dealer *createDealer(shoe *pokerShoe, int initialFunds);
+dealer *createDealer(int initialFunds, shoe *givenPokerShoe);
+
 void killDealer(dealer *dealerPtr);
+
+card *dealACard(const dealer *dealerPtr);
 
 #endif
