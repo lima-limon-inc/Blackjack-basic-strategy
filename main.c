@@ -28,16 +28,58 @@ int main()
 
 	player *player1 = createPlayer("Hi",  3);
 	/* printf("%s \n", player1->name); */
-	printf("%d \n", dealer1->pokerShoe->topOfShoe);
-	printf("%d \n", dealer1->pokerShoe->topOfShoe);
+	/* printf("%d \n", dealer1->pokerShoe->topOfShoe); */
+	/* printf("%d \n", dealer1->pokerShoe->topOfShoe); */
 	/* printf("%d \n", player1->cardsInHand); */
 
-	printf("%d \n", newCard->rank);
+	/* printf("%d \n", newCard->rank); */
 	/* printf("%d \n", newCard->suit); */
 	/* while (true) { */
 	/* } */
 
 	/* destroyShoe(pokerShoe); */
+	
+	/* receiveCard(player1, newCard); */
+	/* receiveCard(player1, newCard); */
+	/* receiveCard(player1, newCard); */
+	/* receiveCard(player1, newCard); */
+	/* receiveCard(player1, newCard); */
+	/* receiveCard(player1, newCard); */
+	/* receiveCard(player1, newCard); */
+	/* receiveCard(player1, newCard); */
+	/* receiveCard(player1, newCard); */
+	/* receiveCard(player1, newCard); */
+	/* receiveCard(player1, newCard); */
+	/* receiveCard(player1, newCard); */
+	receiveCard(player1, newCard);
+	removeCards(player1);
+	receiveCard(player1, newCard);
+	removeCards(player1);
+	receiveCard(player1, newCard);
+	removeCards(player1);
+	receiveCard(player1, newCard);
+	removeCards(player1);
+	receiveCard(player1, newCard);
+	removeCards(player1);
+	receiveCard(player1, newCard);
+	removeCards(player1);
+	receiveCard(player1, newCard);
+	removeCards(player1);
+	receiveCard(player1, newCard);
+	removeCards(player1);
+	receiveCard(player1, newCard);
+	removeCards(player1);
+	receiveCard(player1, newCard);
+	removeCards(player1);
+	receiveCard(player1, newCard);
+	removeCards(player1);
+	receiveCard(player1, newCard);
+
+	/* playerPtr->cardsInHand */
+	for (int i = 0; i < player1->cardsInHand; i++) {
+		printf("%d \n", player1->hand[i]->rank);
+	}
+
 	killPlayer(player1);
 	killDealer(dealer1);
 }

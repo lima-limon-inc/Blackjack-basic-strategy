@@ -1,6 +1,8 @@
 #ifndef PLAYER_HEADER
 #define PLAYER_HEADER
 
+#define INITIALCARDS 4
+
 #include "cards.h"
 
 typedef struct player{
@@ -13,10 +15,18 @@ typedef struct player{
 
 	int cardsInHand;
 
+	int cardCapacity;
+
 	card *hand[];
 }player;
 
 player *createPlayer(char *playerName, int initialFunds);
+
 void killPlayer(player *playerPtr);
+
+void receiveCard(player *playerPtr, card *newCard);
+
+void removeCards(player *playerPtr);
+		
 
 #endif
