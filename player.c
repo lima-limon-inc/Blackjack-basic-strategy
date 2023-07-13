@@ -19,6 +19,12 @@ player *createPlayer(char *playerName, int initialFunds) {
 
 	pokerPlayer->name = playerName;
 	pokerPlayer->funds = initialFunds;
+	pokerPlayer->cardsInHand = 0;
 
 	return pokerPlayer;
+}
+
+//TODO: Change function name if I want to get PEGI 13
+void killPlayer(player *playerPtr){
+	free(playerPtr);
 }

@@ -11,9 +11,12 @@ typedef struct player{
 	//Money!
 	int funds;
 
+	int cardsInHand;
+
 	card *hand[];
 }player;
 
 player *createPlayer(char *playerName, int initialFunds);
+void killPlayer(player *playerPtr);
 
 #endif

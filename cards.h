@@ -45,5 +45,6 @@ typedef struct pokerGame {
 } pokerGame;
 
 pokerGame* createPokerGame();
+void destroyPokerGame(pokerGame *oldPokerGame);
 
 #endif

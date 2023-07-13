@@ -91,3 +91,9 @@ pokerGame *createPokerGame() {
 
 	return newPokerGame;
 }
+
+void destroyPokerGame(pokerGame *oldPokerGame){
+	free(oldPokerGame->pokerDeck);
+	free(oldPokerGame->pokerShoe);
+	free(oldPokerGame);
+}
