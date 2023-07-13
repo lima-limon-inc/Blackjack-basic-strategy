@@ -11,16 +11,16 @@
 int main()
 {
 	printf("Hello world \n");
-	shoe *pokerShoe;
-	pokerShoe = createShuffledShoe();
+	/* shoe *pokerShoe; */
+	/* pokerShoe = createShuffledShoe(); */
 
-	int amountOfCards = sizeof(pokerShoe->cards) / sizeof(card);
-	int result = sumCards(pokerShoe->cards, amountOfCards);
+	/* int amountOfCards = sizeof(pokerShoe->cards) / sizeof(card); */
+	/* int result = sumCards(pokerShoe->cards, amountOfCards); */
 
-	printf("%d \n", result);
+	/* printf("%d \n", result); */
 	/* printf("%ld \n", sizeof(int)); */
 
-	dealer *dealer1 = createDealer(1000, pokerShoe);
+	dealer *dealer1 = createDealer(1000);
 
 
 	card *newCard = dealACard(dealer1);
@@ -28,7 +28,7 @@ int main()
 
 	player *player1 = createPlayer("Hi",  3);
 	/* printf("%s \n", player1->name); */
-	printf("%d \n", pokerShoe->topOfShoe);
+	printf("%d \n", dealer1->pokerShoe->topOfShoe);
 	printf("%d \n", dealer1->pokerShoe->topOfShoe);
 	/* printf("%d \n", player1->cardsInHand); */
 
@@ -37,6 +37,7 @@ int main()
 	/* while (true) { */
 	/* } */
 
-	destroyShoe(pokerShoe);
+	/* destroyShoe(pokerShoe); */
 	killPlayer(player1);
+	killDealer(dealer1);
 }
