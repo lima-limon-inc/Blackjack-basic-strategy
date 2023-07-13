@@ -1,9 +1,16 @@
 #include "dealer.h"
 
-/* dealer *createDealer(shoe *pokerShoe, int initialFunds){ */
-/* 	dealer *newDealer; */
-/* 	newDealer = malloc */
-/* } */
+dealer *createDealer(shoe *givenPokerShoe, int initialFunds){
+	dealer *newDealer;
+	newDealer = (dealer *) malloc (sizeof(dealer));
 
-/* void killDealer(dealer *dealerPtr){ */
-/* } */
+	newDealer->pokerShoe = givenPokerShoe;
+	newDealer->funds = initialFunds;
+
+	return newDealer;
+}
+
+void killDealer(dealer *dealerPtr){
+	free (dealerPtr);
+}
+
