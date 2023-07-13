@@ -52,7 +52,7 @@ static void cardShuffle(card *cards[], uint amountOfCards)
 	}
 }
 
-void getShuffledShoe()
+shoe *getShuffledShoe()
 {
 
 	srand(time(NULL));   // Initialization, should only be called once.
@@ -72,10 +72,10 @@ void getShuffledShoe()
 
 	cardShuffle(shoeOfCards->cards, amountOfCards);
 
-	printf("\n");
-	for (int i = 0; i < CARDSINASHOE; i++ ) {
-		printf("%d %d \n", shoeOfCards->cards[i]->rank,shoeOfCards->cards[i]->suit);
-	}
+	/* printf("\n"); */
+	/* for (int i = 0; i < CARDSINASHOE; i++ ) { */
+	/* 	printf("%d %d \n", shoeOfCards->cards[i]->rank,shoeOfCards->cards[i]->suit); */
+	/* } */
 
-	/* return shoeOfCards; */
+	return shoeOfCards;
 }

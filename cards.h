@@ -43,6 +43,6 @@ typedef struct shoe {
 
 /* } shoe; */
 
-void getShuffledShoe();
+shoe *getShuffledShoe();
 
 #endif
