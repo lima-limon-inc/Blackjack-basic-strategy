@@ -43,15 +43,6 @@ static player *resizePlayer(player *playerPtr) {
 
 		//Set the new capacity
 		playerPtr->cardCapacity /= 2; //Divided equal (fancy notation)
-
-
-		player *smallerPlayer;
-		int smallerSize = sizeof(player) + 
-				playerPtr->cardCapacity * sizeof(card *);
-
-
-		smallerPlayer = realloc(playerPtr, smallerSize);
-		return smallerPlayer;
 	}
 
 	//We need more memory
@@ -60,15 +51,15 @@ static player *resizePlayer(player *playerPtr) {
 
 		//Set the new capacity
 		playerPtr->cardCapacity *= 2; //Divided equal (fancy notation)
-		
-		player *biggerPlayer;
-		int biggerSize = sizeof(player) + 
-				playerPtr->cardCapacity * sizeof(card *);
-
-
-		biggerPlayer = realloc(playerPtr, biggerSize);
-		return biggerPlayer;
 	}
+		
+	player *resizedPlayer;
+	int newSize = sizeof(player) + 
+			playerPtr->cardCapacity * sizeof(card *);
+
+
+	resizedPlayer = realloc(playerPtr, newSize);
+	return resizedPlayer;
 }
 
 void receiveCard(player *playerPtr, card *newCard) {
