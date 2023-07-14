@@ -20,6 +20,8 @@ pokerTable *createPokerTable(int initialFunds);
 
 void destroyPokerTable(pokerTable *pokerTablePtr);
 
-void addPlayer(pokerTable *pokerTable,player *newPlayer);
+pokerTable *addPlayer(pokerTable *pokerTablePtr, char name[], int initialFunds);
+
+void pokerRound(pokerTable *pokerTablePtr);
 
 #endif

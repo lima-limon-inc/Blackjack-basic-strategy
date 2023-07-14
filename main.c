@@ -13,9 +13,34 @@
 int main()
 {
 	printf("Hello world \n");
-	dealer *dealer1 = createDealer(1000);
 
-	player *player1 = createPlayer("Player 1",  100);
+	pokerTable *newPokerTable = createPokerTable(1000);
+	char name[20];
+	while (scanf("%s",name) == 1) {
+		if (newPokerTable->playerAmount == PLAYERAMOUNT) {
+			break;
+		}
+		if (strcmp(name,"No") == 0) {
+			break;
+		}
+		newPokerTable = addPlayer(newPokerTable, name, 100);
+	}
+
+	pokerRound(newPokerTable);
+
+
+
+		/* scanf("%s",c); */
+	/* player *player1 = createPlayer(c,  100); */
+
+	/* scanf("%s",c); */
+	/* } */
+	/* dealer *dealer1 = createDealer(1000); */
+
+
+	/* addPlayer(newPokerTable, player1); */
+	
+	destroyPokerTable(newPokerTable);
 	/* player *player2 = createPlayer("Player 2",  100); */
 	/* player *player3 = createPlayer("Player 3",  100); */
 	/* player *player4 = createPlayer("Player 4",  100); */
@@ -27,10 +52,9 @@ int main()
 
 
 	/* playerPtr->cardsInHand */
-	for (int i = 0; i < player1->cardsInHand; i++) {
-		printf("%d \n", player1->hand[i]->rank);
-	}
+	/* for (int i = 0; i < player1->cardsInHand; i++) { */
+	/* } */
 
-	killPlayer(player1);
-	killDealer(dealer1);
+	/* killPlayer(player1); */
+	/* killDealer(dealer1); */
 }

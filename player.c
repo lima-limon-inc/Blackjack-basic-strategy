@@ -16,7 +16,8 @@ player *createPlayer(char *playerName, int initialFunds) {
 	player *pokerPlayer;
 	pokerPlayer = (player *) malloc(initialSize); 
 
-	pokerPlayer->name = playerName;
+	/* pokerPlayer->name = playerName; */
+	strcpy(pokerPlayer->name, playerName);
 	pokerPlayer->funds = initialFunds;
 	pokerPlayer->cardsInHand = 0;
 	pokerPlayer->cardCapacity = INITIALCARDS;
@@ -32,7 +33,7 @@ void killPlayer(player *playerPtr){
 static player *resizePlayer(player *playerPtr) {
 	//If there's still margin, we don't realloc memory
 	if (playerPtr->cardCapacity > playerPtr->cardsInHand) {
-		printf("DIDN'T RESIZE\n");
+		/* printf("DIDN'T RESIZE\n"); */
 		return playerPtr;
 	}
 
@@ -68,7 +69,7 @@ void receiveCard(player *playerPtr, card *newCard) {
 	playerPtr->hand[playerPtr->cardsInHand] = newCard;
 	playerPtr->cardsInHand += 1;
 
-	printf("%d \n", playerPtr->cardsInHand);
+	/* printf("%d \n", playerPtr->cardsInHand); */
 }
 
 void removeCards(player *playerPtr) {

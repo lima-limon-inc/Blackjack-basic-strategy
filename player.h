@@ -8,7 +8,7 @@
 typedef struct player{
 //Nomenclature taken from: https://en.wikipedia.org/wiki/Standard_52-card_deck
 
-	char * name;
+	char name[20];
 
 	//Money!
 	int funds;
