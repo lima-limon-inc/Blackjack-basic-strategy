@@ -11,7 +11,7 @@
 
 player *createPlayer(char *playerName, int initialFunds) {
 	int initialSize;
-	initialSize = sizeof(player) + INITIALCARDS * sizeof(card);
+	initialSize = sizeof(player) + INITIALCARDS * sizeof(card *);
 
 	player *pokerPlayer;
 	pokerPlayer = (player *) malloc(initialSize); 

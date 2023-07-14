@@ -53,6 +53,7 @@ void pokerRound(pokerTable *pokerTablePtr) {
 			player *activePlayer = pokerTablePtr->players[j];
 
 			card *topCard = dealACard(pokerDealer);
+			printf("%s's card: ", activePlayer->name);
 			printf("%d %d\n", topCard->rank, topCard->suit);
 
 
@@ -63,5 +64,13 @@ void pokerRound(pokerTable *pokerTablePtr) {
 			/* 	printf("%c\n", activePlayer->hand[1]->rank); */
 			/* } */
 		}
+		card *dealersCard = dealACard(pokerDealer);
+
+		printf("Dealer's card: ");
+		printf("%d %d\n", dealersCard->rank, dealersCard->suit);
+		dealDealersHand(pokerDealer, dealersCard);
+
+
+
 	}
 }
