@@ -47,7 +47,7 @@ static player *resizePlayer(player *playerPtr) {
 
 		player *smallerPlayer;
 		int smallerSize = sizeof(player) + 
-				playerPtr->cardCapacity * sizeof(card);
+				playerPtr->cardCapacity * sizeof(card *);
 
 
 		smallerPlayer = realloc(playerPtr, smallerSize);
@@ -63,7 +63,7 @@ static player *resizePlayer(player *playerPtr) {
 		
 		player *biggerPlayer;
 		int biggerSize = sizeof(player) + 
-				playerPtr->cardCapacity * sizeof(card);
+				playerPtr->cardCapacity * sizeof(card *);
 
 
 		biggerPlayer = realloc(playerPtr, biggerSize);

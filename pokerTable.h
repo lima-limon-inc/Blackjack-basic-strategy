@@ -9,7 +9,15 @@ typedef struct pokerTable {
 
 	dealer *pokerDealer;
 
+	int playerCapacity;
+
+	int playerAmount;
+
 	player *players[];
 }pokerTable ;
+
+pokerTable *createPokerTable(int initialFunds);
+
+void addPlayer(pokerTable *pokerTable,player *newPlayer);
 
 #endif
