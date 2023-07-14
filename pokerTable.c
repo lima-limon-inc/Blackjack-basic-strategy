@@ -8,7 +8,7 @@ pokerTable *createPokerTable(int initialFunds) {
 
 	pokerTable *newPokerTable;	
 	newPokerTable =  (pokerTable *) malloc(sizeof(pokerTable) +
-			INITIALCAPACITY * sizeof(player));
+			INITIALCAPACITY * sizeof(player *));
 
 	newPokerTable->pokerDealer = dealerPtr;
 	newPokerTable->playerCapacity = INITIALCAPACITY;
@@ -17,7 +17,23 @@ pokerTable *createPokerTable(int initialFunds) {
 	return newPokerTable;
 }
 
-/* void addPlayer(pokerTable *pokerTable,player *newPlayer) { */
-/* 	pokerTable-> */
+void destroyPokerTable(pokerTable *pokerTablePtr) {
+	killDealer(pokerTablePtr->pokerDealer);
+
+	for (int i = 0; i < pokerTablePtr->playerAmount; i++) {
+		killPlayer(pokerTablePtr->players[i]);
+	}
+	free(pokerTablePtr);
+}
+
+void addPlayer(pokerTable *pokerTablePtr,player *newPlayer) {
+	pokerTablePtr->players[pokerTablePtr->playerAmount] = newPlayer;
+	pokerTablePtr->playerAmount += 1;
+
+	//TODO: Add resize down function
+	if (pokerTablePtr->playerAmount == pokerTablePtr->playerCapacity) {
+		int newSize = pokerTablePtr->playerCapacity * 2;
+		pokerTablePtr = realloc(pokerTablePtr, newSize);
+	}
 	
-/* } */
+}

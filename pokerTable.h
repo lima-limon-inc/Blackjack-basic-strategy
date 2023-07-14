@@ -18,6 +18,8 @@ typedef struct pokerTable {
 
 pokerTable *createPokerTable(int initialFunds);
 
+void destroyPokerTable(pokerTable *pokerTablePtr);
+
 void addPlayer(pokerTable *pokerTable,player *newPlayer);
 
 #endif

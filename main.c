@@ -5,6 +5,7 @@
 #include "cardArithmetic.h"
 #include "player.h"
 #include "dealer.h"
+#include "pokerTable.h"
 
 //TODO: Make dinamic
 #define PLAYERAMOUNT 5
