@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -W -Wall -Werror
+CFLAGS = -g -W -Wall -Werror
 
 OBJECTFILES = cards.o cardArithmetic.o player.o dealer.o pokerTable.o main.o
 
