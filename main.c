@@ -13,6 +13,8 @@
 int main()
 {
 	printf("Hello world \n");
+	/* printf("%ld \n", sizeof(card)); */
+	/* printf("%ld \n", sizeof(card *)); */
 
 	pokerTable *newPokerTable = createPokerTable(1000);
 	char name[20];

@@ -1,9 +1,12 @@
 #ifndef PLAYER_HEADER
 #define PLAYER_HEADER
 
+#include <stdbool.h>
+
 #define INITIALCARDS 4
 
 #include "cards.h"
+
 
 typedef struct player{
 //Nomenclature taken from: https://en.wikipedia.org/wiki/Standard_52-card_deck
@@ -28,5 +31,6 @@ void receiveCard(player *playerPtr, card *newCard);
 
 void removeCards(player *playerPtr);
 		
+bool dealNewCardTo(player *playerPtr);
 
 #endif

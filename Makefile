@@ -1,5 +1,6 @@
 CC = gcc
 CFLAGS = -g -W -Wall -Werror
+#-fanalyzer
 
 OBJECTFILES = cards.o cardArithmetic.o player.o dealer.o pokerTable.o main.o
 

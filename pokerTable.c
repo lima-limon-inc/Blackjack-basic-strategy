@@ -2,6 +2,7 @@
 #include "player.h"
 
 #define INITIALCAPACITY 5
+#define INITIALCARDCOUNT 2
 
 pokerTable *createPokerTable(int initialFunds) {
 	dealer *dealerPtr = createDealer(initialFunds);
@@ -46,31 +47,43 @@ pokerTable *addPlayer(pokerTable *pokerTablePtr, char name[], int initialFunds) 
 	return pokerTablePtr;
 }
 
-void pokerRound(pokerTable *pokerTablePtr) {
-	dealer *pokerDealer = pokerTablePtr->pokerDealer;
-	for (int i = 0; i < 2; i++) {
+static inline void dealInitialCards(pokerTable *pokerTablePtr, int initialCard, dealer *pokerDealer) {
+	/* dealer *pokerDealer = pokerTablePtr->pokerDealer; */
+	for (int i = 0; i < initialCard; i++) {
 		for (int j = 0; j < pokerTablePtr->playerAmount; j++) {
 			player *activePlayer = pokerTablePtr->players[j];
 
 			card *topCard = dealACard(pokerDealer);
-			printf("%s's card: ", activePlayer->name);
-			printf("%d %d\n", topCard->rank, topCard->suit);
-
 
 			receiveCard(activePlayer,  topCard);
-
-			/* printf("%c\n", activePlayer->hand[0]->rank); */
-			/* if (i == 1) { */
-			/* 	printf("%c\n", activePlayer->hand[1]->rank); */
-			/* } */
 		}
 		card *dealersCard = dealACard(pokerDealer);
 
-		printf("Dealer's card: ");
-		printf("%d %d\n", dealersCard->rank, dealersCard->suit);
+		/* printf("Dealer's card: "); */
+		/* printf("%d %d\n", dealersCard->rank, dealersCard->suit); */
 		dealDealersHand(pokerDealer, dealersCard);
-
-
-
 	}
+}
+
+static inline void playersTurns(pokerTable *pokerTablePtr, dealer *pokerDealer) {
+	printf("Dealer's card: ");
+	printf("%d %d\n", pokerDealer->hand[0]->rank, pokerDealer->hand[0]->suit);
+	printf("Dealer's card: ");
+	printf("%d %d\n", pokerDealer->hand[1]->rank, pokerDealer->hand[1]->suit);
+
+
+	for (int i = 0; i < pokerTablePtr->playerAmount; i++) {
+		player *activePlayer;
+		activePlayer = pokerTablePtr->players[i];
+		
+		bool wantsNewCard;
+		wantsNewCar = dealNewCardTo(activePlayer);
+	}
+}
+
+void pokerRound(pokerTable *pokerTablePtr) {
+	dealer *pokerDealer = pokerTablePtr->pokerDealer;
+
+	dealInitialCards(pokerTablePtr, INITIALCARDCOUNT, pokerDealer);
+	playersTurns(pokerTablePtr, pokerDealer);
 }

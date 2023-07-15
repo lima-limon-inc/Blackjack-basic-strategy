@@ -70,10 +70,35 @@ void receiveCard(player *playerPtr, card *newCard) {
 	playerPtr->cardsInHand += 1;
 
 	/* printf("%d \n", playerPtr->cardsInHand); */
+
+	/* printf("%d %d\n", newCard->rank, newCard->suit); */
 }
 
 void removeCards(player *playerPtr) {
 	//We simply move the index. The pointer will simply get removed by
 	//the receiveCard function (it will overwrite the value)
 	playerPtr->cardsInHand = 0;
+}
+
+bool dealNewCardTo(player *playerPtr) {
+
+	for (int i = 0; i < playerPtr->cardsInHand; i++) {
+		printf("%s's card: ", playerPtr->name); 
+		printf("%d, %d \n", playerPtr->hand[i]->rank, 
+				playerPtr->hand[i]->suit);
+	}
+
+	printf("Want another card? Y/N");
+	char userInput[10];
+	scanf("%s", userInput);
+
+	bool wantsAnotherCard; 
+	if (strcmp(userInput, "Y")) {
+		wantsAnotherCard = true;
+	}
+	else {
+		wantsAnotherCard = false;
+	}
+
+	return wantsAnotherCard;
 }
