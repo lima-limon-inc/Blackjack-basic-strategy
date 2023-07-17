@@ -18,6 +18,7 @@ typedef struct card{
 	suits suit;
 }card;
 
+uint sumCards(card *cards[], uint amountOfCards);
 
 #define SUITAMOUNT 4
 #define DECKLENGTH 13
