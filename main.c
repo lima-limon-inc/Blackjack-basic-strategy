@@ -12,7 +12,7 @@
 
 int main()
 {
-	printf("Hello world \n");
+	/* printf("Hello world \n"); */
 	/* printf("%ld \n", sizeof(card)); */
 	/* printf("%ld \n", sizeof(card *)); */
 

@@ -30,7 +30,7 @@ void killPlayer(player *playerPtr);
 void receiveCard(player *playerPtr, card *newCard);
 
 void removeCards(player *playerPtr);
-		
-bool dealNewCardTo(player *playerPtr);
 
+void printCards(player *playerPtr);
+		
 #endif

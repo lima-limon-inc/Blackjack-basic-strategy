@@ -1,8 +1,10 @@
 #include "pokerTable.h"
 #include "player.h"
+#include "cardArithmetic.h" //TODO: Move to card header file
 
 #define INITIALCAPACITY 5
 #define INITIALCARDCOUNT 2
+#define CARDSUMBEFOREBUST 21
 
 pokerTable *createPokerTable(int initialFunds) {
 	dealer *dealerPtr = createDealer(initialFunds);
@@ -65,19 +67,64 @@ static inline void dealInitialCards(pokerTable *pokerTablePtr, int initialCard, 
 	}
 }
 
+static inline bool askForNewCard() {
+	printf("Want another card? Y/N");
+	char userInput[10];
+	scanf("%s", userInput);
+
+
+	bool wantsAnotherCard; 
+	if (strcmp(userInput, "Y") == 0) {
+		wantsAnotherCard = true;
+		/* printf("QUIERO"); */
+	}
+	else {
+		wantsAnotherCard = false;
+	}
+
+	return wantsAnotherCard;
+}
+
+static inline void activePlayerTurn(player *activePlayer, dealer *pokerDealer) {
+	int playersSum;
+	playersSum = 0;
+
+	bool wantsNewCard;
+	wantsNewCard = true;
+	/* wantsNewCard = askForNewCard(activePlayer); */
+
+	while (true) {// && wantsNewCard == true) {
+		printCards(activePlayer);
+
+		playersSum = sumCards(activePlayer->hand, activePlayer->cardsInHand);
+		printf("Player's sum: %d\n", playersSum);
+		//If the player busts, then he lost his turn
+		if (playersSum > CARDSUMBEFOREBUST) {
+			break;
+		}
+
+		wantsNewCard = askForNewCard(activePlayer);
+		//If the player does not want a new card, then we want to exit
+		//the while loop immediately. 
+		if (wantsNewCard == false) {
+			break;
+		}
+		
+		card *topCard = dealACard(pokerDealer);
+		printf("\nNew card :%d, %d \n", topCard->rank, 
+				topCard->suit);
+
+		receiveCard(activePlayer,  topCard);
+
+	}
+}
+
 static inline void playersTurns(pokerTable *pokerTablePtr, dealer *pokerDealer) {
-	printf("Dealer's card: ");
-	printf("%d %d\n", pokerDealer->hand[0]->rank, pokerDealer->hand[0]->suit);
-	printf("Dealer's card: ");
-	printf("%d %d\n", pokerDealer->hand[1]->rank, pokerDealer->hand[1]->suit);
-
-
 	for (int i = 0; i < pokerTablePtr->playerAmount; i++) {
 		player *activePlayer;
 		activePlayer = pokerTablePtr->players[i];
-		
-		bool wantsNewCard;
-		wantsNewCar = dealNewCardTo(activePlayer);
+		activePlayerTurn(activePlayer, pokerDealer);
+
 	}
 }
 

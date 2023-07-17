@@ -80,25 +80,10 @@ void removeCards(player *playerPtr) {
 	playerPtr->cardsInHand = 0;
 }
 
-bool dealNewCardTo(player *playerPtr) {
-
+void printCards(player *playerPtr) {
 	for (int i = 0; i < playerPtr->cardsInHand; i++) {
 		printf("%s's card: ", playerPtr->name); 
 		printf("%d, %d \n", playerPtr->hand[i]->rank, 
 				playerPtr->hand[i]->suit);
 	}
-
-	printf("Want another card? Y/N");
-	char userInput[10];
-	scanf("%s", userInput);
-
-	bool wantsAnotherCard; 
-	if (strcmp(userInput, "Y")) {
-		wantsAnotherCard = true;
-	}
-	else {
-		wantsAnotherCard = false;
-	}
-
-	return wantsAnotherCard;
 }
