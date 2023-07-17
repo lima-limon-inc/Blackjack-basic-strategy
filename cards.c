@@ -114,15 +114,15 @@ int sumCards(card *cards[], int amountOfCards)
 	for (int card = 0; card < amountOfCards; card++) {
 		int cardValue = cards[card]->rank;
 
+		//King, Queen, Jack all equal 10
+		if (cardValue > 10) {
+			cardValue = 10;
+		}
+
 		//Only one ace can be used with value 11
 		if (cardValue == 1 && foundAnAce == false) {
 			foundAnAce = true;
 			cardValue = 11;
-		}
-
-		//King, Queen, Jack all equal 10
-		if (cardValue > 10) {
-			cardValue = 10;
 		}
 
 		sum += cardValue;
