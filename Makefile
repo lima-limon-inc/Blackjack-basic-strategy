@@ -2,7 +2,7 @@ CC = gcc
 CFLAGS = -g -W -Wall -Werror
 #-fanalyzer
 
-OBJECTFILES = cards.o cardArithmetic.o player.o dealer.o pokerTable.o main.o
+OBJECTFILES = cards.o player.o dealer.o pokerTable.o main.o
 
 run: build
 	./main.out
@@ -12,9 +12,6 @@ cards.o: cards.c
 
 main.o: main.c
 	$(CC) $(CFLAGS) -c main.c
-
-cardArithmetic.o: cardArithmetic.c
-	$(CC) $(CFLAGS) -c cardArithmetic.c
 
 player.o: player.c
 	$(CC) $(CFLAGS) -c player.c

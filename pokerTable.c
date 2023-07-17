@@ -1,6 +1,5 @@
 #include "pokerTable.h"
 #include "player.h"
-#include "cardArithmetic.h" //TODO: Move to card header file
 
 #define INITIALCAPACITY 5
 #define INITIALCARDCOUNT 2

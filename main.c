@@ -2,7 +2,7 @@
 #include <stdbool.h>
 
 #include "cards.h"
-#include "cardArithmetic.h"
+/* #include "cardArithmetic.h" */
 #include "player.h"
 #include "dealer.h"
 #include "pokerTable.h"

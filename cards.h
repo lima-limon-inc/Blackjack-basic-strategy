@@ -18,7 +18,6 @@ typedef struct card{
 	suits suit;
 }card;
 
-uint sumCards(card *cards[], uint amountOfCards);
 
 #define SUITAMOUNT 4
 #define DECKLENGTH 13
@@ -44,5 +43,7 @@ shoe* createShuffledShoe();
 void destroyShoe(shoe *shoePtr);
 
 card *getCardAtTheTop(shoe *shoePtr);
+
+int sumCards(card *cards[], int amountOfCards);
 
 #endif

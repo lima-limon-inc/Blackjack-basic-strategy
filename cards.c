@@ -1,4 +1,7 @@
 #include "cards.h"
+#include "stdbool.h"
+#include <stdarg.h>
+#include <stdlib.h>
 
 static deck *createDeckOfCards()
 {
@@ -103,7 +106,7 @@ card *getCardAtTheTop(shoe *shoePtr) {
 //The array may also contain old, values from previous rounds. Those are not 
 //meant to be counted. Normally, amountOfCards will be equal to the amount of
 //cards in a players hand
-int sumCards(const card *cards[], int amountOfCards)
+int sumCards(card *cards[], int amountOfCards)
 {
 	int sum = 0;
 	bool foundAnAce = false;
