@@ -4,6 +4,7 @@
 #define INITIALCAPACITY 5
 #define INITIALCARDCOUNT 2
 #define CARDSUMBEFOREBUST 21
+#define DEALERLIMIT 17
 
 pokerTable *createPokerTable(int initialFunds) {
 	dealer *dealerPtr = createDealer(initialFunds);
@@ -84,14 +85,34 @@ static inline bool askForNewCard() {
 	return wantsAnotherCard;
 }
 
+static inline void askPlayerForBet(player *activePlayer) {
+	printf("%s, what's your bet?\n", activePlayer->name); 
+
+	int playerBet;
+	scanf("%d", &playerBet);
+
+	makeABet(activePlayer, playerBet);
+}
+
+static inline void asksPlayerForBet(pokerTable *pokerTablePtr) {
+	for (int i = 0; i < pokerTablePtr->playerAmount; i++) {
+		player *activePlayer;
+		activePlayer = pokerTablePtr->players[i];
+		askPlayerForBet(activePlayer);
+
+	}
+}
+
 static inline void activePlayerTurn(player *activePlayer, dealer *pokerDealer) {
 	int playersSum;
 	playersSum = 0;
 
+	/* askPlayerForBet(activePlayer); */
+
 	bool wantsNewCard;
 	wantsNewCard = true;
-	/* wantsNewCard = askForNewCard(activePlayer); */
 
+	//Main player turn loop
 	while (true) {// && wantsNewCard == true) {
 		printCards(activePlayer);
 
@@ -104,11 +125,11 @@ static inline void activePlayerTurn(player *activePlayer, dealer *pokerDealer) {
 
 		wantsNewCard = askForNewCard(activePlayer);
 		//If the player does not want a new card, then we want to exit
-		//the while loop immediately. 
+		//the while loop immediately.
 		if (wantsNewCard == false) {
 			break;
 		}
-		
+
 		card *topCard = dealACard(pokerDealer);
 		printf("\nNew card :%d, %d \n", topCard->rank, 
 				topCard->suit);
@@ -127,9 +148,31 @@ static inline void playersTurns(pokerTable *pokerTablePtr, dealer *pokerDealer) 
 	}
 }
 
+static inline void dealersTurn(dealer *pokerDealer) {
+	int dealersSum;
+	dealersSum = sumCards(pokerDealer->hand, pokerDealer->cardsInHand);
+	printf("\nNew dealers card :%d, %d \n", pokerDealer->hand[0]->rank, 
+			pokerDealer->hand[0]->rank);
+	printf("\nNew dealers card :%d, %d \n", pokerDealer->hand[1]->rank, 
+			pokerDealer->hand[1]->rank);
+
+	while (dealersSum < DEALERLIMIT) {
+		card *topCard = dealACard(pokerDealer);
+		printf("\nNew dealers card :%d, %d \n", topCard->rank, 
+				topCard->suit);
+
+		//This operation may require us to resize the dealer struct
+		pokerDealer = dealDealersHand(pokerDealer,  topCard);
+		dealersSum = sumCards(pokerDealer->hand, pokerDealer->cardsInHand);
+	}
+
+}
+
 void pokerRound(pokerTable *pokerTablePtr) {
 	dealer *pokerDealer = pokerTablePtr->pokerDealer;
 
+	asksPlayerForBet(pokerTablePtr);
 	dealInitialCards(pokerTablePtr, INITIALCARDCOUNT, pokerDealer);
 	playersTurns(pokerTablePtr, pokerDealer);
+	dealersTurn(pokerDealer);
 }

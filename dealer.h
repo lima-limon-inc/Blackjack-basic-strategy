@@ -29,8 +29,10 @@ card *dealACard(const dealer *dealerPtr);
 
 //TODO: Use _Generic macro to do fancy function overloading
 //with player struct
-void dealDealersHand(dealer *dealerPtr, card *newCard);
+dealer *dealDealersHand(dealer *dealerPtr, card *newCard);
 
 void removeDealersCards(dealer *dealerPtr);
+
+void takeMoney(dealer *dealerPtr, int money);
 
 #endif

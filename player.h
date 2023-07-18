@@ -20,6 +20,8 @@ typedef struct player{
 
 	int cardCapacity;
 
+	int bet;
+
 	card *hand[];
 }player;
 
@@ -32,5 +34,9 @@ void receiveCard(player *playerPtr, card *newCard);
 void removeCards(player *playerPtr);
 
 void printCards(player *playerPtr);
+
+void makeABet(player *playerPtr, int bet);
+
+int loseBet(player *playerPtr);
 		
 #endif

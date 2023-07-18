@@ -21,6 +21,7 @@ player *createPlayer(char *playerName, int initialFunds) {
 	pokerPlayer->funds = initialFunds;
 	pokerPlayer->cardsInHand = 0;
 	pokerPlayer->cardCapacity = INITIALCARDS;
+	pokerPlayer->bet = 0;
 
 	return pokerPlayer;
 }
@@ -86,4 +87,18 @@ void printCards(player *playerPtr) {
 		printf("%d, %d \n", playerPtr->hand[i]->rank, 
 				playerPtr->hand[i]->suit);
 	}
+}
+
+void makeABet(player *playerPtr, int bet) {
+	//TODO: Create if statement to check if you have enough funds
+	playerPtr->bet += bet;
+	playerPtr->funds -= bet;
+}
+
+int loseBet(player *playerPtr) {
+	int lostBet;
+	lostBet = playerPtr->bet;
+
+	playerPtr->bet = 0;
+	return lostBet;
 }

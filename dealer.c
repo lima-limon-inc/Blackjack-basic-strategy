@@ -63,12 +63,13 @@ static dealer *resizeDealer(dealer *dealerPtr) {
 
 
 
-void dealDealersHand(dealer *dealerPtr, card *newCard) {
-	dealerPtr = resizeDealer(dealerPtr);
+dealer *dealDealersHand(dealer *dealerPtr, card *newCard) {
+	dealer *resizedDealer = resizeDealer(dealerPtr);
 
-	dealerPtr->hand[dealerPtr->cardsInHand] = newCard;
-	dealerPtr->cardsInHand += 1;
+	resizedDealer->hand[dealerPtr->cardsInHand] = newCard;
+	resizedDealer->cardsInHand += 1;
 
+	return resizedDealer;
 	/* printf("%d \n", dealerPtr->cardsInHand); */
 }
 
@@ -76,4 +77,8 @@ void removeDealersCards(dealer *dealerPtr) {
 	//We simply move the index. The pointer will simply get removed by
 	//the receiveCard function (it will overwrite the value)
 	dealerPtr->cardsInHand = 0;
+}
+
+void takeMoney(dealer *dealerPtr, int money) {
+	dealerPtr->funds += money;
 }
