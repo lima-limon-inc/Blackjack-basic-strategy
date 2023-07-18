@@ -25,6 +25,7 @@ pokerTable *createPokerTable(int initialFunds) {
 void destroyPokerTable(pokerTable *pokerTablePtr) {
 	killDealer(pokerTablePtr->pokerDealer);
 
+	printf("Kill player\n");
 	for (int i = 0; i < pokerTablePtr->playerAmount; i++) {
 		killPlayer(pokerTablePtr->players[i]);
 	}
