@@ -152,13 +152,13 @@ static inline void dealersTurn(dealer *pokerDealer) {
 	int dealersSum;
 	dealersSum = sumCards(pokerDealer->hand, pokerDealer->cardsInHand);
 	printf("\nNew dealers card :%d, %d \n", pokerDealer->hand[0]->rank, 
-			pokerDealer->hand[0]->rank);
+			pokerDealer->hand[0]->suit);
 	printf("\nNew dealers card :%d, %d \n", pokerDealer->hand[1]->rank, 
-			pokerDealer->hand[1]->rank);
+			pokerDealer->hand[1]->suit);
 
 	while (dealersSum < DEALERLIMIT) {
 		card *topCard = dealACard(pokerDealer);
-		printf("\nNew dealers card :%d, %d \n", topCard->rank, 
+		printf("\nNew dealers card :%d, %d \n", topCard->suit, 
 				topCard->suit);
 
 		//This operation may require us to resize the dealer struct
