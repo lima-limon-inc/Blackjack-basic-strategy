@@ -14,6 +14,8 @@ typedef struct dealer{
 	int cardsInHand;
 
 	int cardCapacity;
+	
+	int cardSum;
 
 	card *hand[];
 
@@ -32,5 +34,7 @@ dealer *dealDealersHand(dealer *dealerPtr, card *newCard);
 void removeDealersCards(dealer *dealerPtr);
 
 void takeMoney(dealer *dealerPtr, int money);
+
+void removeMoneyFromFunds(dealer *dealerPtr, int moneyToPlayer);
 
 #endif

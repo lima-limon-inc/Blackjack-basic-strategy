@@ -4,7 +4,9 @@
 #define INITIALCAPACITY 5
 #define INITIALCARDCOUNT 2
 #define CARDSUMBEFOREBUST 21
+#define BLACKJACK 21
 #define DEALERLIMIT 17
+#define AMOUNTOFCARDSFORBLACKJACK 2
 
 pokerTable *createPokerTable(int initialFunds) {
 	dealer *dealerPtr = createDealer(initialFunds);
@@ -140,6 +142,8 @@ static inline player *activePlayerTurn(player *activePlayer, dealer *pokerDealer
 		activePlayer = receiveCard(activePlayer,  topCard);
 
 	}
+	activePlayer-> cardSum = playersSum;
+
 	return activePlayer;
 }
 
@@ -155,7 +159,7 @@ static inline void playersTurns(pokerTable *pokerTablePtr, dealer *pokerDealer) 
 	}
 }
 
-static inline void dealersTurn(dealer *pokerDealer) {
+static inline dealer *dealersTurn(dealer *pokerDealer) {
 	int dealersSum;
 	dealersSum = sumCards(pokerDealer->hand, pokerDealer->cardsInHand);
 	printf("\nNew dealers card :%d, %d \n", pokerDealer->hand[0]->rank, 
@@ -173,6 +177,92 @@ static inline void dealersTurn(dealer *pokerDealer) {
 		dealersSum = sumCards(pokerDealer->hand, pokerDealer->cardsInHand);
 	}
 
+	pokerDealer->cardSum = dealersSum;
+	printf("\nDealers sum :%d\n", dealersSum);
+	return pokerDealer;
+
+}
+
+typedef enum playerRoundResult {Win, Lost, Tie, Blackjack} playerRoundResult;
+static inline playerRoundResult roundEndedIn(player *activePlayer, dealer *dealerPtr) {
+	int playersSum;
+	playersSum = activePlayer->cardSum;
+
+	int dealersSum;
+	dealersSum = dealerPtr->cardSum;
+
+	//Player lost, he busted
+	if (playersSum > CARDSUMBEFOREBUST) {
+		return Lost;
+	}
+
+	if (playersSum == BLACKJACK && activePlayer->cardsInHand == AMOUNTOFCARDSFORBLACKJACK) {
+		return Blackjack;
+	}
+
+	//The dealer bust, in this case,  all the non busted player win
+	else if (dealersSum > CARDSUMBEFOREBUST) {
+		return Win;
+	}
+
+	//Player has better cards
+	else if (playersSum > dealersSum) {
+			return Win;
+		}
+
+	//Equal cards
+	else if (playersSum == dealersSum) {
+		return Tie;
+	}
+
+	else {
+		printf("NOT CONSIDERED CASE");
+		abort();
+		return 1;
+	}
+}
+
+static inline void losersAndWiners(pokerTable *pokerTablePtr, dealer *dealerPtr) {
+	for (int i = 0; i < pokerTablePtr->playerAmount; i++) {
+		player *activePlayer;
+		activePlayer = pokerTablePtr->players[i];
+
+		playerRoundResult playerResult;
+		playerResult = roundEndedIn(activePlayer, dealerPtr);
+
+		printf("%s\n", activePlayer->name);
+		switch (playerResult) {
+			case Lost:
+				printf("Lost\n");
+				int lostMoney;
+				lostMoney = loseBet(activePlayer);
+				takeMoney(dealerPtr, lostMoney);
+				break;
+			case Win:
+				printf("Win\n");
+				int wonMoney;
+				wonMoney = getBet(activePlayer);
+				wonMoney *= 2;
+				removeMoneyFromFunds(dealerPtr, wonMoney);
+				winBet(activePlayer, wonMoney);
+				break;
+			case Tie:
+				printf("Tie\n");
+				int tieMoney;
+				tieMoney = getBet(activePlayer);
+				takeMoney(dealerPtr, tieMoney);
+				winBet(activePlayer, tieMoney);
+				break;
+			case Blackjack:
+				printf("Blackjack\n");
+				int BlackjackMoneyu;
+				BlackjackMoneyu = getBet(activePlayer);
+				BlackjackMoneyu *= 3;
+				removeMoneyFromFunds(dealerPtr, BlackjackMoneyu);
+				winBet(activePlayer, BlackjackMoneyu);
+				break;
+		}
+	}
 }
 
 void pokerRound(pokerTable *pokerTablePtr) {
@@ -181,5 +271,6 @@ void pokerRound(pokerTable *pokerTablePtr) {
 	asksPlayerForBet(pokerTablePtr);
 	dealInitialCards(pokerTablePtr, INITIALCARDCOUNT, pokerDealer);
 	playersTurns(pokerTablePtr, pokerDealer);
-	dealersTurn(pokerDealer);
+	pokerDealer = dealersTurn(pokerDealer);
+	losersAndWiners(pokerTablePtr, pokerDealer);
 }

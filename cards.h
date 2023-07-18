@@ -46,4 +46,5 @@ card *getCardAtTheTop(shoe *shoePtr);
 
 int sumCards(card *cards[], int amountOfCards);
 
+
 #endif

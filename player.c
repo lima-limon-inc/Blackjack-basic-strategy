@@ -22,6 +22,7 @@ player *createPlayer(char *playerName, int initialFunds) {
 	pokerPlayer->cardsInHand = 0;
 	pokerPlayer->cardCapacity = INITIALPLAYERCARDS;
 	pokerPlayer->bet = 0;
+	pokerPlayer->cardSum = 0;
 
 	return pokerPlayer;
 }
@@ -99,4 +100,14 @@ int loseBet(player *playerPtr) {
 
 	playerPtr->bet = 0;
 	return lostBet;
+}
+
+void winBet(player *playerPtr, int awardedMoney) {
+	playerPtr->funds += awardedMoney;
+
+	playerPtr->bet = 0;
+}
+
+int getBet(player *playerPtr) {
+	return playerPtr->bet;
 }

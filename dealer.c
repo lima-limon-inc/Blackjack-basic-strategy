@@ -16,6 +16,7 @@ dealer *createDealer(int initialFunds) {
 	newDealer->pokerShoe = newPokerShoe;
 	newDealer->cardsInHand = 0;
 	newDealer->cardCapacity = INITIALDEALERCARDS;
+	newDealer->cardSum = 0;
 
 	return newDealer;
 }
@@ -83,4 +84,8 @@ void removeDealersCards(dealer *dealerPtr) {
 
 void takeMoney(dealer *dealerPtr, int money) {
 	dealerPtr->funds += money;
+}
+
+void removeMoneyFromFunds(dealer *dealerPtr, int moneyToPlayer) {
+	dealerPtr->funds -= moneyToPlayer;
 }

@@ -19,6 +19,8 @@ typedef struct player{
 
 	int bet;
 
+	int cardSum;
+
 	card *hand[];
 }player;
 
@@ -36,4 +38,8 @@ void makeABet(player *playerPtr, int bet);
 
 int loseBet(player *playerPtr);
 		
+void winBet(player *playerPtr, int awardedMoney);
+
+int getBet(player *playerPtr);
+
 #endif
