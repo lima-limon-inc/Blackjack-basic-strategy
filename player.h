@@ -3,10 +3,7 @@
 
 #include <stdbool.h>
 
-#define INITIALCARDS 4
-
 #include "cards.h"
-
 
 typedef struct player{
 //Nomenclature taken from: https://en.wikipedia.org/wiki/Standard_52-card_deck
@@ -29,7 +26,7 @@ player *createPlayer(char *playerName, int initialFunds);
 
 void killPlayer(player *playerPtr);
 
-void receiveCard(player *playerPtr, card *newCard);
+player *receiveCard(player *playerPtr, card *newCard);
 
 void removeCards(player *playerPtr);
 

@@ -103,11 +103,13 @@ static inline void asksPlayerForBet(pokerTable *pokerTablePtr) {
 	}
 }
 
-static inline void activePlayerTurn(player *activePlayer, dealer *pokerDealer) {
+static inline player *activePlayerTurn(player *activePlayer, dealer *pokerDealer) {
 	int playersSum;
 	playersSum = 0;
 
-	/* askPlayerForBet(activePlayer); */
+	//It may not need to resize the player struct
+	/* player *resizedPlayer; */
+	/* resizedPlayer = activePlayer; */
 
 	bool wantsNewCard;
 	wantsNewCard = true;
@@ -134,16 +136,21 @@ static inline void activePlayerTurn(player *activePlayer, dealer *pokerDealer) {
 		printf("\nNew card :%d, %d \n", topCard->rank, 
 				topCard->suit);
 
-		receiveCard(activePlayer,  topCard);
+		//May need to re size a player struct
+		activePlayer = receiveCard(activePlayer,  topCard);
 
 	}
+	return activePlayer;
 }
 
 static inline void playersTurns(pokerTable *pokerTablePtr, dealer *pokerDealer) {
 	for (int i = 0; i < pokerTablePtr->playerAmount; i++) {
 		player *activePlayer;
 		activePlayer = pokerTablePtr->players[i];
-		activePlayerTurn(activePlayer, pokerDealer);
+		
+		player *resizedPlayer;
+		resizedPlayer = activePlayerTurn(activePlayer, pokerDealer);
+		pokerTablePtr->players[i] = resizedPlayer;
 
 	}
 }

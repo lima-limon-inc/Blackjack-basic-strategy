@@ -1,8 +1,6 @@
 #ifndef DEALER_HEADER
 #define DEALER_HEADER
 
-#define INITIALCARDS 4
-
 #include "cards.h"
 
 typedef struct dealer{

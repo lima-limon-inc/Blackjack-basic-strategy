@@ -7,11 +7,11 @@
 //Maybe it's not the most precise thing in the world, but the number makes 
 //sense. We'll assume it to be a bit bigger, just to simplify things and avoid
 //the amount of times we need to realloc memory
-
+#define INITIALPLAYERCARDS 4
 
 player *createPlayer(char *playerName, int initialFunds) {
 	int initialSize;
-	initialSize = sizeof(player) + INITIALCARDS * sizeof(card *);
+	initialSize = sizeof(player) + INITIALPLAYERCARDS * sizeof(card *);
 
 	player *pokerPlayer;
 	pokerPlayer = (player *) malloc(initialSize); 
@@ -20,7 +20,7 @@ player *createPlayer(char *playerName, int initialFunds) {
 	strcpy(pokerPlayer->name, playerName);
 	pokerPlayer->funds = initialFunds;
 	pokerPlayer->cardsInHand = 0;
-	pokerPlayer->cardCapacity = INITIALCARDS;
+	pokerPlayer->cardCapacity = INITIALPLAYERCARDS;
 	pokerPlayer->bet = 0;
 
 	return pokerPlayer;
@@ -64,15 +64,13 @@ static player *resizePlayer(player *playerPtr) {
 	return resizedPlayer;
 }
 
-void receiveCard(player *playerPtr, card *newCard) {
-	playerPtr = resizePlayer(playerPtr);
+player *receiveCard(player *playerPtr, card *newCard) {
+	player *resizedPlayer = resizePlayer(playerPtr);
 
-	playerPtr->hand[playerPtr->cardsInHand] = newCard;
-	playerPtr->cardsInHand += 1;
+	resizedPlayer->hand[playerPtr->cardsInHand] = newCard;
+	resizedPlayer->cardsInHand += 1;
 
-	/* printf("%d \n", playerPtr->cardsInHand); */
-
-	/* printf("%d %d\n", newCard->rank, newCard->suit); */
+	return resizedPlayer;
 }
 
 void removeCards(player *playerPtr) {
