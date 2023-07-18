@@ -170,7 +170,7 @@ static inline dealer *dealersTurn(dealer *pokerDealer) {
 
 	while (dealersSum < DEALERLIMIT) {
 		card *topCard = dealACard(pokerDealer);
-		printf("\nNew dealers card :%d, %d \n", topCard->suit, 
+		printf("\nNew dealers card :%d, %d \n", topCard->rank, 
 				topCard->suit);
 
 		//This operation may require us to resize the dealer struct
@@ -214,6 +214,11 @@ static inline playerRoundResult roundEndedIn(player *activePlayer, dealer *deale
 	//Equal cards
 	else if (playersSum == dealersSum) {
 		return Tie;
+	}
+
+	//The dealer has better cards
+	else if (dealersSum > playersSum) {
+		return Lost;
 	}
 
 	else {
