@@ -120,6 +120,8 @@ static inline player *activePlayerTurn(player *activePlayer, dealer *pokerDealer
 	//Main player turn loop
 	while (true) {// && wantsNewCard == true) {
 		printCards(activePlayer);
+		printf("%d\n", activePlayer->cardsInHand);
+		asciiRepresentation(activePlayer->hand, activePlayer->cardsInHand);
 
 		playersSum = sumCards(activePlayer->hand, activePlayer->cardsInHand);
 		printf("Player's sum: %d\n", playersSum);

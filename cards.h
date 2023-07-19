@@ -46,5 +46,6 @@ card *getCardAtTheTop(shoe *shoePtr);
 
 int sumCards(card *cards[], int amountOfCards);
 
+void asciiRepresentation(card *cards[], int amountOfCards);
 
 #endif

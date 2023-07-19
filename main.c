@@ -10,11 +10,19 @@
 //TODO: Make dinamic
 #define PLAYERAMOUNT 5
 
+
 int main()
 {
 	/* printf("Hello world \n"); */
 	/* printf("%ld \n", sizeof(card)); */
 	/* printf("%ld \n", sizeof(card *)); */
+	/* printf(RED "♣\n"     RESET); */
+	/* printf(GRN "♦\n"   RESET); */
+	/* printf(YEL "♥\n"  RESET); */
+	/* printf(BLU "♠\n"    RESET); */
+	/* printf(MAG "magenta\n" RESET); */
+	/* printf(CYN "cyan\n"    RESET); */
+	/* printf(WHT "white\n"   RESET); */
 
 	pokerTable *newPokerTable = createPokerTable(1000);
 	char name[20];
