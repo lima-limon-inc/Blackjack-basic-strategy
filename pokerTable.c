@@ -1,5 +1,7 @@
 #include "pokerTable.h"
 #include "player.h"
+#include "graphics.h"
+#include <unistd.h>
 
 #define INITIALCAPACITY 5
 #define INITIALCARDCOUNT 2
@@ -110,21 +112,26 @@ static inline player *activePlayerTurn(player *activePlayer, dealer *pokerDealer
 	int playersSum;
 	playersSum = 0;
 
-	//It may not need to resize the player struct
-	/* player *resizedPlayer; */
-	/* resizedPlayer = activePlayer; */
-
 	bool wantsNewCard;
 	wantsNewCard = true;
 
 	//Main player turn loop
 	while (true) {// && wantsNewCard == true) {
-		printCards(activePlayer);
-		printf("%d\n", activePlayer->cardsInHand);
-		asciiRepresentation(activePlayer->hand, activePlayer->cardsInHand);
+		//TODO: Maybe change? It gets the job done
+		system("clear");
 
+		printf("DEALER: \n");
+		asciiRepresentation(pokerDealer->hand, 1);
+
+		/* printCards(activePlayer); */
+
+
+		printf("%s:\n", activePlayer->name);
+		asciiRepresentation(activePlayer->hand, activePlayer->cardsInHand);
 		playersSum = sumCards(activePlayer->hand, activePlayer->cardsInHand);
-		printf("Player's sum: %d\n", playersSum);
+		//TODO: Move to graphics.c
+		printf("%s's sum: %d\n", activePlayer->name, playersSum);
+
 		//If the player busts, then he lost his turn
 		if (playersSum > CARDSUMBEFOREBUST) {
 			break;
@@ -163,12 +170,17 @@ static inline void playersTurns(pokerTable *pokerTablePtr, dealer *pokerDealer) 
 }
 
 static inline dealer *dealersTurn(dealer *pokerDealer) {
+	system("clear");
 	int dealersSum;
 	dealersSum = sumCards(pokerDealer->hand, pokerDealer->cardsInHand);
-	printf("\nNew dealers card :%d, %d \n", pokerDealer->hand[0]->rank, 
-			pokerDealer->hand[0]->suit);
-	printf("\nNew dealers card :%d, %d \n", pokerDealer->hand[1]->rank, 
-			pokerDealer->hand[1]->suit);
+	/* printf("\nNew dealers card :%d, %d \n", pokerDealer->hand[0]->rank, */ 
+	/* 		pokerDealer->hand[0]->suit); */
+	/* printf("\nNew dealers card :%d, %d \n", pokerDealer->hand[1]->rank, */ 
+	/* 		pokerDealer->hand[1]->suit); */
+
+	printf("DEALER: \n");
+	asciiRepresentation(pokerDealer->hand, pokerDealer->cardsInHand);
+	sleep(3);
 
 	while (dealersSum < DEALERLIMIT) {
 		card *topCard = dealACard(pokerDealer);
@@ -178,6 +190,7 @@ static inline dealer *dealersTurn(dealer *pokerDealer) {
 		//This operation may require us to resize the dealer struct
 		pokerDealer = dealDealersHand(pokerDealer,  topCard);
 		dealersSum = sumCards(pokerDealer->hand, pokerDealer->cardsInHand);
+		asciiRepresentation(pokerDealer->hand, pokerDealer->cardsInHand);
 	}
 
 	pokerDealer->cardSum = dealersSum;

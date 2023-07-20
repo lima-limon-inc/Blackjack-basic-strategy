@@ -1,21 +1,5 @@
 #include "cards.h"
 
-//Got from printf("%ld\n", sizeof("┌─────────┐"));
-#define CARDWIDTH 34
-#define CARDLENGTH 11
-#define SPACESBETWEENCARDS 4
-#define SPACESBETWEENUMBERANDSUIT 2
-#define RANKLENGTH 2
-//‘♥’ directive writing 3 bytes
-#define SUITLENGTH 4
-
-#define TOPCARD    "┌──────────┐"
-#define RANKCARD   "│%s%s        │"
-#define MIDDLECARD "│          │"
-#define SUITCARD   "│    %s     │"
-#define BRANKCARD  "│        %s%s│"
-#define BOTTOMCARD "└──────────┘"
-
 //COLORS (taken from https://stackoverflow.com/a/23657072/13683575)
 #define RED   "\x1B[31m"
 #define GRN   "\x1B[32m"
@@ -26,45 +10,79 @@
 #define WHT   "\x1B[37m"
 #define RESET "\x1B[0m"
 
+#define TOPCARD    "┌───────────┐"
+#define RANKCARD   "│%s%s        │"
+#define MIDDLECARD "│           │"
+#define SUITCARD   "│     %s     │"
+#define BRANKCARD  "│        %s%s│"
+#define BOTTOMCARD "└───────────┘"
 
-static inline char *intToRank(int rank) {
-	char *representation = malloc(RANKLENGTH);
+//Got from printf("%ld\n", sizeof("┌─────────┐"));
+#define COLORSIZE sizeof(RED)
+//Represents the length of the rank character (including color)
+#define RANKLENGTH (COLORSIZE + sizeof(int) + COLORSIZE)
+//Represents the length of the suit character (including color)
+#define SUITLENGTH (COLORSIZE + sizeof(int) + COLORSIZE)
+
+#define CARDWIDTH sizeof(BOTTOMCARD)
+#define SPACESBETWEENCARDS 4
+
+#define SPACESBETWEENUMBERANDSUIT 2
+
+static inline char *intToRank(int rank, suits cardSuits) {
+
+	char color[COLORSIZE];
+	switch (cardSuits) {
+		case Hearts:
+			strcpy(color, RED);
+			break;
+		case Diamonds:
+			strcpy(color, RED);
+			break;
+		default:
+			strcpy(color, WHT);
+	}
 	
+	char *representation = malloc(RANKLENGTH);
 	switch (rank) {
 		case 1:
-			sprintf(representation, "A");
+			/* strcpy(representation, ""); */
+			/* strcat(color, representation); */
+			/* strcat(representation, "A"); */
+			sprintf(representation, "%sA%s", color, RESET);
 			break;
 		case 11:
-			sprintf(representation, "J");
+			sprintf(representation, "%sJ%s", color, RESET);
+			/* sprintf(representation, "J"); */
 			break;
 		case 12:
-			sprintf(representation, "Q");
+			sprintf(representation, "%sQ%s", color, RESET);
+			/* sprintf(representation, "Q"); */
 			break;
 		case 13:
-			sprintf(representation, "K");
+			sprintf(representation, "%sK%s", color, RESET);
+			/* sprintf(representation, "K"); */
 			break;
 		//The rest of the cards have their number as the representation
 		default:
-			sprintf(representation, "%d", rank);
+			sprintf(representation, "%s%d%s", color, rank, RESET);
+			/* sprintf(representation, "%d", rank); */
 	}
-	/* if (rank >= 2 || rank <= 9) { */
-	/* } */
-
 	return representation;
 }
 
 static inline char *intToSuit(suits cardSuits) {
 	char *representation = malloc(SUITLENGTH);
-	
+ 
 	switch (cardSuits) {
 		case Clubs:
 			sprintf(representation, "♣");
 			break;
 		case Diamonds:
-			sprintf(representation, "♦");
+			sprintf(representation, RED "♦" RESET);
 			break;
 		case Hearts:
-			sprintf(representation, "♥");
+			sprintf(representation, RED "♥" RESET);
 			break;
 		case Spades:
 			sprintf(representation, "♠");
@@ -75,7 +93,9 @@ static inline char *intToSuit(suits cardSuits) {
 }
 
 void asciiRepresentation(card *cards[], int amountOfCards) {
-	char cardRepresentation[CARDWIDTH * amountOfCards + SPACESBETWEENCARDS * amountOfCards];
+	int lengthOfAllTheCards = CARDWIDTH * amountOfCards + SPACESBETWEENCARDS * amountOfCards;
+	char cardRepresentation[lengthOfAllTheCards];
+	/* char cardRepresentation[1]; */
 	char bufferCard[CARDWIDTH];
 
 	strcpy(cardRepresentation, " ");
@@ -90,12 +110,15 @@ void asciiRepresentation(card *cards[], int amountOfCards) {
 	strcpy(cardRepresentation, " ");
 	char *rank;
 	for (int i = 0; i < amountOfCards; i++) {
-		rank = intToRank(cards[i]->rank);
-		if (strcmp(rank,"10") == 0) {
-			sprintf(bufferCard, RANKCARD, rank, "");
+		rank = intToRank(cards[i]->rank, cards[i]->suit);
+
+		//Red or white 10
+		if ((strcmp(rank,"\x1B[31m10\x1B[0m") == 0) || 
+		    (strcmp(rank,"\x1B[37m10\x1B[0m") == 0)) {
+			sprintf(bufferCard, RANKCARD, rank," ");
 		}
 		else {
-			sprintf(bufferCard, RANKCARD, rank, " ");
+			sprintf(bufferCard, RANKCARD, rank, "  ");
 		}
 
 		strcat(cardRepresentation, bufferCard);
@@ -140,14 +163,16 @@ void asciiRepresentation(card *cards[], int amountOfCards) {
 	}
 
 	strcpy(cardRepresentation, " ");
-	/* char *rank; */
 	for (int i = 0; i < amountOfCards; i++) {
-		rank = intToRank(cards[i]->rank);
-		if (strcmp(rank,"10") == 0) {
-			sprintf(bufferCard, BRANKCARD, "", rank);
+		rank = intToRank(cards[i]->rank, cards[i]->suit);
+
+		//Red or white 10
+		if ((strcmp(rank,"\x1B[31m10\x1B[0m") == 0) || 
+		    (strcmp(rank,"\x1B[37m10\x1B[0m") == 0)) {
+			sprintf(bufferCard, BRANKCARD, " ", rank);
 		}
 		else {
-			sprintf(bufferCard, BRANKCARD, " ", rank);
+			sprintf(bufferCard, BRANKCARD, "  ", rank);
 		}
 
 		strcat(cardRepresentation, bufferCard);
