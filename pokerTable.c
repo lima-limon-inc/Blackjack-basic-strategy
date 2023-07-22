@@ -153,6 +153,7 @@ static inline player *activePlayerTurn(player *activePlayer, dealer *pokerDealer
 
 	}
 	activePlayer-> cardSum = playersSum;
+	sleep(3);
 
 	return activePlayer;
 }
@@ -169,8 +170,12 @@ static inline void playersTurns(pokerTable *pokerTablePtr, dealer *pokerDealer) 
 	}
 }
 
-static inline dealer *dealersTurn(dealer *pokerDealer) {
+static inline dealer *dealersTurn(pokerTable *pokerTablePtr, dealer *pokerDealer) {
 	system("clear");
+	for (int i = 0; i < pokerTablePtr->playerAmount; i++) {
+		printf("%s's sum: %d\n", pokerTablePtr->players[i]->name,
+				pokerTablePtr->players[i]->cardSum);
+	}
 	int dealersSum;
 	dealersSum = sumCards(pokerDealer->hand, pokerDealer->cardsInHand);
 	/* printf("\nNew dealers card :%d, %d \n", pokerDealer->hand[0]->rank, */ 
@@ -251,7 +256,7 @@ static inline void losersAndWiners(pokerTable *pokerTablePtr, dealer *dealerPtr)
 		playerRoundResult playerResult;
 		playerResult = roundEndedIn(activePlayer, dealerPtr);
 
-		printf("%s\n", activePlayer->name);
+		printf("%s: ", activePlayer->name);
 		switch (playerResult) {
 			case Lost:
 				printf("Lost\n");
@@ -292,6 +297,6 @@ void pokerRound(pokerTable *pokerTablePtr) {
 	asksPlayerForBet(pokerTablePtr);
 	dealInitialCards(pokerTablePtr, INITIALCARDCOUNT, pokerDealer);
 	playersTurns(pokerTablePtr, pokerDealer);
-	pokerDealer = dealersTurn(pokerDealer);
+	pokerDealer = dealersTurn(pokerTablePtr, pokerDealer);
 	losersAndWiners(pokerTablePtr, pokerDealer);
 }
