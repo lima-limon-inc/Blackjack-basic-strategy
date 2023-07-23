@@ -28,7 +28,6 @@ pokerTable *createPokerTable(int initialFunds) {
 void destroyPokerTable(pokerTable *pokerTablePtr) {
 	killDealer(pokerTablePtr->pokerDealer);
 
-	/* printf("Kill player\n"); */
 	for (int i = 0; i < pokerTablePtr->playerAmount; i++) {
 		killPlayer(pokerTablePtr->players[i]);
 	}
@@ -36,8 +35,6 @@ void destroyPokerTable(pokerTable *pokerTablePtr) {
 }
 
 pokerTable *addPlayer(pokerTable *pokerTablePtr, char name[], int initialFunds) {
-	/* printf("ADDING PLAYER TO POKER TABLE \n"); */
-
 	player *newPlayer = createPlayer(name,  initialFunds);
 
 	pokerTablePtr->players[pokerTablePtr->playerAmount] = newPlayer;
@@ -46,7 +43,6 @@ pokerTable *addPlayer(pokerTable *pokerTablePtr, char name[], int initialFunds) 
 	//TODO: Add resize down function
 	if (pokerTablePtr->playerAmount == pokerTablePtr->playerCapacity) {
 		printf("REALLOC\n");
-		/* int newSize = pokerTablePtr->playerCapacity * 2; */
 		int newSize = sizeof(pokerTable) +
 			 pokerTablePtr->playerCapacity * 2 * sizeof(player *);
 		pokerTablePtr = realloc(pokerTablePtr, newSize);
@@ -56,7 +52,6 @@ pokerTable *addPlayer(pokerTable *pokerTablePtr, char name[], int initialFunds) 
 }
 
 static inline void dealInitialCards(pokerTable *pokerTablePtr, int initialCard, dealer *pokerDealer) {
-	/* dealer *pokerDealer = pokerTablePtr->pokerDealer; */
 	for (int i = 0; i < initialCard; i++) {
 		for (int j = 0; j < pokerTablePtr->playerAmount; j++) {
 			player *activePlayer = pokerTablePtr->players[j];
@@ -67,8 +62,6 @@ static inline void dealInitialCards(pokerTable *pokerTablePtr, int initialCard, 
 		}
 		card *dealersCard = dealACard(pokerDealer);
 
-		/* printf("Dealer's card: "); */
-		/* printf("%d %d\n", dealersCard->rank, dealersCard->suit); */
 		dealDealersHand(pokerDealer, dealersCard);
 	}
 }
@@ -175,8 +168,6 @@ static inline void printDealersCards(dealer *pokerDealer, bool showAllCards) {
 }
 
 static inline void printVisualRepresentation(player *activePlayer, dealer *pokerDealer, bool showAllDealerCards) {
-	//TODO: Maybe change? It gets the job done
-
 	printDealersCards(pokerDealer, showAllDealerCards);
 	printf("%s:\n", activePlayer->name);
 	asciiRepresentation(activePlayer->hand, activePlayer->cardsInHand);
@@ -219,8 +210,6 @@ static inline player *activePlayerTurn(player *activePlayer, dealer *pokerDealer
 		switch (playersDecision) {
 			case Hit:
 				topCard = dealACard(pokerDealer);
-				/* printf("\nNew card :%d, %d \n", topCard->rank, */ 
-				/* 		topCard->suit); */
 
 				//May need to re size a player struct
 				activePlayer = receiveCard(activePlayer, topCard);
@@ -269,13 +258,7 @@ static inline void playersTurns(pokerTable *pokerTablePtr, dealer *pokerDealer) 
 static inline dealer *dealersTurn(pokerTable *pokerTablePtr, dealer *pokerDealer) {
 	int dealersSum;
 	dealersSum = sumCards(pokerDealer->hand, pokerDealer->cardsInHand);
-	/* printf("\nNew dealers card :%d, %d \n", pokerDealer->hand[0]->rank, */ 
-	/* 		pokerDealer->hand[0]->suit); */
-	/* printf("\nNew dealers card :%d, %d \n", pokerDealer->hand[1]->rank, */ 
-	/* 		pokerDealer->hand[1]->suit); */
 
-	/* printf("DEALER: \n"); */
-	/* asciiRepresentation(pokerDealer->hand, pokerDealer->cardsInHand); */
 	system("clear");
 	for (int i = 0; i < pokerTablePtr->playerAmount; i++) {
 		printf("%s's sum: %d\n", pokerTablePtr->players[i]->name,
@@ -291,15 +274,12 @@ static inline dealer *dealersTurn(pokerTable *pokerTablePtr, dealer *pokerDealer
 					pokerTablePtr->players[i]->cardSum);
 		}
 		card *topCard = dealACard(pokerDealer);
-		/* printf("\nNew dealers card :%d, %d \n", topCard->rank, */ 
-		/* 		topCard->suit); */
 
 		//This operation may require us to resize the dealer struct
 		pokerDealer = dealDealersHand(pokerDealer,  topCard);
 		dealersSum = sumCards(pokerDealer->hand, pokerDealer->cardsInHand);
 		printDealersCards(pokerDealer, true);
 		sleep(SLEEPAMOUNT);
-		/* asciiRepresentation(pokerDealer->hand, pokerDealer->cardsInHand); */
 	}
 
 	pokerDealer->cardSum = dealersSum;

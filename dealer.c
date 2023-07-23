@@ -73,7 +73,6 @@ dealer *dealDealersHand(dealer *dealerPtr, card *newCard) {
 	resizedDealer->cardsInHand += 1;
 
 	return resizedDealer;
-	/* printf("%d \n", dealerPtr->cardsInHand); */
 }
 
 void removeDealersCards(dealer *dealerPtr) {

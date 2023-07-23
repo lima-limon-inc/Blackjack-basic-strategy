@@ -46,27 +46,20 @@ static inline char *intToRank(int rank, suits cardSuits) {
 	char *representation = malloc(RANKLENGTH);
 	switch (rank) {
 		case 1:
-			/* strcpy(representation, ""); */
-			/* strcat(color, representation); */
-			/* strcat(representation, "A"); */
 			sprintf(representation, "%sA%s", color, RESET);
 			break;
 		case 11:
 			sprintf(representation, "%sJ%s", color, RESET);
-			/* sprintf(representation, "J"); */
 			break;
 		case 12:
 			sprintf(representation, "%sQ%s", color, RESET);
-			/* sprintf(representation, "Q"); */
 			break;
 		case 13:
 			sprintf(representation, "%sK%s", color, RESET);
-			/* sprintf(representation, "K"); */
 			break;
 		//The rest of the cards have their number as the representation
 		default:
 			sprintf(representation, "%s%d%s", color, rank, RESET);
-			/* sprintf(representation, "%d", rank); */
 	}
 	return representation;
 }
@@ -147,7 +140,6 @@ void asciiRepresentation(card *cards[], int amountOfCards) {
 		sprintf(bufferCard, SUITCARD, suit);
 		strcat(cardRepresentation, bufferCard);
 
-		/* strcat(cardRepresentation, TOPCARD); */
 		strcat(cardRepresentation, "  ");
 		free(suit);
 	}
@@ -191,7 +183,4 @@ void asciiRepresentation(card *cards[], int amountOfCards) {
 	}
 	printf(cardRepresentation);
 	printf("\n");
-
-	/* free(suit); */
-	/* free(rank); */
 }
