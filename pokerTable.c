@@ -89,9 +89,34 @@ static inline bool checkForDoubleDown(int amountOfCards) {
 	return canDoubleDown;
 }
 
-#define ASKFORDECISION "What do you do? (H)it, (S)tand or (D)ouble Down "
-#define NOSPLIT                                                        ": "
-#define CANSPLIT                                                       "or S(P)lit: "
+#define FULLINPUTMESSAGE "What do you do? (H)it, (S)tand or (D)ouble Down or S(P)lit: "
+/* #define ASKFORDECISION "What do you do? (H)it, (S)tand or (D)ouble Down" */
+/* #define NOSPLIT                                                        ": " */
+/* #define CANSPLIT                                                       " */
+static inline char *askForPlayerMessage(bool canDoubleDown, bool canSplit) {
+	char *message = malloc(sizeof(FULLINPUTMESSAGE));
+	
+	strcpy(message, "What do you do? (H)it, (S)tand");
+
+	//IF you can't double down, then you can't split.
+	//Both are only possible on the first hand
+	if (canDoubleDown == false) {
+		strcat(message, ": ");
+		return message;
+	}
+	char doubleDownConnector[sizeof(" or (D)ouble Down or S(P)lit: ")];
+	//If you can't split, then you can only double down
+	if (canSplit == false) {
+		strcpy(doubleDownConnector, " or (D)ouble Down: ");
+	}
+	else {
+		strcpy(doubleDownConnector, ", (D)ouble Down or S(P)lit: ");
+	}
+	strcat(message, doubleDownConnector);
+
+	return message;
+}
+
 typedef enum playerDecision {Hit, Stand, DoubleDown, Split} playerDecision;
 static inline playerDecision askForDecision(player *activePlayer) {
 	bool canSplit;
@@ -108,13 +133,11 @@ static inline playerDecision askForDecision(player *activePlayer) {
 	playerDecision playersDecision; 
 	while (validAnswer == false) {
 		//Not the prettiest way to handle it, but it works
-		printf(ASKFORDECISION);
-		if (canSplit == false) {
-			printf(NOSPLIT);
-		} 
-		else {
-			printf(CANSPLIT);
-		}
+		char *askForDecisionMessage;
+		askForDecisionMessage = askForPlayerMessage(canDoubleDown, canSplit);
+		printf(askForDecisionMessage);
+		free(askForDecisionMessage);
+		
 		scanf("%s", userInput);
 
 		if (strcmp(userInput, "H") == 0) {
@@ -191,7 +214,8 @@ static inline player *activePlayerTurn(player *activePlayer, dealer *pokerDealer
 	printVisualRepresentation(activePlayer, pokerDealer, false);
 
 	//If the player has Blackjack, then automatically skips input
-	if (playersSum == BLACKJACK && activePlayer->cardsInHand == 2) {
+	/* if (playersSum == BLACKJACK && activePlayer->cardsInHand == 2) { */
+	if (playersSum == BLACKJACK) {
 		sleep(SLEEPAMOUNT);
 		ENDACTIVEPLAYERTURN
 	}

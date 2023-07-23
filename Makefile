@@ -4,6 +4,7 @@ CFLAGS = -g -W -Wall -Werror
 
 OBJECTFILES = cards.o player.o dealer.o pokerTable.o graphics.o main.o
 
+
 run: build
 	./main.out
 
@@ -28,3 +29,6 @@ graphics.o: graphics.c
 build: $(OBJECTFILES)
 	clear
 	$(CC) $(CFLAGS) -o main.out $(OBJECTFILES)
+
+valgrind: build
+	valgrind --leak-check=full ./main.out
