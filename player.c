@@ -115,3 +115,7 @@ int getBet(player *playerPtr) {
 void increaseBet(player *playerPtr, int increaseAmount) {
 	makeABet(playerPtr, increaseAmount);
 }
+
+void saveCardSum(player *playerPtr, int newSum) {
+	playerPtr-> cardSum = newSum;
+}

@@ -9,6 +9,7 @@
 #define BLACKJACK 21
 #define DEALERLIMIT 17
 #define AMOUNTOFCARDSFORBLACKJACK 2
+#define SLEEPAMOUNT 1.5
 
 pokerTable *createPokerTable(int initialFunds) {
 	dealer *dealerPtr = createDealer(initialFunds);
@@ -161,76 +162,97 @@ static inline void asksPlayerForBet(pokerTable *pokerTablePtr) {
 	}
 }
 
+static inline void printDealersCards(dealer *pokerDealer, bool showAllCards) {
+	int howManyCards;
+	if (showAllCards == false) {
+		howManyCards = 1;
+	}
+	else {
+		howManyCards = pokerDealer->cardsInHand;
+	}
+	printf("DEALER: \n");
+	asciiRepresentation(pokerDealer->hand, howManyCards);
+}
+
+static inline void printVisualRepresentation(player *activePlayer, dealer *pokerDealer, bool showAllDealerCards) {
+	//TODO: Maybe change? It gets the job done
+
+	printDealersCards(pokerDealer, showAllDealerCards);
+	printf("%s:\n", activePlayer->name);
+	asciiRepresentation(activePlayer->hand, activePlayer->cardsInHand);
+}
+
+
+#define ENDACTIVEPLAYERTURN saveCardSum(activePlayer, playersSum);\
+			   return activePlayer;
 static inline player *activePlayerTurn(player *activePlayer, dealer *pokerDealer) {
-	int playersSum;
-	playersSum = 0;
+	bool playersTurnContinues;
+	playersTurnContinues = true;
 
 	playerDecision playersDecision;
 
+	card *topCard;
+
+	int playersSum;
+	playersSum = sumCards(activePlayer->hand, activePlayer->cardsInHand);
+
+	system("clear");
+	printVisualRepresentation(activePlayer, pokerDealer, false);
+
+	//If the player has Blackjack, then automatically skips input
+	if (playersSum == BLACKJACK && activePlayer->cardsInHand == 2) {
+		sleep(SLEEPAMOUNT);
+		ENDACTIVEPLAYERTURN
+	}
+
 	//Main player turn loop
-	while (true) {// && wantsNewCard == true)
-		//TODO: Maybe change? It gets the job done
+	while (playersTurnContinues == true && playersSum < CARDSUMBEFOREBUST) {
 		system("clear");
-
-		printf("DEALER: \n");
-		asciiRepresentation(pokerDealer->hand, 1);
-
-		printf("%s:\n", activePlayer->name);
-		asciiRepresentation(activePlayer->hand, activePlayer->cardsInHand);
-		playersSum = sumCards(activePlayer->hand, activePlayer->cardsInHand);
-		printf("%s's sum: %d\n", activePlayer->name, playersSum);
+		printVisualRepresentation(activePlayer, pokerDealer, false);
 
 		//If the player busts, then he lost his turn
-		if (playersSum > CARDSUMBEFOREBUST || playersSum == BLACKJACK) {
+		if (playersSum > CARDSUMBEFOREBUST) {
 			break;
 		}
 
-		//TODO: This will equal Hit, Stand, DoubleDown or Split
 		playersDecision = askForDecision(activePlayer);
-		//If the player does not want a new card, then we want to exit
-		//the while loop immediately.
-		if (playersDecision == Hit) {
-			card *topCard = dealACard(pokerDealer);
-			printf("\nNew card :%d, %d \n", topCard->rank, 
-					topCard->suit);
+		switch (playersDecision) {
+			case Hit:
+				topCard = dealACard(pokerDealer);
+				/* printf("\nNew card :%d, %d \n", topCard->rank, */ 
+				/* 		topCard->suit); */
 
-			//May need to re size a player struct
-			activePlayer = receiveCard(activePlayer,  topCard);
+				//May need to re size a player struct
+				activePlayer = receiveCard(activePlayer, topCard);
+				break;
+			case Stand:
+				playersTurnContinues = false;
+				break;
+			case DoubleDown:
+				int increaseAmount;
+				increaseAmount = getBet(activePlayer);
+				increaseBet(activePlayer, increaseAmount);
+				//Once the bet is increased, the player can 
+				//only get one more card, so we deal a card and 
+				//exit the loop
+				topCard = dealACard(pokerDealer);
+				activePlayer = receiveCard(activePlayer, topCard);
+				playersTurnContinues = false;
+				break;
+			case Split:
+				break;
 		}
 
-		else if (playersDecision == Stand) {
-			break;
-		}
-
-		else if (playersDecision == DoubleDown) {
-			int increaseAmount;
-			increaseAmount = getBet(activePlayer);
-			increaseBet(activePlayer, increaseAmount);
-			//Once the bet is increased, the player can only get 
-			//one more card, so we deal a card and exit the loop
-			card *topCard = dealACard(pokerDealer);
-			activePlayer = receiveCard(activePlayer,  topCard);
-			playersSum = sumCards(activePlayer->hand, activePlayer->cardsInHand);
-			break;
-		}
-		else {
-			printf("NOT CONSIDERED CASE");
-		}
-
-
+		playersSum = sumCards(activePlayer->hand, activePlayer->cardsInHand);
 	}
 	system("clear");
+	printVisualRepresentation(activePlayer, pokerDealer, false);
 
-	printf("DEALER: \n");
-	asciiRepresentation(pokerDealer->hand, 1);
+	sleep(SLEEPAMOUNT);
 
-	printf("%s:\n", activePlayer->name);
-	asciiRepresentation(activePlayer->hand, activePlayer->cardsInHand);
-	activePlayer-> cardSum = playersSum;
-	sleep(3);
-
-	return activePlayer;
+	ENDACTIVEPLAYERTURN
 }
+#undef ENDACTIVEPLAYERTURN
 
 static inline void playersTurns(pokerTable *pokerTablePtr, dealer *pokerDealer) {
 	for (int i = 0; i < pokerTablePtr->playerAmount; i++) {
@@ -245,11 +267,6 @@ static inline void playersTurns(pokerTable *pokerTablePtr, dealer *pokerDealer) 
 }
 
 static inline dealer *dealersTurn(pokerTable *pokerTablePtr, dealer *pokerDealer) {
-	system("clear");
-	for (int i = 0; i < pokerTablePtr->playerAmount; i++) {
-		printf("%s's sum: %d\n", pokerTablePtr->players[i]->name,
-				pokerTablePtr->players[i]->cardSum);
-	}
 	int dealersSum;
 	dealersSum = sumCards(pokerDealer->hand, pokerDealer->cardsInHand);
 	/* printf("\nNew dealers card :%d, %d \n", pokerDealer->hand[0]->rank, */ 
@@ -257,19 +274,32 @@ static inline dealer *dealersTurn(pokerTable *pokerTablePtr, dealer *pokerDealer
 	/* printf("\nNew dealers card :%d, %d \n", pokerDealer->hand[1]->rank, */ 
 	/* 		pokerDealer->hand[1]->suit); */
 
-	printf("DEALER: \n");
-	asciiRepresentation(pokerDealer->hand, pokerDealer->cardsInHand);
-	sleep(3);
+	/* printf("DEALER: \n"); */
+	/* asciiRepresentation(pokerDealer->hand, pokerDealer->cardsInHand); */
+	system("clear");
+	for (int i = 0; i < pokerTablePtr->playerAmount; i++) {
+		printf("%s's sum: %d\n", pokerTablePtr->players[i]->name,
+				pokerTablePtr->players[i]->cardSum);
+	}
+	printDealersCards(pokerDealer, true);
+	sleep(SLEEPAMOUNT);
 
 	while (dealersSum < DEALERLIMIT) {
+		system("clear");
+		for (int i = 0; i < pokerTablePtr->playerAmount; i++) {
+			printf("%s's sum: %d\n", pokerTablePtr->players[i]->name,
+					pokerTablePtr->players[i]->cardSum);
+		}
 		card *topCard = dealACard(pokerDealer);
-		printf("\nNew dealers card :%d, %d \n", topCard->rank, 
-				topCard->suit);
+		/* printf("\nNew dealers card :%d, %d \n", topCard->rank, */ 
+		/* 		topCard->suit); */
 
 		//This operation may require us to resize the dealer struct
 		pokerDealer = dealDealersHand(pokerDealer,  topCard);
 		dealersSum = sumCards(pokerDealer->hand, pokerDealer->cardsInHand);
-		asciiRepresentation(pokerDealer->hand, pokerDealer->cardsInHand);
+		printDealersCards(pokerDealer, true);
+		sleep(SLEEPAMOUNT);
+		/* asciiRepresentation(pokerDealer->hand, pokerDealer->cardsInHand); */
 	}
 
 	pokerDealer->cardSum = dealersSum;

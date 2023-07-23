@@ -44,4 +44,6 @@ int getBet(player *playerPtr);
 
 void increaseBet(player *playerPtr, int increaseAmount);
 
+void saveCardSum(player *playerPtr, int newSum);
+
 #endif
