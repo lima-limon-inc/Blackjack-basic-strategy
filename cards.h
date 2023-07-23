@@ -1,6 +1,7 @@
 #ifndef CARDS_HEADER
 #define CARDS_HEADER
 
+#include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>

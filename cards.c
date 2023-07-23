@@ -137,4 +137,3 @@ int sumCards(card *cards[], int amountOfCards)
 
    return sum;
 }
-

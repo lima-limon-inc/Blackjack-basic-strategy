@@ -27,7 +27,7 @@ pokerTable *createPokerTable(int initialFunds) {
 void destroyPokerTable(pokerTable *pokerTablePtr) {
 	killDealer(pokerTablePtr->pokerDealer);
 
-	printf("Kill player\n");
+	/* printf("Kill player\n"); */
 	for (int i = 0; i < pokerTablePtr->playerAmount; i++) {
 		killPlayer(pokerTablePtr->players[i]);
 	}
@@ -72,22 +72,76 @@ static inline void dealInitialCards(pokerTable *pokerTablePtr, int initialCard, 
 	}
 }
 
-static inline bool askForNewCard() {
-	printf("Want another card? Y/N");
+#define AMOUNTOFCARDSNEEDEDFORSPLIT 2
+static inline bool checkForSplit(card *cards[], int amountOfCards) {
+	bool areTheyTheSameRank;
+
+	if (amountOfCards != AMOUNTOFCARDSNEEDEDFORSPLIT) {
+		return false;
+	}
+
+	//This is a bit hacky, but you can only split 2 cards.
+	//The previous if statement should discard all the non 2 card hands
+	areTheyTheSameRank = (cards[0]->rank == cards[1]->rank);
+
+	return areTheyTheSameRank;
+}
+
+#define AMOUNTOFCARDSNEEDEDFORDOUBLEDOWN 2
+static inline bool checkForDoubleDown(int amountOfCards) {
+	bool canDoubleDown;
+	canDoubleDown = (amountOfCards == AMOUNTOFCARDSNEEDEDFORDOUBLEDOWN);
+
+	return canDoubleDown;
+}
+
+#define ASKFORDECISION "What do you do? (H)it, (S)tand or (D)ouble Down "
+#define NOSPLIT                                                        ": "
+#define CANSPLIT                                                       "or S(P)lit: "
+typedef enum playerDecision {Hit, Stand, DoubleDown, Split} playerDecision;
+static inline playerDecision askForDecision(player *activePlayer) {
+	bool canSplit;
+	canSplit = checkForSplit(activePlayer->hand, activePlayer->cardsInHand);
+
+	bool canDoubleDown;
+	canDoubleDown = checkForDoubleDown(activePlayer->cardsInHand);
+
 	char userInput[10];
-	scanf("%s", userInput);
 
+	bool validAnswer;
+	validAnswer = false;
 
-	bool wantsAnotherCard; 
-	if (strcmp(userInput, "Y") == 0) {
-		wantsAnotherCard = true;
-		/* printf("QUIERO"); */
+	playerDecision playersDecision; 
+	while (validAnswer == false) {
+		//Not the prettiest way to handle it, but it works
+		printf(ASKFORDECISION);
+		if (canSplit == false) {
+			printf(NOSPLIT);
+		} 
+		else {
+			printf(CANSPLIT);
+		}
+		scanf("%s", userInput);
+
+		if (strcmp(userInput, "H") == 0) {
+			playersDecision = Hit;
+			validAnswer = true;
+		}
+		else if (strcmp(userInput, "S") == 0) {
+			playersDecision = Stand;
+			validAnswer = true;
+		}
+		else if (canDoubleDown == true && strcmp(userInput, "D") == 0) {
+			playersDecision = DoubleDown;
+			validAnswer = true;
+		}
+		else if (canSplit == true && strcmp(userInput, "P") == 0) {
+			playersDecision = Split;
+			validAnswer = true;
+		}
 	}
-	else {
-		wantsAnotherCard = false;
-	}
 
-	return wantsAnotherCard;
+	return playersDecision;
 }
 
 static inline void askPlayerForBet(player *activePlayer) {
@@ -104,7 +158,6 @@ static inline void asksPlayerForBet(pokerTable *pokerTablePtr) {
 		player *activePlayer;
 		activePlayer = pokerTablePtr->players[i];
 		askPlayerForBet(activePlayer);
-
 	}
 }
 
@@ -112,46 +165,67 @@ static inline player *activePlayerTurn(player *activePlayer, dealer *pokerDealer
 	int playersSum;
 	playersSum = 0;
 
-	bool wantsNewCard;
-	wantsNewCard = true;
+	playerDecision playersDecision;
 
 	//Main player turn loop
-	while (true) {// && wantsNewCard == true) {
+	while (true) {// && wantsNewCard == true)
 		//TODO: Maybe change? It gets the job done
 		system("clear");
 
 		printf("DEALER: \n");
 		asciiRepresentation(pokerDealer->hand, 1);
 
-		/* printCards(activePlayer); */
-
-
 		printf("%s:\n", activePlayer->name);
 		asciiRepresentation(activePlayer->hand, activePlayer->cardsInHand);
 		playersSum = sumCards(activePlayer->hand, activePlayer->cardsInHand);
-		//TODO: Move to graphics.c
 		printf("%s's sum: %d\n", activePlayer->name, playersSum);
 
 		//If the player busts, then he lost his turn
-		if (playersSum > CARDSUMBEFOREBUST) {
+		if (playersSum > CARDSUMBEFOREBUST || playersSum == BLACKJACK) {
 			break;
 		}
 
-		wantsNewCard = askForNewCard(activePlayer);
+		//TODO: This will equal Hit, Stand, DoubleDown or Split
+		playersDecision = askForDecision(activePlayer);
 		//If the player does not want a new card, then we want to exit
 		//the while loop immediately.
-		if (wantsNewCard == false) {
+		if (playersDecision == Hit) {
+			card *topCard = dealACard(pokerDealer);
+			printf("\nNew card :%d, %d \n", topCard->rank, 
+					topCard->suit);
+
+			//May need to re size a player struct
+			activePlayer = receiveCard(activePlayer,  topCard);
+		}
+
+		else if (playersDecision == Stand) {
 			break;
 		}
 
-		card *topCard = dealACard(pokerDealer);
-		printf("\nNew card :%d, %d \n", topCard->rank, 
-				topCard->suit);
+		else if (playersDecision == DoubleDown) {
+			int increaseAmount;
+			increaseAmount = getBet(activePlayer);
+			increaseBet(activePlayer, increaseAmount);
+			//Once the bet is increased, the player can only get 
+			//one more card, so we deal a card and exit the loop
+			card *topCard = dealACard(pokerDealer);
+			activePlayer = receiveCard(activePlayer,  topCard);
+			playersSum = sumCards(activePlayer->hand, activePlayer->cardsInHand);
+			break;
+		}
+		else {
+			printf("NOT CONSIDERED CASE");
+		}
 
-		//May need to re size a player struct
-		activePlayer = receiveCard(activePlayer,  topCard);
 
 	}
+	system("clear");
+
+	printf("DEALER: \n");
+	asciiRepresentation(pokerDealer->hand, 1);
+
+	printf("%s:\n", activePlayer->name);
+	asciiRepresentation(activePlayer->hand, activePlayer->cardsInHand);
 	activePlayer-> cardSum = playersSum;
 	sleep(3);
 

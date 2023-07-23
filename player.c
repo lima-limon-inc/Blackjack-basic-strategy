@@ -111,3 +111,7 @@ void winBet(player *playerPtr, int awardedMoney) {
 int getBet(player *playerPtr) {
 	return playerPtr->bet;
 }
+
+void increaseBet(player *playerPtr, int increaseAmount) {
+	makeABet(playerPtr, increaseAmount);
+}

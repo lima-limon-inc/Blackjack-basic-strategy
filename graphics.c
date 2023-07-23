@@ -79,6 +79,7 @@ static inline char *intToSuit(suits cardSuits) {
 			sprintf(representation, "♣");
 			break;
 		case Diamonds:
+			//                      This changes the symbol's color
 			sprintf(representation, RED "♦" RESET);
 			break;
 		case Hearts:
@@ -92,6 +93,7 @@ static inline char *intToSuit(suits cardSuits) {
 	return representation;
 }
 
+//This function isn't pretty. In fact, it's pretty ugly. It simply prints a card
 void asciiRepresentation(card *cards[], int amountOfCards) {
 	int lengthOfAllTheCards = CARDWIDTH * amountOfCards + SPACESBETWEENCARDS * amountOfCards;
 	char cardRepresentation[lengthOfAllTheCards];

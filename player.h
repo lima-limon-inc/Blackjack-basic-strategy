@@ -42,4 +42,6 @@ void winBet(player *playerPtr, int awardedMoney);
 
 int getBet(player *playerPtr);
 
+void increaseBet(player *playerPtr, int increaseAmount);
+
 #endif
