@@ -9,43 +9,60 @@
 //the amount of times we need to realloc memory
 #define INITIALPLAYERCARDS 4
 
+static playerHand *createPlayerHand() {
+	int initialSize;
+	initialSize = sizeof(playerHand) + INITIALPLAYERCARDS * sizeof(card *);
+
+	playerHand *pokerHand;
+	pokerHand = (playerHand *) malloc(initialSize); 
+	pokerHand->cardsInHand = 0;
+	pokerHand->cardCapacity = INITIALPLAYERCARDS;
+	pokerHand->bet = 0;
+	pokerHand->cardSum = 0;
+	
+	return pokerHand;
+}
+
 player *createPlayer(char *playerName, int initialFunds) {
 	int initialSize;
-	initialSize = sizeof(player) + INITIALPLAYERCARDS * sizeof(card *);
+	initialSize = sizeof(player);
 
 	player *pokerPlayer;
 	pokerPlayer = (player *) malloc(initialSize); 
 
-	/* pokerPlayer->name = playerName; */
+	playerHand *playersHand;
+	playersHand = createPlayerHand();
+
 	strcpy(pokerPlayer->name, playerName);
 	pokerPlayer->funds = initialFunds;
-	pokerPlayer->cardsInHand = 0;
-	pokerPlayer->cardCapacity = INITIALPLAYERCARDS;
-	pokerPlayer->bet = 0;
-	pokerPlayer->cardSum = 0;
+	pokerPlayer->playerHands[0] = playersHand;
+	pokerPlayer->howManyHands = 1;
 
 	return pokerPlayer;
 }
 
 //TODO: Change function name if I want to get PEGI 13
 void killPlayer(player *playerPtr){
+	for (int i = 0; i < playerPtr->howManyHands; i++) {
+		free(playerPtr->playerHands[i]);
+	}
 	free(playerPtr);
 }
 
-static player *resizePlayer(player *playerPtr) {
+static playerHand *resizeHand(playerHand *playerHandPtr) {
 	//If there's still margin, we don't realloc memory
-	if (playerPtr->cardCapacity > playerPtr->cardsInHand) {
+	if (playerHandPtr->cardCapacity > playerHandPtr->cardsInHand) {
 		/* printf("DIDN'T RESIZE\n"); */
-		return playerPtr;
+		return playerHandPtr;
 	}
 
 	//We will downsize if it's way to big
 	//                   8                             2      * 2
-	else if (playerPtr->cardCapacity > playerPtr->cardsInHand * 2) {
+	else if (playerHandPtr->cardCapacity > playerHandPtr->cardsInHand * 2) {
 		printf("DOWNSIZE\n");
 
 		//Set the new capacity
-		playerPtr->cardCapacity /= 2; //Divided equal (fancy notation)
+		playerHandPtr->cardCapacity /= 2; //Divided equal (fancy notation)
 	}
 
 	//We need more memory
@@ -53,69 +70,100 @@ static player *resizePlayer(player *playerPtr) {
 		printf("UPSIZE\n");
 
 		//Set the new capacity
-		playerPtr->cardCapacity *= 2; //Divided equal (fancy notation)
+		playerHandPtr->cardCapacity *= 2; //Divided equal (fancy notation)
 	}
 		
-	player *resizedPlayer;
-	int newSize = sizeof(player) + 
-			playerPtr->cardCapacity * sizeof(card *);
+	playerHand *resizedPlayer;
+	int newSize = sizeof(playerHand) + 
+			playerHandPtr->cardCapacity * sizeof(card *);
 
 
-	resizedPlayer = realloc(playerPtr, newSize);
+	resizedPlayer = realloc(playerHandPtr, newSize);
 	return resizedPlayer;
 }
 
-player *receiveCard(player *playerPtr, card *newCard) {
-	player *resizedPlayer = resizePlayer(playerPtr);
+void receiveCard(player *playerPtr, card *newCard, int whichHand) {
+	playerHand *activePlayerHand = getSpecificHand(playerPtr, whichHand);
 
-	resizedPlayer->hand[playerPtr->cardsInHand] = newCard;
-	resizedPlayer->cardsInHand += 1;
+	activePlayerHand = resizeHand(activePlayerHand);
 
-	return resizedPlayer;
+	activePlayerHand->hand[activePlayerHand->cardsInHand] = newCard;
+	activePlayerHand->cardsInHand += 1;
 }
 
-void removeCards(player *playerPtr) {
+void removeCards(player *playerPtr, int whichHand) {
 	//We simply move the index. The pointer will simply get removed by
 	//the receiveCard function (it will overwrite the value)
-	playerPtr->cardsInHand = 0;
+	playerHand *activePlayerHand = getSpecificHand(playerPtr, whichHand);
+	activePlayerHand->cardsInHand = 0;
 }
 
-void printCards(player *playerPtr) {
-	for (int i = 0; i < playerPtr->cardsInHand; i++) {
+void printCards(player *playerPtr, int whichHand) {
+	playerHand *activePlayerHand = getSpecificHand(playerPtr, whichHand);
+	for (int i = 0; i < activePlayerHand->cardsInHand; i++) {
 		printf("%s's card: ", playerPtr->name); 
-		printf("%d, %d \n", playerPtr->hand[i]->rank, 
-				playerPtr->hand[i]->suit);
+		printf("%d, %d \n", activePlayerHand->hand[i]->rank, 
+				activePlayerHand->hand[i]->suit);
 	}
 }
 
-void makeABet(player *playerPtr, int bet) {
+void makeABet(player *playerPtr, int bet, int whichHand) {
 	//TODO: Create if statement to check if you have enough funds
-	playerPtr->bet += bet;
+	playerHand *activePlayerHand = getSpecificHand(playerPtr, whichHand);
+	activePlayerHand->bet += bet;
 	playerPtr->funds -= bet;
 }
 
-int loseBet(player *playerPtr) {
+//This returns the money to symbolize the dealer taking it
+int loseBet(player *playerPtr, int whichHand) {
+	playerHand *activePlayerHand = getSpecificHand(playerPtr, whichHand);
 	int lostBet;
-	lostBet = playerPtr->bet;
+	lostBet = activePlayerHand->bet;
 
-	playerPtr->bet = 0;
+	activePlayerHand->bet = 0;
 	return lostBet;
 }
 
-void winBet(player *playerPtr, int awardedMoney) {
+void winBet(player *playerPtr, int awardedMoney, int whichHand) {
+	playerHand *activePlayerHand = getSpecificHand(playerPtr, whichHand);
 	playerPtr->funds += awardedMoney;
 
-	playerPtr->bet = 0;
+	activePlayerHand->bet = 0;
 }
 
-int getBet(player *playerPtr) {
-	return playerPtr->bet;
+int getBet(player *playerPtr, int whichHand) {
+	playerHand *activePlayerHand = getSpecificHand(playerPtr, whichHand);
+	return activePlayerHand->bet;
 }
 
-void increaseBet(player *playerPtr, int increaseAmount) {
-	makeABet(playerPtr, increaseAmount);
+int getNumberOfHands(player *playerPtr) {
+	return playerPtr->howManyHands;
 }
 
-void saveCardSum(player *playerPtr, int newSum) {
-	playerPtr-> cardSum = newSum;
+//TODO: Make it return a copy? Maybe
+playerHand *getSpecificHand(player *playerPtr, int whichHand) {
+	return playerPtr->playerHands[whichHand];
+}
+
+void increaseBet(player *playerPtr, int increaseAmount, int whichHand) {
+	makeABet(playerPtr, increaseAmount, whichHand);
+}
+
+void saveCardSum(playerHand *playersHand, int newSum) {
+	playersHand-> cardSum = newSum;
+}
+
+
+/* PLAYERHAND FUNCTIONS */
+
+card **getCards(playerHand *playersHand) {
+	return playersHand->hand;
+}
+
+int getAmountOfCardsInHand(playerHand *playersHand) {
+	return playersHand->cardsInHand;
+}
+
+int getHandSum(playerHand *playersHand) {
+	return playersHand->cardSum;
 }
