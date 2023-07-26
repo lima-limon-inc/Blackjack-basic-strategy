@@ -86,6 +86,7 @@ void receiveCard(player *playerPtr, card *newCard, int whichHand) {
 	playerHand *activePlayerHand = getSpecificHand(playerPtr, whichHand);
 
 	activePlayerHand = resizeHand(activePlayerHand);
+	playerPtr->playerHands[whichHand] = activePlayerHand;
 
 	activePlayerHand->hand[activePlayerHand->cardsInHand] = newCard;
 	activePlayerHand->cardsInHand += 1;

@@ -183,9 +183,10 @@ static inline void asksPlayerForBet(pokerTable *pokerTablePtr) {
 		/* activePlayer = pokerTablePtr->players[i]; */
 		player *activePlayer;
 		activePlayer = getPlayerAtPosition(pokerTablePtr, position);
-		for (int currentHand = 0; currentHand < getNumberOfHands(activePlayer); currentHand++) {
-			askPlayerForBet(activePlayer, currentHand);
-		}
+		/* for (int currentHand = 0; currentHand < getNumberOfHands(activePlayer); currentHand++) { */
+			//                   0 because it's the initial dealing
+		askPlayerForBet(activePlayer, 0);
+		/* } */
 	}
 }
 
@@ -212,8 +213,8 @@ static inline void printVisualRepresentation(player *activePlayer, int whichHand
 
 
 //TODO: Remove macro and simply write text
-#define ENDACTIVEPLAYERTURN saveCardSum(activePlayerHand, playersSum);
-			   /* return activePlayerHand; */
+#define ENDACTIVEPLAYERTURN saveCardSum(activePlayerHand, playersSum); \
+			   return;
 static inline void activePlayerTurn(player *activePlayer, dealer *pokerDealer) {
 	bool playersTurnContinues;
 	playersTurnContinues = true;
@@ -222,29 +223,39 @@ static inline void activePlayerTurn(player *activePlayer, dealer *pokerDealer) {
 
 	card *topCard;
 
+	int totalNumberOfHands;
+	totalNumberOfHands = getNumberOfHands(activePlayer);
 	int currentHand;
-	currentHand = getNumberOfHands(activePlayer);
 	//The first hand is at index 0, but the amountOfCards is 1
-	currentHand -= 1;
+	currentHand = totalNumberOfHands - 1;
 	//Now currentHand is 0, so it coioncides with the first element of then
 	//array
+	/* currentHand -= 1; */
 
-	int playersSum;
 	/* playersSum = sumCards(activePlayer->hand, activePlayer->cardsInHand); */
 	playerHand *activePlayerHand;
-	activePlayerHand = getSpecificHand(activePlayer, currentHand);
+	activePlayerHand = getSpecificHand(activePlayer, 0);
+	//                                                  0 because it's the 
+	//                                                  initial dealing
+	int playersSum;
 	playersSum = sumCards(getCards(activePlayerHand), getAmountOfCardsInHand(activePlayerHand));
 
-	system("clear");
-	printVisualRepresentation(activePlayer, currentHand, pokerDealer, false);
+	/* system("clear"); */
+	//                                      0 because it's the 
+	//                                      initial dealing
+	/* printVisualRepresentation(activePlayer, 0, pokerDealer, false); */
 
 	//If the player has Blackjack, then automatically skips input
+	//BUT we gotta show the cards
 	if (playersSum == BLACKJACK) {
+		system("clear");
+		printVisualRepresentation(activePlayer, 0, pokerDealer, false);
 		sleep(SLEEPAMOUNT);
+		/* printf("TEST"); */
 		ENDACTIVEPLAYERTURN
 	}
 
-	while (currentHand >= 0) {
+	while ((totalNumberOfHands - currentHand) > 0) {
 	//Main player turn loop
 		while (playersTurnContinues == true && playersSum < CARDSUMBEFOREBUST) {
 			system("clear");
@@ -284,10 +295,18 @@ static inline void activePlayerTurn(player *activePlayer, dealer *pokerDealer) {
 			activePlayerHand = getSpecificHand(activePlayer, currentHand);
 			playersSum = sumCards(getCards(activePlayerHand), getAmountOfCardsInHand(activePlayerHand));
 			/* playersSum = sumCards(activePlayer->hand, activePlayer->cardsInHand); */
+			//
+			//TODO: Refactor: This sucks
+			/* if (currentHand <= -1) { */
+			/* 	hasValidHand = false; */
+			/* 	break; */
+			/* } */
 		}
-	}
+
 	system("clear");
-	/* printVisualRepresentation(activePlayer, pokerDealer, false); */
+	printVisualRepresentation(activePlayer, currentHand, pokerDealer, false);
+	currentHand += 1;
+	}
 
 	sleep(SLEEPAMOUNT);
 
