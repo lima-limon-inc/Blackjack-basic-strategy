@@ -32,3 +32,6 @@ build: $(OBJECTFILES)
 
 valgrind: build
 	valgrind --leak-check=full ./main.out
+
+gdb: build
+	gdb ./main.out

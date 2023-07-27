@@ -216,47 +216,39 @@ static inline void printVisualRepresentation(player *activePlayer, int whichHand
 #define ENDACTIVEPLAYERTURN saveCardSum(activePlayerHand, playersSum); \
 			   return;
 static inline void activePlayerTurn(player *activePlayer, dealer *pokerDealer) {
-	bool playersTurnContinues;
-	playersTurnContinues = true;
-
 	playerDecision playersDecision;
 
 	card *topCard;
 
 	int totalNumberOfHands;
 	totalNumberOfHands = getNumberOfHands(activePlayer);
-	int currentHand;
-	//The first hand is at index 0, but the amountOfCards is 1
-	currentHand = totalNumberOfHands - 1;
-	//Now currentHand is 0, so it coioncides with the first element of then
-	//array
-	/* currentHand -= 1; */
 
-	/* playersSum = sumCards(activePlayer->hand, activePlayer->cardsInHand); */
-	playerHand *activePlayerHand;
-	activePlayerHand = getSpecificHand(activePlayer, 0);
-	//                                                  0 because it's the 
-	//                                                  initial dealing
 	int playersSum;
-	playersSum = sumCards(getCards(activePlayerHand), getAmountOfCardsInHand(activePlayerHand));
 
-	/* system("clear"); */
-	//                                      0 because it's the 
-	//                                      initial dealing
-	/* printVisualRepresentation(activePlayer, 0, pokerDealer, false); */
+	playerHand *activePlayerHand;
 
-	//If the player has Blackjack, then automatically skips input
-	//BUT we gotta show the cards
-	if (playersSum == BLACKJACK) {
-		system("clear");
-		printVisualRepresentation(activePlayer, 0, pokerDealer, false);
-		sleep(SLEEPAMOUNT);
-		/* printf("TEST"); */
-		ENDACTIVEPLAYERTURN
-	}
+	bool firstHand;
 
-	while ((totalNumberOfHands - currentHand) > 0) {
-	//Main player turn loop
+	for (int currentHand = 0; currentHand < totalNumberOfHands; currentHand++) {
+		bool playersTurnContinues;
+		playersTurnContinues = true;
+
+		activePlayerHand = getSpecificHand(activePlayer, currentHand);
+		//                                                  0 because it's the 
+		//                                                  initial dealing
+		playersSum = sumCards(getCards(activePlayerHand), getAmountOfCardsInHand(activePlayerHand));
+
+		//You can only get a Blackjack in you first hand when you
+		//are originally dealt cards
+		if (firstHand == true && playersSum == BLACKJACK) {
+			system("clear");
+			printVisualRepresentation(activePlayer, 0, pokerDealer, false);
+			sleep(SLEEPAMOUNT);
+			/* printf("TEST"); */
+			ENDACTIVEPLAYERTURN
+		}
+
+		//Main player turn loop
 		while (playersTurnContinues == true && playersSum < CARDSUMBEFOREBUST) {
 			system("clear");
 			printVisualRepresentation(activePlayer, currentHand, pokerDealer, false);
@@ -271,7 +263,6 @@ static inline void activePlayerTurn(player *activePlayer, dealer *pokerDealer) {
 				case Hit:
 					topCard = dealACard(pokerDealer);
 
-					//May need to re size a player struct
 					receiveCard(activePlayer, topCard, currentHand);
 					break;
 				case Stand:
@@ -294,18 +285,12 @@ static inline void activePlayerTurn(player *activePlayer, dealer *pokerDealer) {
 
 			activePlayerHand = getSpecificHand(activePlayer, currentHand);
 			playersSum = sumCards(getCards(activePlayerHand), getAmountOfCardsInHand(activePlayerHand));
-			/* playersSum = sumCards(activePlayer->hand, activePlayer->cardsInHand); */
-			//
-			//TODO: Refactor: This sucks
-			/* if (currentHand <= -1) { */
-			/* 	hasValidHand = false; */
-			/* 	break; */
-			/* } */
 		}
+	//This will over write the value everytime. This is fine (I think)
+	firstHand = false;
 
 	system("clear");
 	printVisualRepresentation(activePlayer, currentHand, pokerDealer, false);
-	currentHand += 1;
 	}
 
 	sleep(SLEEPAMOUNT);
@@ -319,11 +304,7 @@ static inline void playersTurns(pokerTable *pokerTablePtr, dealer *pokerDealer) 
 		player *activePlayer;
 		activePlayer = pokerTablePtr->players[i];
 		
-		/* player *resizedPlayer; */
 		activePlayerTurn(activePlayer, pokerDealer);
-		/* resizedPlayer = activePlayerTurn(activePlayer, pokerDealer); */
-		/* pokerTablePtr->players[i] = resizedPlayer; */
-
 	}
 }
 
@@ -348,11 +329,6 @@ static inline dealer *dealersTurn(pokerTable *pokerTablePtr, dealer *pokerDealer
 	sleep(SLEEPAMOUNT);
 
 	while (dealersSum < DEALERLIMIT) {
-		/* system("clear"); */
-		/* for (int i = 0; i < pokerTablePtr->playerAmount; i++) { */
-		/* 	printf("%s's sum: %d\n", pokerTablePtr->players[i]->name, */
-		/* 			pokerTablePtr->players[i]->cardSum); */
-		/* } */
 		system("clear");
 		for (int position = 0; position < pokerTablePtr->playerAmount; position++) {
 			player *activePlayer;
