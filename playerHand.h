@@ -10,6 +10,7 @@ typedef struct playerHand{
 	int cardCapacity;
 
 	int bet;
+	//TODO: Remove bet
 
 	int cardSum;
 

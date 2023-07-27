@@ -357,10 +357,10 @@ static inline dealer *dealersTurn(pokerTable *pokerTablePtr, dealer *pokerDealer
 		card *topCard = dealACard(pokerDealer);
 
 		dealDealersHand(pokerDealer,  topCard);
-
-		/* dealersHand = getSpecificHandDealer(pokerDealer); */
-
-		int howManyCardsDealer;
+		//dealersHand changed from its initical call to here, due to
+		//the dealDealersHand function, that's why we have to
+		//redefine it
+		dealersHand = getSpecificHandDealer(pokerDealer);
 		howManyCardsDealer= getAmountOfCardsInHand(dealersHand);
 
 		dealersSum = sumCards(getCards(dealersHand), howManyCardsDealer);
@@ -369,7 +369,6 @@ static inline dealer *dealersTurn(pokerTable *pokerTablePtr, dealer *pokerDealer
 	}
 
 	saveCardSum(dealersHand, dealersSum);
-	/* pokerDealer->cardSum = dealersSum; */
 	printf("\nDealers sum :%d\n", dealersSum);
 	return pokerDealer;
 
@@ -379,14 +378,12 @@ typedef enum playerRoundResult {Win, Lost, Tie, Blackjack} playerRoundResult;
 static inline playerRoundResult roundEndedIn(playerHand *activeHand, dealer *dealerPtr) {
 	int playersSum;
 	playersSum = getHandSum(activeHand);
-	/* playersSum = activePlayer->cardSum; */
 
 	playerHand *dealersHand;
 	dealersHand = getSpecificHandDealer(dealerPtr);
 
 	int dealersSum;
 	dealersSum = getHandSum(dealersHand);
-	/* dealersSum = dealerPtr->cardSum; */
 
 	int playersAmountOfCards;
 	playersAmountOfCards = getAmountOfCardsInHand(activeHand);
