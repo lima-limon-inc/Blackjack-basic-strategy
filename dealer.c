@@ -1,10 +1,8 @@
 #include "dealer.h"
 
-#define INITIALDEALERCARDS 4
-
 dealer *createDealer(int initialFunds) {
 	int initialSize;
-	initialSize = sizeof(dealer) + INITIALDEALERCARDS * sizeof(card *);
+	initialSize = sizeof(dealer);
 
 	shoe *newPokerShoe;
 	newPokerShoe = createShuffledShoe();
@@ -18,9 +16,6 @@ dealer *createDealer(int initialFunds) {
 	newDealer->funds = initialFunds;
 	newDealer->pokerShoe = newPokerShoe;
 	newDealer->dealersHand = newDealersHand;
-	/* newDealer->cardsInHand = 0; */
-	/* newDealer->cardCapacity = INITIALDEALERCARDS; */
-	/* newDealer->cardSum = 0; */
 
 	return newDealer;
 }
