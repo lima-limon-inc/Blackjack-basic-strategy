@@ -17,7 +17,7 @@ playerHand *createPlayerHand() {
 	pokerHand = (playerHand *) malloc(initialSize); 
 	pokerHand->cardsInHand = 0;
 	pokerHand->cardCapacity = INITIALPLAYERCARDS;
-	pokerHand->bet = 0;
+	/* pokerHand->bet = 0; */
 	pokerHand->cardSum = 0;
 	
 	return pokerHand;

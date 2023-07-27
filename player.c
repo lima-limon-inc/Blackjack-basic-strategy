@@ -15,6 +15,7 @@ player *createPlayer(char *playerName, int initialFunds) {
 	pokerPlayer->funds = initialFunds;
 	pokerPlayer->playerHands[0] = playersHand;
 	pokerPlayer->howManyHands = 1;
+	pokerPlayer->bets[0] = 0;
 
 	return pokerPlayer;
 }
@@ -50,31 +51,32 @@ void printCards(player *playerPtr, int whichHand) {
 
 void makeABet(player *playerPtr, int bet, int whichHand) {
 	//TODO: Create if statement to check if you have enough funds
-	playerHand *activePlayerHand = getSpecificHand(playerPtr, whichHand);
-	activePlayerHand->bet += bet;
+	playerPtr->bets[whichHand] = bet;
 	playerPtr->funds -= bet;
+}
+
+static void resetBet(player *playerPtr, int whichHand) {
+	playerPtr->bets[whichHand] = 0;
+
 }
 
 //This returns the money to symbolize the dealer taking it
 int loseBet(player *playerPtr, int whichHand) {
-	playerHand *activePlayerHand = getSpecificHand(playerPtr, whichHand);
 	int lostBet;
-	lostBet = activePlayerHand->bet;
+	lostBet = getBet(playerPtr, whichHand);
 
-	activePlayerHand->bet = 0;
+	resetBet(playerPtr, whichHand);
 	return lostBet;
 }
 
 void winBet(player *playerPtr, int awardedMoney, int whichHand) {
-	playerHand *activePlayerHand = getSpecificHand(playerPtr, whichHand);
 	playerPtr->funds += awardedMoney;
 
-	activePlayerHand->bet = 0;
+	resetBet(playerPtr, whichHand);
 }
 
 int getBet(player *playerPtr, int whichHand) {
-	playerHand *activePlayerHand = getSpecificHand(playerPtr, whichHand);
-	return activePlayerHand->bet;
+	return playerPtr->bets[whichHand];
 }
 
 int getNumberOfHands(player *playerPtr) {

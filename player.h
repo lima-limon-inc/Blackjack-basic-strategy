@@ -13,6 +13,9 @@ typedef struct player{
 	//Money!
 	int funds;
 
+	//Array that contains the bet corresponding to each hand
+	int bets[MAXAMOUNTOFSPLITS];
+
 	int howManyHands;
 
 	playerHand *playerHands[MAXAMOUNTOFSPLITS];
