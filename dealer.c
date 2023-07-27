@@ -22,6 +22,7 @@ dealer *createDealer(int initialFunds) {
 
 void killDealer(dealer *dealerPtr){
 	destroyShoe(dealerPtr->pokerShoe);
+	removeHand(getSpecificHandDealer(dealerPtr));
 	free (dealerPtr);
 }
 
