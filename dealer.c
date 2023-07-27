@@ -12,11 +12,15 @@ dealer *createDealer(int initialFunds) {
 	dealer *newDealer;
 	newDealer = (dealer *) malloc (initialSize);
 
+	playerHand *newDealersHand;
+	newDealersHand = createPlayerHand();
+
 	newDealer->funds = initialFunds;
 	newDealer->pokerShoe = newPokerShoe;
-	newDealer->cardsInHand = 0;
-	newDealer->cardCapacity = INITIALDEALERCARDS;
-	newDealer->cardSum = 0;
+	newDealer->dealersHand = newDealersHand;
+	/* newDealer->cardsInHand = 0; */
+	/* newDealer->cardCapacity = INITIALDEALERCARDS; */
+	/* newDealer->cardSum = 0; */
 
 	return newDealer;
 }
@@ -31,55 +35,76 @@ card *dealACard(const dealer *dealerPtr){
 	return cardAtTheTop;
 }
 
-static dealer *resizeDealer(dealer *dealerPtr) {
-	//If there's still margin, we don't realloc memory
-	if (dealerPtr->cardCapacity > dealerPtr->cardsInHand) {
-		/* printf("DIDN'T RESIZE\n"); */
-		return dealerPtr;
-	}
+/* static dealer *resizeDealer(dealer *dealerPtr) { */
+/* 	//If there's still margin, we don't realloc memory */
+/* 	if (dealerPtr->cardCapacity > dealerPtr->cardsInHand) { */
+/* 		/1* printf("DIDN'T RESIZE\n"); *1/ */
+/* 		return dealerPtr; */
+/* 	} */
 
-	//We will downsize if it's way to big
-	//                   8                             2      * 2
-	else if (dealerPtr->cardCapacity > dealerPtr->cardsInHand * 2) {
-		printf("DOWNSIZE\n");
+/* 	//We will downsize if it's way to big */
+/* 	//                   8                             2      * 2 */
+/* 	else if (dealerPtr->cardCapacity > dealerPtr->cardsInHand * 2) { */
+/* 		printf("DOWNSIZE\n"); */
 
-		//Set the new capacity
-		dealerPtr->cardCapacity /= 2; //Divided equal (fancy notation)
-	}
+/* 		//Set the new capacity */
+/* 		dealerPtr->cardCapacity /= 2; //Divided equal (fancy notation) */
+/* 	} */
 
-	//We need more memory
-	else {
-		printf("UPSIZE\n");
+/* 	//We need more memory */
+/* 	else { */
+/* 		printf("UPSIZE\n"); */
 
-		//Set the new capacity
-		dealerPtr->cardCapacity *= 2; //Divided equal (fancy notation)
-	}
+/* 		//Set the new capacity */
+/* 		dealerPtr->cardCapacity *= 2; //Divided equal (fancy notation) */
+/* 	} */
 		
-	dealer *resizedDealer;
-	int newSize = sizeof(dealer) + 
-			dealerPtr->cardCapacity * sizeof(card *);
+/* 	dealer *resizedDealer; */
+/* 	int newSize = sizeof(dealer) + */ 
+/* 			dealerPtr->cardCapacity * sizeof(card *); */
 
 
-	resizedDealer = realloc(dealerPtr, newSize);
-	return resizedDealer;
+/* 	resizedDealer = realloc(dealerPtr, newSize); */
+/* 	return resizedDealer; */
+/* } */
+
+static playerHand *getDealersHand(dealer *dealerPtr) {
+	return dealerPtr->dealersHand;
 }
 
+void dealDealersHand(dealer *dealerPtr, card *newCard) {
+	playerHand *newDealersHand = getDealersHand(dealerPtr);
+	newDealersHand = resizeHand(newDealersHand);
+
+	newDealersHand->hand[newDealersHand->cardsInHand] = newCard;
+	newDealersHand->cardsInHand += 1;
+
+	dealerPtr->dealersHand = newDealersHand;
+
+	/* playerHand *activePlayerHand = getSpecificHand(playerPtr, whichHand); */
+
+	/* activePlayerHand = resizeHand(activePlayerHand); */
+	/* playerPtr->playerHands[whichHand] = activePlayerHand; */
+
+	/* activePlayerHand->hand[activePlayerHand->cardsInHand] = newCard; */
+	/* activePlayerHand->cardsInHand += 1; */
+	
 
 
-dealer *dealDealersHand(dealer *dealerPtr, card *newCard) {
-	dealer *resizedDealer = resizeDealer(dealerPtr);
 
-	resizedDealer->hand[dealerPtr->cardsInHand] = newCard;
-	resizedDealer->cardsInHand += 1;
+/* 	dealer *resizedDealer = resizeDealer(dealerPtr); */
 
-	return resizedDealer;
+/* 	resizedDealer->hand[dealerPtr->cardsInHand] = newCard; */
+/* 	resizedDealer->cardsInHand += 1; */
+
+/* 	return resizedDealer; */
 }
 
-void removeDealersCards(dealer *dealerPtr) {
-	//We simply move the index. The pointer will simply get removed by
-	//the receiveCard function (it will overwrite the value)
-	dealerPtr->cardsInHand = 0;
-}
+/* void removeDealersCards(dealer *dealerPtr) { */
+/* 	//We simply move the index. The pointer will simply get removed by */
+/* 	//the receiveCard function (it will overwrite the value) */
+/* 	dealerPtr->cardsInHand = 0; */
+/* } */
 
 void takeMoney(dealer *dealerPtr, int money) {
 	dealerPtr->funds += money;
@@ -87,4 +112,8 @@ void takeMoney(dealer *dealerPtr, int money) {
 
 void removeMoneyFromFunds(dealer *dealerPtr, int moneyToPlayer) {
 	dealerPtr->funds -= moneyToPlayer;
+}
+
+playerHand *getSpecificHandDealer(dealer *dealersPtr) {
+	return dealersPtr->dealersHand;
 }

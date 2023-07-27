@@ -192,14 +192,18 @@ static inline void asksPlayerForBet(pokerTable *pokerTablePtr) {
 
 static inline void printDealersCards(dealer *pokerDealer, bool showAllCards) {
 	int howManyCards;
+
+	playerHand *dealersHand;
+	dealersHand = getSpecificHandDealer(pokerDealer);
+
 	if (showAllCards == false) {
 		howManyCards = 1;
 	}
 	else {
-		howManyCards = pokerDealer->cardsInHand;
+		howManyCards = getAmountOfCardsInHand(dealersHand);//pokerDealer->cardsInHand;
 	}
 	printf("DEALER: \n");
-	asciiRepresentation(pokerDealer->hand, howManyCards);
+	asciiRepresentation(getCards(dealersHand), howManyCards);
 }
 
 static inline void printVisualRepresentation(player *activePlayer, int whichHand, dealer *pokerDealer, bool showAllDealerCards) {
@@ -310,7 +314,15 @@ static inline void playersTurns(pokerTable *pokerTablePtr, dealer *pokerDealer) 
 
 static inline dealer *dealersTurn(pokerTable *pokerTablePtr, dealer *pokerDealer) {
 	int dealersSum;
-	dealersSum = sumCards(pokerDealer->hand, pokerDealer->cardsInHand);
+	
+	playerHand *dealersHand;
+	dealersHand = getSpecificHandDealer(pokerDealer);
+
+	int howManyCardsDealer;
+	howManyCardsDealer= getAmountOfCardsInHand(dealersHand);
+
+	dealersSum = sumCards(getCards(dealersHand), howManyCardsDealer);
+
 
 	system("clear");
 	for (int position = 0; position < pokerTablePtr->playerAmount; position++) {
@@ -344,14 +356,20 @@ static inline dealer *dealersTurn(pokerTable *pokerTablePtr, dealer *pokerDealer
 		}
 		card *topCard = dealACard(pokerDealer);
 
-		//This operation may require us to resize the dealer struct
-		pokerDealer = dealDealersHand(pokerDealer,  topCard);
-		dealersSum = sumCards(pokerDealer->hand, pokerDealer->cardsInHand);
+		dealDealersHand(pokerDealer,  topCard);
+
+		/* dealersHand = getSpecificHandDealer(pokerDealer); */
+
+		int howManyCardsDealer;
+		howManyCardsDealer= getAmountOfCardsInHand(dealersHand);
+
+		dealersSum = sumCards(getCards(dealersHand), howManyCardsDealer);
 		printDealersCards(pokerDealer, true);
 		sleep(SLEEPAMOUNT);
 	}
 
-	pokerDealer->cardSum = dealersSum;
+	saveCardSum(dealersHand, dealersSum);
+	/* pokerDealer->cardSum = dealersSum; */
 	printf("\nDealers sum :%d\n", dealersSum);
 	return pokerDealer;
 
@@ -363,8 +381,12 @@ static inline playerRoundResult roundEndedIn(playerHand *activeHand, dealer *dea
 	playersSum = getHandSum(activeHand);
 	/* playersSum = activePlayer->cardSum; */
 
+	playerHand *dealersHand;
+	dealersHand = getSpecificHandDealer(dealerPtr);
+
 	int dealersSum;
-	dealersSum = dealerPtr->cardSum;
+	dealersSum = getHandSum(dealersHand);
+	/* dealersSum = dealerPtr->cardSum; */
 
 	int playersAmountOfCards;
 	playersAmountOfCards = getAmountOfCardsInHand(activeHand);

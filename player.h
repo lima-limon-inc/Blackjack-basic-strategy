@@ -3,27 +3,11 @@
 
 #include <stdbool.h>
 
+#include "playerHand.h"
+
 #define MAXAMOUNTOFSPLITS 4
 
-#include "cards.h"
-
-typedef struct playerHand{
-
-	int cardsInHand;
-
-	int cardCapacity;
-
-	int bet;
-
-	int cardSum;
-
-	card *hand[];
-
-}playerHand;
-
 typedef struct player{
-//Nomenclature taken from: https://en.wikipedia.org/wiki/Standard_52-card_deck
-
 	char name[20];
 
 	//Money!
@@ -55,18 +39,9 @@ int getBet(player *playerPtr, int whichHand);
 
 int getNumberOfHands(player *playerPtr);
 
+//TODO: DO generic macro thing with getSpecificHandDealer
 playerHand *getSpecificHand(player *playerPtr, int whichHand);
 
 void increaseBet(player *playerPtr, int increaseAmount, int whichHand);
-
-void saveCardSum(playerHand *playersHand, int newSum);
-
-/* PLAYERHAND FUNCTIONS */
- 
-card **getCards(playerHand *playersHand);
-
-int getAmountOfCardsInHand(playerHand *playersHand);
-
-int getHandSum(playerHand *playersHand);
 
 #endif

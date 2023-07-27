@@ -1,7 +1,8 @@
 #ifndef DEALER_HEADER
 #define DEALER_HEADER
 
-#include "cards.h"
+#include "playerHand.h"
+/* #include "cards.h" */
 
 typedef struct dealer{
 //Nomenclature taken from: https://en.wikipedia.org/wiki/Standard_52-card_deck
@@ -11,13 +12,15 @@ typedef struct dealer{
 
 	shoe *pokerShoe;
 
-	int cardsInHand;
+	/* int cardsInHand; */
 
-	int cardCapacity;
+	/* int cardCapacity; */
 	
-	int cardSum;
+	/* int cardSum; */
 
-	card *hand[];
+	/* card *hand[]; */
+
+	playerHand *dealersHand;
 
 }dealer;
 
@@ -29,12 +32,14 @@ card *dealACard(const dealer *dealerPtr);
 
 //TODO: Use _Generic macro to do fancy function overloading
 //with player struct
-dealer *dealDealersHand(dealer *dealerPtr, card *newCard);
+void dealDealersHand(dealer *dealerPtr, card *newCard);
 
 void removeDealersCards(dealer *dealerPtr);
 
 void takeMoney(dealer *dealerPtr, int money);
 
 void removeMoneyFromFunds(dealer *dealerPtr, int moneyToPlayer);
+
+playerHand *getSpecificHandDealer(dealer *dealersPtr);
 
 #endif
