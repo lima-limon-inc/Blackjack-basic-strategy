@@ -1,0 +1,8 @@
+#ifndef BASICSTRATEGY_HEADER
+#define BASICSTRATEGY_HEADER
+
+
+
+
+
+#endif

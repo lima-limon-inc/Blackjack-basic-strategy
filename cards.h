@@ -47,4 +47,8 @@ card *getCardAtTheTop(shoe *shoePtr);
 
 int sumCards(card *cards[], int amountOfCards);
 
+suits getSuit(card *cardPtr);
+
+int getRank(card *cardPtr);
+
 #endif

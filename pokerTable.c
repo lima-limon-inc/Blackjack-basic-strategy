@@ -1,7 +1,10 @@
+#include <unistd.h>
+
 #include "pokerTable.h"
+
 #include "player.h"
 #include "graphics.h"
-#include <unistd.h>
+#include "playerDecision.h"
 
 #define MAXAMOUNTOFSPLITS 4
 #define INITIALCAPACITY 5
@@ -123,7 +126,6 @@ static inline char *askForPlayerMessage(bool canDoubleDown, bool canSplit) {
 	return message;
 }
 
-typedef enum playerDecision {Hit, Stand, DoubleDown, Split} playerDecision;
 static inline playerDecision askForDecision(playerHand *activePlayerHand, int howManyHands) {
 	bool canSplit;
 	if (howManyHands < MAXAMOUNTOFSPLITS) {

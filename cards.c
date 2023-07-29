@@ -137,3 +137,11 @@ int sumCards(card *cards[], int amountOfCards)
 
    return sum;
 }
+
+suits getSuit(card *cardPtr) {
+	return cardPtr->suit;
+}
+
+int getRank(card *cardPtr) {
+	return cardPtr->rank;
+}
