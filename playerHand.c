@@ -82,6 +82,21 @@ static void resetIndex(playerHand *playerHandPtr) {
 	playerHandPtr->cardsInHand = 0;
 }
 
+card *removeSpecificCard(playerHand *playerHandPtr, int whichPosition) {
+	card *removedCard;
+	removedCard = playerHandPtr->hand[whichPosition];
+
+	//If you want to remove the last card, then the for loop is never 
+	//entered and you simply move the index by -one
+	for (int currentCard = whichPosition; currentCard < playerHandPtr->cardsInHand; currentCard++) {
+		//Swap between the current one and the next
+		playerHandPtr->hand[currentCard] = playerHandPtr->hand[currentCard + 1];
+	}
+	playerHandPtr->cardsInHand -= 1;
+
+	return removedCard;
+}
 void removeCards(playerHand *playerHandPtr) {
 	resetIndex(playerHandPtr);
+	//TODO add resize function call here
 }

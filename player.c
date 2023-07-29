@@ -13,8 +13,8 @@ player *createPlayer(char *playerName, int initialFunds) {
 
 	strcpy(pokerPlayer->name, playerName);
 	pokerPlayer->funds = initialFunds;
-	pokerPlayer->playerHands[0] = playersHand;
 	pokerPlayer->howManyHands = 1;
+	pokerPlayer->playerHands[pokerPlayer->howManyHands - 1] = playersHand;
 	pokerPlayer->bets[0] = 0;
 
 	return pokerPlayer;
@@ -90,4 +90,23 @@ playerHand *getSpecificHand(player *playerPtr, int whichHand) {
 
 void increaseBet(player *playerPtr, int increaseAmount, int whichHand) {
 	makeABet(playerPtr, increaseAmount, whichHand);
+}
+
+void splitCards(player *playerPtr, int whichHand) {
+	playerHand *newHand;	
+	newHand = createPlayerHand();
+
+	//We remove the last card from the hand you want to split
+	card *cardForNextHand;
+	
+	playerHand *handToRemoveFrom;
+	handToRemoveFrom = playerPtr->playerHands[whichHand];
+
+	//cardForNextHand and cardToBeRemoved SHOULD be the same
+	cardForNextHand = removeSpecificCard(handToRemoveFrom, whichHand);
+
+	playerPtr->playerHands[playerPtr->howManyHands] = newHand;
+	receiveCard(playerPtr, cardForNextHand, playerPtr->howManyHands);
+
+	playerPtr->howManyHands += 1;
 }

@@ -28,7 +28,7 @@ void killPlayer(player *playerPtr);
 
 void receiveCard(player *playerPtr, card *newCard, int whichHand);
 
-void removeCards(player *playerPtr, int whichHand);
+/* void removeCards(player *playerPtr, int whichHand); */
 
 void printCards(player *playerPtr, int whichHand);
 
@@ -46,5 +46,7 @@ int getNumberOfHands(player *playerPtr);
 playerHand *getSpecificHand(player *playerPtr, int whichHand);
 
 void increaseBet(player *playerPtr, int increaseAmount, int whichHand);
+
+void splitCards(player *playerPtr, int whichHand);
 
 #endif

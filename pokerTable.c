@@ -3,6 +3,7 @@
 #include "graphics.h"
 #include <unistd.h>
 
+#define MAXAMOUNTOFSPLITS 4
 #define INITIALCAPACITY 5
 #define INITIALCARDCOUNT 2
 #define CARDSUMBEFOREBUST 21
@@ -123,9 +124,16 @@ static inline char *askForPlayerMessage(bool canDoubleDown, bool canSplit) {
 }
 
 typedef enum playerDecision {Hit, Stand, DoubleDown, Split} playerDecision;
-static inline playerDecision askForDecision(playerHand *activePlayerHand) {
+static inline playerDecision askForDecision(playerHand *activePlayerHand, int howManyHands) {
 	bool canSplit;
-	canSplit = checkForSplit(getCards(activePlayerHand), getAmountOfCardsInHand(activePlayerHand));
+	if (howManyHands < MAXAMOUNTOFSPLITS) {
+		canSplit = checkForSplit(getCards(activePlayerHand), getAmountOfCardsInHand(activePlayerHand));
+	}
+	else {
+		//If the player has exceeded the amount of valid splits, then
+		//we don't even bother calculating it
+		canSplit = false;
+	}
 	/* canSplit = checkForSplit(activePlayer->hand, activePlayer->cardsInHand); */
 
 	bool canDoubleDown;
@@ -206,26 +214,58 @@ static inline void printDealersCards(dealer *pokerDealer, bool showAllCards) {
 	asciiRepresentation(getCards(dealersHand), howManyCards);
 }
 
+static inline char *cardinalToOrdinal(int cardinal) {
+	switch (cardinal) {
+		case 1:
+			return "first";
+		case 2:
+			return "second";
+		case 3:
+			return "third";
+		case 4:
+			return "fourth";
+		default:
+			return "nth";
+	}
+}
+
+static void printPlayerAndHand(player *activePlayer, int whichHand) {
+	printf("%s's ", activePlayer->name);
+	if (getNumberOfHands(activePlayer) > 1) {
+		//We add 1 because the first hand is stored in position 0,
+		//the second hand in position 1 and so on
+		printf("%s ", cardinalToOrdinal(whichHand + 1));
+	}
+	printf("hand");
+}
+
 static inline void printVisualRepresentation(player *activePlayer, int whichHand, dealer *pokerDealer, bool showAllDealerCards) {
 	playerHand *activePlayerHand;
 	activePlayerHand = getSpecificHand(activePlayer, whichHand);
 
 	printDealersCards(pokerDealer, showAllDealerCards);
-	printf("%s:\n", activePlayer->name);
+
+	/* printf("%s:\n", activePlayer->name); */
+	/* printf("%s's ", activePlayer->name); */
+	/* if (getNumberOfHands(activePlayer) > 1) { */
+	/* 	//We add 1 because the first hand is stored in position 0, */
+	/* 	//the second hand in position 1 and so on */
+	/* 	printf("%s ", cardinalToOrdinal(whichHand + 1)); */
+	/* } */
+	printPlayerAndHand(activePlayer, whichHand);
+	printf("\n");
+
 	asciiRepresentation(getCards(activePlayerHand), getAmountOfCardsInHand(activePlayerHand));
 }
 
 
-//TODO: Remove macro and simply write text
-#define ENDACTIVEPLAYERTURN saveCardSum(activePlayerHand, playersSum); \
-			   return;
 static inline void activePlayerTurn(player *activePlayer, dealer *pokerDealer) {
 	playerDecision playersDecision;
 
 	card *topCard;
 
-	int totalNumberOfHands;
-	totalNumberOfHands = getNumberOfHands(activePlayer);
+	/* int totalNumberOfHands; */
+	/* totalNumberOfHands = getNumberOfHands(activePlayer); */
 
 	int playersSum;
 
@@ -233,7 +273,7 @@ static inline void activePlayerTurn(player *activePlayer, dealer *pokerDealer) {
 
 	bool firstHand;
 
-	for (int currentHand = 0; currentHand < totalNumberOfHands; currentHand++) {
+	for (int currentHand = 0; currentHand < getNumberOfHands(activePlayer); currentHand++) {
 		bool playersTurnContinues;
 		playersTurnContinues = true;
 
@@ -248,8 +288,8 @@ static inline void activePlayerTurn(player *activePlayer, dealer *pokerDealer) {
 			system("clear");
 			printVisualRepresentation(activePlayer, 0, pokerDealer, false);
 			sleep(SLEEPAMOUNT);
-			/* printf("TEST"); */
-			ENDACTIVEPLAYERTURN
+			saveCardSum(activePlayerHand, playersSum);
+			return;
 		}
 
 		//Main player turn loop
@@ -262,7 +302,7 @@ static inline void activePlayerTurn(player *activePlayer, dealer *pokerDealer) {
 				break;
 			}
 
-			playersDecision = askForDecision(activePlayerHand);
+			playersDecision = askForDecision(activePlayerHand, getNumberOfHands(activePlayer));
 			switch (playersDecision) {
 				case Hit:
 					topCard = dealACard(pokerDealer);
@@ -284,6 +324,14 @@ static inline void activePlayerTurn(player *activePlayer, dealer *pokerDealer) {
 					playersTurnContinues = false;
 					break;
 				case Split:
+					splitCards(activePlayer, currentHand);
+					//We deal an addtional to the newly
+					//created hand
+					topCard = dealACard(pokerDealer);
+					receiveCard(activePlayer, topCard, currentHand);
+
+					topCard = dealACard(pokerDealer);
+					receiveCard(activePlayer, topCard, getNumberOfHands(activePlayer) - 1);
 					break;
 			}
 
@@ -295,13 +343,12 @@ static inline void activePlayerTurn(player *activePlayer, dealer *pokerDealer) {
 
 	system("clear");
 	printVisualRepresentation(activePlayer, currentHand, pokerDealer, false);
+	saveCardSum(activePlayerHand, playersSum);
+	sleep(SLEEPAMOUNT);
 	}
 
-	sleep(SLEEPAMOUNT);
-
-	ENDACTIVEPLAYERTURN
+	return;
 }
-#undef ENDACTIVEPLAYERTURN
 
 static inline void playersTurns(pokerTable *pokerTablePtr, dealer *pokerDealer) {
 	for (int i = 0; i < pokerTablePtr->playerAmount; i++) {
@@ -324,6 +371,7 @@ static inline dealer *dealersTurn(pokerTable *pokerTablePtr, dealer *pokerDealer
 	dealersSum = sumCards(getCards(dealersHand), howManyCardsDealer);
 
 
+	//TODO: Remove this bit, IDK why I wrote it twice
 	system("clear");
 	for (int position = 0; position < pokerTablePtr->playerAmount; position++) {
 		player *activePlayer;
@@ -333,8 +381,10 @@ static inline dealer *dealersTurn(pokerTable *pokerTablePtr, dealer *pokerDealer
 
 			playerHand *activePlayerHand;
 			activePlayerHand = getSpecificHand(activePlayer, currentHand);
-			printf("%s's sum: %d\n", activePlayer->name,
-			      			getHandSum(activePlayerHand));
+			/* printf("%s's sum: %d\n", activePlayer->name, */
+			/*       			getHandSum(activePlayerHand)); */
+			printPlayerAndHand(activePlayer, currentHand);
+			printf(" sum: %d\n", getHandSum(activePlayerHand));
 		}
 	}
 	printDealersCards(pokerDealer, true);
@@ -350,8 +400,10 @@ static inline dealer *dealersTurn(pokerTable *pokerTablePtr, dealer *pokerDealer
 
 				playerHand *activePlayerHand;
 				activePlayerHand = getSpecificHand(activePlayer, currentHand);
-				printf("%s's sum: %d\n", activePlayer->name,
-							getHandSum(activePlayerHand));
+				/* printf("%s's sum: %d\n", activePlayer->name, */
+				/* 			getHandSum(activePlayerHand)); */
+				printPlayerAndHand(activePlayer, currentHand);
+				printf(" sum: %d\n", getHandSum(activePlayerHand));
 			}
 		}
 		card *topCard = dealACard(pokerDealer);
@@ -434,7 +486,10 @@ static inline void losersAndWiners(pokerTable *pokerTablePtr, dealer *dealerPtr)
 			playerRoundResult playerResult;
 			playerResult = roundEndedIn(playersHand, dealerPtr);
 
-			printf("%s: ", activePlayer->name);
+			/* printf("%s: ", activePlayer->name); */
+			printPlayerAndHand(activePlayer, currentHand);
+			printf(": ");
+
 			switch (playerResult) {
 				case Lost:
 					printf("Lost\n");
