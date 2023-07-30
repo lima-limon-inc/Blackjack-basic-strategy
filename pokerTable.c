@@ -116,11 +116,9 @@ static inline playerDecision askForDecision(playerHand *activePlayerHand, int ho
 		//we don't even bother calculating it
 		canSplit = false;
 	}
-	/* canSplit = checkForSplit(activePlayer->hand, activePlayer->cardsInHand); */
 
 	bool canDoubleDown;
 	canDoubleDown = checkForDoubleDown(getAmountOfCardsInHand(activePlayerHand));
-	/* canDoubleDown = checkForDoubleDown(activePlayer->cardsInHand); */
 
 	char userInput[10];
 
@@ -168,15 +166,11 @@ static inline void askPlayerForBet(player *activePlayer, int whichHand) {
 }
 
 static inline void asksPlayerForBet(pokerTable *pokerTablePtr) {
-	/* for (int i = 0; i < pokerTablePtr->playerAmount; i++) { */
 	for (int position = 0; position < pokerTablePtr->playerAmount; position++) {
-		/* activePlayer = pokerTablePtr->players[i]; */
 		player *activePlayer;
 		activePlayer = getPlayerAtPosition(pokerTablePtr, position);
-		/* for (int currentHand = 0; currentHand < getNumberOfHands(activePlayer); currentHand++) { */
-			//                   0 because it's the initial dealing
+
 		askPlayerForBet(activePlayer, 0);
-		/* } */
 	}
 }
 
@@ -227,13 +221,6 @@ static inline void printVisualRepresentation(player *activePlayer, int whichHand
 
 	printDealersCards(pokerDealer, showAllDealerCards);
 
-	/* printf("%s:\n", activePlayer->name); */
-	/* printf("%s's ", activePlayer->name); */
-	/* if (getNumberOfHands(activePlayer) > 1) { */
-	/* 	//We add 1 because the first hand is stored in position 0, */
-	/* 	//the second hand in position 1 and so on */
-	/* 	printf("%s ", cardinalToOrdinal(whichHand + 1)); */
-	/* } */
 	printPlayerAndHand(activePlayer, whichHand);
 	printf("\n");
 
@@ -247,9 +234,6 @@ static inline void activePlayerTurn(player *activePlayer, dealer *pokerDealer) {
 
 	card *topCard;
 
-	/* int totalNumberOfHands; */
-	/* totalNumberOfHands = getNumberOfHands(activePlayer); */
-
 	int playersSum;
 
 	playerHand *activePlayerHand;
@@ -261,8 +245,6 @@ static inline void activePlayerTurn(player *activePlayer, dealer *pokerDealer) {
 		playersTurnContinues = true;
 
 		activePlayerHand = getSpecificHand(activePlayer, currentHand);
-		//                                                  0 because it's the 
-		//                                                  initial dealing
 		playersSum = sumCards(getCards(activePlayerHand), getAmountOfCardsInHand(activePlayerHand));
 
 		//You can only get a Blackjack in you first hand when you
@@ -292,7 +274,6 @@ static inline void activePlayerTurn(player *activePlayer, dealer *pokerDealer) {
 
 			bool isItCorrectChoice;
 			isItCorrectChoice = (correctDecision == playersDecision);
-			/* isItCorrectChoice = isCorrectChoice(playersDecision, getCards(activePlayerHand), getAmountOfCardsInHand(activePlayerHand), getCards(getSpecificHandDealer(pokerDealer))[0]); */
 
 			switch (playersDecision) {
 				case Hit:
@@ -325,15 +306,12 @@ static inline void activePlayerTurn(player *activePlayer, dealer *pokerDealer) {
 					receiveCard(activePlayer, topCard, getNumberOfHands(activePlayer) - 1);
 					break;
 			}
-			/* printf("%d \n", isItCorrectChoice); */
 			printCorrectOrNot(isItCorrectChoice, correctDecision);
 			sleep(SLEEPAMOUNT);
-			/* scanf(); */
 
 
 			activePlayerHand = getSpecificHand(activePlayer, currentHand);
 			playersSum = sumCards(getCards(activePlayerHand), getAmountOfCardsInHand(activePlayerHand));
-			/* saveCardSum(activePlayerHand, playersSum); */
 		}
 	//This will over write the value everytime. This is fine (I think)
 	firstHand = false;
@@ -378,8 +356,6 @@ static inline dealer *dealersTurn(pokerTable *pokerTablePtr, dealer *pokerDealer
 
 			playerHand *activePlayerHand;
 			activePlayerHand = getSpecificHand(activePlayer, currentHand);
-			/* printf("%s's sum: %d\n", activePlayer->name, */
-			/*       			getHandSum(activePlayerHand)); */
 			printPlayerAndHand(activePlayer, currentHand);
 			printf(" sum: %d\n", getHandSum(activePlayerHand));
 		}
