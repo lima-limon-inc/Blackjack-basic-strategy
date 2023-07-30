@@ -6,6 +6,6 @@
 #include "playerDecision.h"
 #include "cards.h"
 
-bool isCorrectChoice(playerDecision decisionToCheck, card *playersCard[], int amountOfCards, card *dealersCard);
+playerDecision getCorrectChoice(card *playersCard[], int amountOfCards, card *dealersCard);
 
 #endif

@@ -66,7 +66,7 @@ const bool splitHands[10][10] = {
 #define VERTICALOFFSET 2
 #define VERTICALOFFSETHARD 5
 
-static inline bool isCorrectSplit(playerDecision decisionToCheck, card *playersCard[], card *dealersCard) {
+static inline playerDecision isCorrectSplit(card *playersCard[], card *dealersCard) {
 	int cardRrank = playersCard[0]->rank;
 
 	int horizontalPosition = dealersCard->rank - HORIZONTALOFFSET;
@@ -74,14 +74,17 @@ static inline bool isCorrectSplit(playerDecision decisionToCheck, card *playersC
 
 	playerDecision correctDecision = splitHands[verticalPosition][horizontalPosition];
 
-	bool areTheyTheSame;
 
-	areTheyTheSame = correctDecision == decisionToCheck;
+	return correctDecision;
 
-	return areTheyTheSame;
+	/* bool areTheyTheSame; */
+
+	/* areTheyTheSame = correctDecision == decisionToCheck; */
+
+	/* return areTheyTheSame; */
 }
 
-static inline bool isCorrectHard(playerDecision decisionToCheck, card *playersCard[], int amountOfCards, card *dealersCard) {
+static inline playerDecision isCorrectHard(card *playersCard[], int amountOfCards, card *dealersCard) {
 	/* int cardRrank = playersCard[0]->rank; */
 	int cardSum = sumCards(playersCard, amountOfCards);
 
@@ -96,16 +99,18 @@ static inline bool isCorrectHard(playerDecision decisionToCheck, card *playersCa
 
 	playerDecision correctDecision = hardHands[verticalPosition][horizontalPosition];
 
-	bool areTheyTheSame;
+	return correctDecision;
 
-	areTheyTheSame = correctDecision == decisionToCheck;
+/* 	bool areTheyTheSame; */
 
-	return areTheyTheSame;
+/* 	areTheyTheSame = correctDecision == decisionToCheck; */
+
+/* 	return areTheyTheSame; */
 }
 
 //If this functions is called it means that THERE IS 1 ace. If not, the 
 //function won't work (Why would you use it otherwise? :P)
-static inline bool isCorrectSoft(playerDecision decisionToCheck, card *playersCard[], int amountOfCards, card *dealersCard) {
+static inline playerDecision isCorrectSoft(card *playersCard[], int amountOfCards, card *dealersCard) {
 	int cardSum = sumCards(playersCard, amountOfCards);
 
 	//We remove 11 because the table is represented in the form of A,1; A,2
@@ -123,15 +128,17 @@ static inline bool isCorrectSoft(playerDecision decisionToCheck, card *playersCa
 
 	playerDecision correctDecision = softHands[verticalPosition][horizontalPosition];
 
-	bool areTheyTheSame;
+	return correctDecision;
 
-	areTheyTheSame = correctDecision == decisionToCheck;
+/* 	bool areTheyTheSame; */
 
-	return areTheyTheSame;
+/* 	areTheyTheSame = correctDecision == decisionToCheck; */
+
+/* 	return areTheyTheSame; */
 }
   
-bool isCorrectChoice(playerDecision decisionToCheck, card *playersCard[], int amountOfCards, card *dealersCard) {
-	bool isItCorrect;
+playerDecision getCorrectChoice(card *playersCard[], int amountOfCards, card *dealersCard) {
+	playerDecision correctDecision;
 /* 	int cardSum; = sumCards(playersCard, amountOfCards); */
 	/* if (amountOfCards == 2) { */
 
@@ -139,21 +146,21 @@ bool isCorrectChoice(playerDecision decisionToCheck, card *playersCard[], int am
 	canSplit = checkForSplit(playersCard, amountOfCards);
 
 	if (canSplit == true) {
-		isItCorrect = isCorrectSplit(decisionToCheck, playersCard, dealersCard);
-		return isItCorrect;
+		correctDecision = isCorrectSplit(playersCard, dealersCard);
+		return correctDecision;
 	}
 
 	//AKA has an ace
 	bool isSoft;
 	isSoft  = isSoftHand(playersCard, amountOfCards);
 	if (isSoft == true) {
-		isItCorrect = isCorrectSoft(decisionToCheck, playersCard, amountOfCards, dealersCard);
-		return isItCorrect;
+		correctDecision = isCorrectSoft(playersCard, amountOfCards, dealersCard);
+		return correctDecision;
 	}
 
 	/* } */
 /* 	int */
-	isItCorrect = isCorrectHard(decisionToCheck, playersCard, amountOfCards, dealersCard);
+	correctDecision = isCorrectHard(playersCard, amountOfCards, dealersCard);
 
-	return isItCorrect;
+	return correctDecision;
 }

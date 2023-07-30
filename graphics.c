@@ -1,4 +1,4 @@
-#include "cards.h"
+#include "graphics.h"
 
 //COLORS (taken from https://stackoverflow.com/a/23657072/13683575)
 #define RED   "\x1B[31m"
@@ -185,15 +185,33 @@ void asciiRepresentation(card *cards[], int amountOfCards) {
 	printf("\n");
 }
 
-void printCorrectOrNot(bool isCorrect) {
-	/* char *message; */
+void printCorrectOrNot(bool isCorrect, playerDecision correctDecision) {
+	char *message = malloc(sizeof("Double Down"));
+	/* strcpy(message, ""); */
+	switch (correctDecision) {
+		case Hit:
+			strcpy(message, "Hit");
+			break;
+		case Stand:
+			strcpy(message, "Stand");
+			break;
+		case DoubleDown:
+			strcpy(message, "Double Down");
+			break;
+		case Split:
+			strcpy(message, "Split");
+			break;
+	}
+
 	if (isCorrect == true) {
 		/* printf(); */
 		printf("%s\n", GRN "✓" RESET);
 	}
 	else {
 		/* printf; */
-		printf("%s\n", RED "X" RESET);
+		printf("%s: %s\n", RED "X" RESET, message);
 	}
+
+	free(message);
 	/* printf(message); */
 }

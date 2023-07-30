@@ -241,6 +241,7 @@ static inline void printVisualRepresentation(player *activePlayer, int whichHand
 }
 
 
+
 static inline void activePlayerTurn(player *activePlayer, dealer *pokerDealer) {
 	playerDecision playersDecision;
 
@@ -285,8 +286,13 @@ static inline void activePlayerTurn(player *activePlayer, dealer *pokerDealer) {
 			}
 
 			playersDecision = askForDecision(activePlayerHand, getNumberOfHands(activePlayer));
+
+			playerDecision correctDecision;
+			correctDecision = getCorrectChoice(getCards(activePlayerHand), getAmountOfCardsInHand(activePlayerHand), getCards(getSpecificHandDealer(pokerDealer))[0]);
+
 			bool isItCorrectChoice;
-			isItCorrectChoice = isCorrectChoice(playersDecision, getCards(activePlayerHand), getAmountOfCardsInHand(activePlayerHand), getCards(getSpecificHandDealer(pokerDealer))[0]);
+			isItCorrectChoice = (correctDecision == playersDecision);
+			/* isItCorrectChoice = isCorrectChoice(playersDecision, getCards(activePlayerHand), getAmountOfCardsInHand(activePlayerHand), getCards(getSpecificHandDealer(pokerDealer))[0]); */
 
 			switch (playersDecision) {
 				case Hit:
@@ -320,7 +326,7 @@ static inline void activePlayerTurn(player *activePlayer, dealer *pokerDealer) {
 					break;
 			}
 			/* printf("%d \n", isItCorrectChoice); */
-			printCorrectOrNot(isItCorrectChoice);
+			printCorrectOrNot(isItCorrectChoice, correctDecision);
 			sleep(SLEEPAMOUNT);
 			/* scanf(); */
 
