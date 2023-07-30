@@ -1,8 +1,7 @@
 #include "basicStrategy.h"
 
-#include <stdbool.h>
-
 #include "playerDecision.h"
+#include "blackjackRules.h"
 
 /* typedef enum playerDecision {Hit, Stand, DoubleDown, Split} playerDecision; */
 
@@ -15,7 +14,7 @@
 
 /* efjknfen */
 
-const playerDecision hardHands[16][10] = {
+const playerDecision hardHands[17][10] = {
 //      2   3   4   5   6   7   8   9  10   A
 /* 5*/{HT, HT, HT, HT, HT, HT, HT, HT, HT, HT},
 /* 6*/{HT, HT, HT, HT, HT, HT, HT, HT, HT, HT},
@@ -24,17 +23,17 @@ const playerDecision hardHands[16][10] = {
 /* 9*/{HT, DD, DD, DD, DD, HT, HT, HT, HT, HT},
 /*10*/{DD, DD, DD, DD, DD, DD, DD, DD, HT, HT},
 /*11*/{DD, DD, DD, DD, DD, DD, DD, DD, DD, DD},
-/*12*/{HT, HT, SP, SP, SP, HT, HT, HT, HT, HT},
-/*13*/{SP, SP, SP, SP, SP, HT, HT, HT, HT, HT},
-/*14*/{SP, SP, SP, SP, SP, HT, HT, HT, HT, HT},
-/*15*/{SP, SP, SP, SP, SP, HT, HT, HT, HT, HT},
-/*16*/{SP, SP, SP, SP, SP, HT, HT, HT, HT, HT},
-/*17*/{SP, SP, SP, SP, SP, SP, SP, SP, SP, SP},
-/*18*/{SP, SP, SP, SP, SP, SP, SP, SP, SP, SP},
-/*19*/{SP, SP, SP, SP, SP, SP, SP, SP, SP, SP},
-/*20*/{SP, SP, SP, SP, SP, SP, SP, SP, SP, SP},
-/*21*/{SP, SP, SP, SP, SP, SP, SP, SP, SP, SP},
-}
+/*12*/{HT, HT, ST, ST, ST, HT, HT, HT, HT, HT},
+/*13*/{ST, ST, ST, ST, ST, HT, HT, HT, HT, HT},
+/*14*/{ST, ST, ST, ST, ST, HT, HT, HT, HT, HT},
+/*15*/{ST, ST, ST, ST, ST, HT, HT, HT, HT, HT},
+/*16*/{ST, ST, ST, ST, ST, HT, HT, HT, HT, HT},
+/*17*/{ST, ST, ST, ST, ST, ST, ST, ST, ST, ST},
+/*18*/{ST, ST, ST, ST, ST, ST, ST, ST, ST, ST},
+/*19*/{ST, ST, ST, ST, ST, ST, ST, ST, ST, ST},
+/*20*/{ST, ST, ST, ST, ST, ST, ST, ST, ST, ST},
+/*21*/{ST, ST, ST, ST, ST, ST, ST, ST, ST, ST},
+};
 
 const playerDecision softHands[8][10] = {
 //       2   3   4   5   6   7   8   9  10   A
@@ -43,32 +42,118 @@ const playerDecision softHands[8][10] = {
 /*A,4*/{HT, HT, DD, DD, DD, HT, HT, HT, HT, HT},
 /*A,5*/{HT, HT, DD, DD, DD, HT, HT, HT, HT, HT},
 /*A,6*/{HT, DD, DD, DD, DD, HT, HT, HT, HT, HT},
-/*A,7*/{SP, DD, DD, DD, DD, SP, SP, HT, HT, HT},
-/*A,8*/{SP, SP, SP, SP, SP, SP, SP, SP, SP, SP},
-/*A,9*/{SP, SP, SP, SP, SP, SP, SP, SP, SP, SP},
+/*A,7*/{ST, DD, DD, DD, DD, ST, ST, HT, HT, HT},
+/*A,8*/{ST, ST, ST, ST, ST, ST, ST, ST, ST, ST},
+/*A,9*/{ST, ST, ST, ST, ST, ST, ST, ST, ST, ST},
+};
+
+const bool splitHands[10][10] = {
+//       2   3   4   5   6   7   8   9  10   A
+/*2,2*/{SP, SP, SP, SP, SP, SP, HT, HT, HT, HT},
+/*3,3*/{SP, SP, SP, SP, SP, SP, HT, HT, HT, HT},
+/*4,4*/{HT, HT, HT, SP, SP, HT, HT, HT, HT, HT},
+/*5,5*/{DD, DD, DD, DD, DD, DD, DD, DD, HT, HT},
+/*6,6*/{SP, SP, SP, SP, SP, HT, HT, HT, HT, HT},
+/*7,7*/{SP, SP, SP, SP, SP, SP, HT, HT, HT, HT},
+/*8,8*/{SP, SP, SP, SP, SP, SP, SP, SP, SP, SP},
+/*9,9*/{SP, SP, SP, SP, SP, ST, SP, SP, SP, SP},
+/*T,T*/{ST, ST, ST, ST, ST, ST, ST, ST, ST, ST},
+/*A,A*/{SP, SP, SP, SP, SP, SP, SP, SP, SP, SP},
+};
+
+//The array starts at 2
+#define HORIZONTALOFFSET 2
+#define VERTICALOFFSET 2
+#define VERTICALOFFSETHARD 5
+
+static inline bool isCorrectSplit(playerDecision decisionToCheck, card *playersCard[], card *dealersCard) {
+	int cardRrank = playersCard[0]->rank;
+
+	int horizontalPosition = dealersCard->rank - HORIZONTALOFFSET;
+	int verticalPosition = cardRrank - VERTICALOFFSET;
+
+	playerDecision correctDecision = splitHands[verticalPosition][horizontalPosition];
+
+	bool areTheyTheSame;
+
+	areTheyTheSame = correctDecision == decisionToCheck;
+
+	return areTheyTheSame;
 }
 
-#define TR true
-#define FA false
-const bool splitHands[8][10] = {
-//       2   3   4   5   6   7   8   9  10   A
-/*2,2*/{TR, TR, TR, TR, TR, TR, FA, FA, FA, FA},
-/*3,3*/{TR, TR, TR, TR, TR, TR, FA, FA, FA, FA},
-/*4,4*/{FA, FA, FA, TR, TR, FA, FA, FA, FA, FA},
-/*5,5*/{FA, FA, FA, FA, FA, FA, FA, FA, FA, FA},
-/*6,6*/{TR, TR, TR, TR, TR, FA, FA, FA, FA, FA},
-/*7,7*/{TR, TR, TR, TR, TR, TR, FA, FA, FA, FA},
-/*8,8*/{TR, TR, TR, TR, TR, TR, TR, TR, TR, TR},
-/*9,9*/{TR, TR, TR, TR, TR, FA, TR, TR, FA, FA},
-/*T,T*/{FA, FA, FA, FA, FA, FA, FA, FA, FA, FA},
-/*A,A*/{TR, TR, TR, TR, TR, TR, TR, TR, TR, TR},
+static inline bool isCorrectHard(playerDecision decisionToCheck, card *playersCard[], int amountOfCards, card *dealersCard) {
+	/* int cardRrank = playersCard[0]->rank; */
+	int cardSum = sumCards(playersCard, amountOfCards);
+
+	int dealersRank = dealersCard->rank;
+	if (dealersRank == 1) {
+		//A is 11 in the chart
+		dealersRank = 11;
+	}
+
+	int horizontalPosition = dealersRank - HORIZONTALOFFSET;
+	int verticalPosition = cardSum - VERTICALOFFSETHARD;
+
+	playerDecision correctDecision = hardHands[verticalPosition][horizontalPosition];
+
+	bool areTheyTheSame;
+
+	areTheyTheSame = correctDecision == decisionToCheck;
+
+	return areTheyTheSame;
+}
+
+//If this functions is called it means that THERE IS 1 ace. If not, the 
+//function won't work (Why would you use it otherwise? :P)
+static inline bool isCorrectSoft(playerDecision decisionToCheck, card *playersCard[], int amountOfCards, card *dealersCard) {
+	int cardSum = sumCards(playersCard, amountOfCards);
+
+	//We remove 11 because the table is represented in the form of A,1; A,2
+	//and so on.
+	cardSum -= 11;
+
+	int dealersRank = dealersCard->rank;
+	if (dealersRank == 1) {
+		//A is 11 in the chart
+		dealersRank = 11;
+	}
+
+	int horizontalPosition = dealersRank - HORIZONTALOFFSET;
+	int verticalPosition = cardSum - VERTICALOFFSET;
+
+	playerDecision correctDecision = softHands[verticalPosition][horizontalPosition];
+
+	bool areTheyTheSame;
+
+	areTheyTheSame = correctDecision == decisionToCheck;
+
+	return areTheyTheSame;
 }
   
 bool isCorrectChoice(playerDecision decisionToCheck, card *playersCard[], int amountOfCards, card *dealersCard) {
-	int cardSum; = sumCards(playersCard, amountOfCards);
-	if (amountOfCards == 2) {
+	bool isItCorrect;
+/* 	int cardSum; = sumCards(playersCard, amountOfCards); */
+	/* if (amountOfCards == 2) { */
+
+	bool canSplit;
+	canSplit = checkForSplit(playersCard, amountOfCards);
+
+	if (canSplit == true) {
+		isItCorrect = isCorrectSplit(decisionToCheck, playersCard, dealersCard);
+		return isItCorrect;
 	}
-	int
 
+	//AKA has an ace
+	bool isSoft;
+	isSoft  = isSoftHand(playersCard, amountOfCards);
+	if (isSoft == true) {
+		isItCorrect = isCorrectSoft(decisionToCheck, playersCard, amountOfCards, dealersCard);
+		return isItCorrect;
+	}
 
+	/* } */
+/* 	int */
+	isItCorrect = isCorrectHard(decisionToCheck, playersCard, amountOfCards, dealersCard);
+
+	return isItCorrect;
 }

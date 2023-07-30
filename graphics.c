@@ -184,3 +184,16 @@ void asciiRepresentation(card *cards[], int amountOfCards) {
 	printf(cardRepresentation);
 	printf("\n");
 }
+
+void printCorrectOrNot(bool isCorrect) {
+	/* char *message; */
+	if (isCorrect == true) {
+		/* printf(); */
+		printf("%s\n", GRN "✓" RESET);
+	}
+	else {
+		/* printf; */
+		printf("%s\n", RED "X" RESET);
+	}
+	/* printf(message); */
+}

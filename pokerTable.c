@@ -5,6 +5,8 @@
 #include "player.h"
 #include "graphics.h"
 #include "playerDecision.h"
+#include "blackjackRules.h"
+#include "basicStrategy.h"
 
 #define MAXAMOUNTOFSPLITS 4
 #define INITIALCAPACITY 5
@@ -75,28 +77,6 @@ static inline void dealInitialCards(pokerTable *pokerTablePtr, int initialCard, 
 	}
 }
 
-#define AMOUNTOFCARDSNEEDEDFORSPLIT 2
-static inline bool checkForSplit(card *cards[], int amountOfCards) {
-	bool areTheyTheSameRank;
-
-	if (amountOfCards != AMOUNTOFCARDSNEEDEDFORSPLIT) {
-		return false;
-	}
-
-	//This is a bit hacky, but you can only split 2 cards.
-	//The previous if statement should discard all the non 2 card hands
-	areTheyTheSameRank = (cards[0]->rank == cards[1]->rank);
-
-	return areTheyTheSameRank;
-}
-
-#define AMOUNTOFCARDSNEEDEDFORDOUBLEDOWN 2
-static inline bool checkForDoubleDown(int amountOfCards) {
-	bool canDoubleDown;
-	canDoubleDown = (amountOfCards == AMOUNTOFCARDSNEEDEDFORDOUBLEDOWN);
-
-	return canDoubleDown;
-}
 
 #define FULLINPUTMESSAGE "What do you do? (H)it, (S)tand or (D)ouble Down or S(P)lit: "
 /* #define ASKFORDECISION "What do you do? (H)it, (S)tand or (D)ouble Down" */
@@ -305,6 +285,9 @@ static inline void activePlayerTurn(player *activePlayer, dealer *pokerDealer) {
 			}
 
 			playersDecision = askForDecision(activePlayerHand, getNumberOfHands(activePlayer));
+			bool isItCorrectChoice;
+			isItCorrectChoice = isCorrectChoice(playersDecision, getCards(activePlayerHand), getAmountOfCardsInHand(activePlayerHand), getCards(getSpecificHandDealer(pokerDealer))[0]);
+
 			switch (playersDecision) {
 				case Hit:
 					topCard = dealACard(pokerDealer);
@@ -336,9 +319,15 @@ static inline void activePlayerTurn(player *activePlayer, dealer *pokerDealer) {
 					receiveCard(activePlayer, topCard, getNumberOfHands(activePlayer) - 1);
 					break;
 			}
+			/* printf("%d \n", isItCorrectChoice); */
+			printCorrectOrNot(isItCorrectChoice);
+			sleep(SLEEPAMOUNT);
+			/* scanf(); */
+
 
 			activePlayerHand = getSpecificHand(activePlayer, currentHand);
 			playersSum = sumCards(getCards(activePlayerHand), getAmountOfCardsInHand(activePlayerHand));
+			/* saveCardSum(activePlayerHand, playersSum); */
 		}
 	//This will over write the value everytime. This is fine (I think)
 	firstHand = false;

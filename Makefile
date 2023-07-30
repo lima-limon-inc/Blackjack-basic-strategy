@@ -2,7 +2,7 @@ CC = gcc
 CFLAGS = -g -W -Wall -Werror
 #-fanalyzer
 
-OBJECTFILES = cards.o player.o dealer.o pokerTable.o graphics.o playerHand.o main.o
+OBJECTFILES = cards.o player.o dealer.o pokerTable.o graphics.o playerHand.o blackjackRules.o basicStrategy.o main.o
 
 run: build
 	./main.out
@@ -25,8 +25,14 @@ pokerTable.o: pokerTable.c
 graphics.o: graphics.c
 	$(CC) $(CFLAGS) -c graphics.c
 
+blackjackRules.o: blackjackRules.c
+	$(CC) $(CFLAGS) -c blackjackRules.c
+
 playerHand.o: playerHand.c
 	$(CC) $(CFLAGS) -c playerHand.c
+
+basicStrategy.o: basicStrategy.c
+	$(CC) $(CFLAGS) -c basicStrategy.c
 
 build: $(OBJECTFILES)
 	clear
