@@ -11,6 +11,6 @@ bool isSoftHand(card *cards[], int amountOfCards);
 
 int sumCards(card *cards[], int amountOfCards);
 
-int getValue(card *cardPtr);
+int getBlackjackValue(card *cardPtr);
 
 #endif

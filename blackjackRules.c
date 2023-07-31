@@ -51,7 +51,7 @@ bool isSoftHand(card *cards[], int amountOfCards) {
 	return isSoft;
 }
 
-int getValue(card *cardPtr) {
+int getBlackjackValue(card *cardPtr) {
 	int cardValue;
 	cardValue = cardPtr->rank;
 
@@ -75,7 +75,7 @@ int sumCards(card *cards[], int amountOfCards)
 	for (int card = 0; card < amountOfCards; card++) {
 		int cardValue; //= cards[card]->rank;
 		
-		cardValue = getValue(cards[card]);
+		cardValue = getBlackjackValue(cards[card]);
 
 		//Only one ace can be used with value 11
 		if (cardValue == 1 && foundAnAce == false) {
