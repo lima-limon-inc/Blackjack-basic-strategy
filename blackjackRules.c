@@ -27,20 +27,28 @@ bool checkForDoubleDown(int amountOfCards) {
 }
 
 bool isSoftHand(card *cards[], int amountOfCards) {
-	/* bool canDoubleDown; */
-	/* canDoubleDown = (amountOfCards == AMOUNTOFCARDSNEEDEDFORDOUBLEDOWN); */
-
-	/* return canDoubleDown; */
 	bool hasAce;
 	hasAce = false;
+
+	int sum;
+	sum = 0;
 	for (int currentCard = 0; currentCard < amountOfCards; currentCard++) {
 		if (cards[currentCard]->rank == 1) {
 			hasAce = true;
-			break;
+			continue;
 		}
+		int cardRank;
+		cardRank = getRank(cards[currentCard]);
+		sum += cardRank;
 	}
 
-	return hasAce;
+	bool lessThanTen;
+	lessThanTen = (sum < 10);
+
+	bool isSoft;
+	isSoft = (lessThanTen && hasAce);
+
+	return isSoft;
 }
 
 int getValue(card *cardPtr) {

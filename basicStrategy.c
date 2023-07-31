@@ -47,7 +47,7 @@ const playerDecision softHands[8][10] = {
 /*A,9*/{ST, ST, ST, ST, ST, ST, ST, ST, ST, ST},
 };
 
-const bool splitHands[10][10] = {
+const playerDecision splitHands[10][10] = {
 //       2   3   4   5   6   7   8   9  10   A
 /*2,2*/{SP, SP, SP, SP, SP, SP, HT, HT, HT, HT},
 /*3,3*/{SP, SP, SP, SP, SP, SP, HT, HT, HT, HT},
@@ -76,12 +76,6 @@ static inline playerDecision isCorrectSplit(card *playersCard[], card *dealersCa
 
 
 	return correctDecision;
-
-	/* bool areTheyTheSame; */
-
-	/* areTheyTheSame = correctDecision == decisionToCheck; */
-
-	/* return areTheyTheSame; */
 }
 
 static inline playerDecision isCorrectHard(card *playersCard[], int amountOfCards, card *dealersCard) {
@@ -101,11 +95,6 @@ static inline playerDecision isCorrectHard(card *playersCard[], int amountOfCard
 
 	return correctDecision;
 
-/* 	bool areTheyTheSame; */
-
-/* 	areTheyTheSame = correctDecision == decisionToCheck; */
-
-/* 	return areTheyTheSame; */
 }
 
 //If this functions is called it means that THERE IS 1 ace. If not, the 
@@ -130,17 +119,10 @@ static inline playerDecision isCorrectSoft(card *playersCard[], int amountOfCard
 
 	return correctDecision;
 
-/* 	bool areTheyTheSame; */
-
-/* 	areTheyTheSame = correctDecision == decisionToCheck; */
-
-/* 	return areTheyTheSame; */
 }
   
 playerDecision getCorrectChoice(card *playersCard[], int amountOfCards, card *dealersCard) {
 	playerDecision correctDecision;
-/* 	int cardSum; = sumCards(playersCard, amountOfCards); */
-	/* if (amountOfCards == 2) { */
 
 	bool canSplit;
 	canSplit = checkForSplit(playersCard, amountOfCards);
@@ -158,8 +140,6 @@ playerDecision getCorrectChoice(card *playersCard[], int amountOfCards, card *de
 		return correctDecision;
 	}
 
-	/* } */
-/* 	int */
 	correctDecision = isCorrectHard(playersCard, amountOfCards, dealersCard);
 
 	return correctDecision;

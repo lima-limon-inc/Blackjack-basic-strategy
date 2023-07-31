@@ -49,4 +49,6 @@ void increaseBet(player *playerPtr, int increaseAmount, int whichHand);
 
 void splitCards(player *playerPtr, int whichHand);
 
+int getFunds(player *playerPtr);
+
 #endif

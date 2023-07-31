@@ -53,7 +53,7 @@ playerHand *resizeHand(playerHand *playerHandPtr) {
 	//We will downsize if it's way to big
 	//                   8                             2      * 2
 	else if (playerHandPtr->cardCapacity > playerHandPtr->cardsInHand * 2) {
-		printf("DOWNSIZE\n");
+		/* printf("DOWNSIZE\n"); */
 
 		//Set the new capacity
 		playerHandPtr->cardCapacity /= 2; //Divided equal (fancy notation)
@@ -61,7 +61,7 @@ playerHand *resizeHand(playerHand *playerHandPtr) {
 
 	//We need more memory
 	else {
-		printf("UPSIZE\n");
+		/* printf("UPSIZE\n"); */
 
 		//Set the new capacity
 		playerHandPtr->cardCapacity *= 2; //Multiply equal (fancy notation)

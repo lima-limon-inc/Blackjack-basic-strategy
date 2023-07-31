@@ -110,3 +110,7 @@ void splitCards(player *playerPtr, int whichHand) {
 
 	playerPtr->howManyHands += 1;
 }
+
+int getFunds(player *playerPtr) {
+	return playerPtr->funds;
+}

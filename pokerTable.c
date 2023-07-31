@@ -496,9 +496,27 @@ static inline void losersAndWiners(pokerTable *pokerTablePtr, dealer *dealerPtr)
 			}
 		}
 	}
+	sleep(SLEEPAMOUNT);
+	printf("\n");
+}
+
+static inline void showMoney(pokerTable *pokerTablePtr) {
+	/* system("clear"); */
+	for (int i = 0; i < pokerTablePtr->playerAmount; i++) {
+		player *activePlayer;
+		activePlayer = pokerTablePtr->players[i];
+
+		int activePlayersMoney;
+		activePlayersMoney = getFunds(activePlayer);
+
+		printf("%s's money: %d\n", activePlayer->name, activePlayersMoney);
+	}
+	sleep(SLEEPAMOUNT);
+	printf("\n");
 }
 
 void pokerRound(pokerTable *pokerTablePtr) {
+	while (true) {
 	dealer *pokerDealer = pokerTablePtr->pokerDealer;
 
 	asksPlayerForBet(pokerTablePtr);
@@ -506,4 +524,6 @@ void pokerRound(pokerTable *pokerTablePtr) {
 	playersTurns(pokerTablePtr, pokerDealer);
 	pokerDealer = dealersTurn(pokerTablePtr, pokerDealer);
 	losersAndWiners(pokerTablePtr, pokerDealer);
+	showMoney(pokerTablePtr);
+	}
 }
