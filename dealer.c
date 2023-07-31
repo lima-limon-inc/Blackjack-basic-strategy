@@ -4,8 +4,8 @@ dealer *createDealer(int initialFunds) {
 	int initialSize;
 	initialSize = sizeof(dealer);
 
-	shoe *newPokerShoe;
-	newPokerShoe = createShuffledShoe();
+	shoe *newBlackjackShoe;
+	newBlackjackShoe = createShuffledShoe();
 
 	dealer *newDealer;
 	newDealer = (dealer *) malloc (initialSize);
@@ -14,20 +14,20 @@ dealer *createDealer(int initialFunds) {
 	newDealersHand = createPlayerHand();
 
 	newDealer->funds = initialFunds;
-	newDealer->pokerShoe = newPokerShoe;
+	newDealer->blackjackShoe = newBlackjackShoe;
 	newDealer->dealersHand = newDealersHand;
 
 	return newDealer;
 }
 
 void killDealer(dealer *dealerPtr){
-	destroyShoe(dealerPtr->pokerShoe);
+	destroyShoe(dealerPtr->blackjackShoe);
 	removeHand(getSpecificHandDealer(dealerPtr));
 	free (dealerPtr);
 }
 
 card *dealACard(const dealer *dealerPtr){
-	card *cardAtTheTop = getCardAtTheTop(dealerPtr->pokerShoe);
+	card *cardAtTheTop = getCardAtTheTop(dealerPtr->blackjackShoe);
 	return cardAtTheTop;
 }
 

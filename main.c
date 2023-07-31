@@ -5,7 +5,7 @@
 /* #include "cardArithmetic.h" */
 #include "player.h"
 #include "dealer.h"
-#include "pokerTable.h"
+#include "blackjackTable.h"
 
 //TODO: Make dinamic
 #define PLAYERAMOUNT 5
@@ -13,19 +13,19 @@
 
 int main()
 {
-	pokerTable *newPokerTable = createPokerTable(1000);
+	blackjackTable *newBlackjackTable = createBlackjackTable(1000);
 	char name[20];
 	while (scanf("%s",name) == 1) {
-		if (newPokerTable->playerAmount == PLAYERAMOUNT) {
+		if (newBlackjackTable->playerAmount == PLAYERAMOUNT) {
 			break;
 		}
 		if (strcmp(name,"No") == 0) {
 			break;
 		}
-		newPokerTable = addPlayer(newPokerTable, name, 100);
+		newBlackjackTable = addPlayer(newBlackjackTable, name, 100);
 	}
 
-	pokerRound(newPokerTable);
+	blackjackRound(newBlackjackTable);
 
-	destroyPokerTable(newPokerTable);
+	destroyBlackjackTable(newBlackjackTable);
 }

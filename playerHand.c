@@ -13,14 +13,14 @@ playerHand *createPlayerHand() {
 	int initialSize;
 	initialSize = sizeof(playerHand) + INITIALPLAYERCARDS * sizeof(card *);
 
-	playerHand *pokerHand;
-	pokerHand = (playerHand *) malloc(initialSize); 
-	pokerHand->cardsInHand = 0;
-	pokerHand->cardCapacity = INITIALPLAYERCARDS;
-	/* pokerHand->bet = 0; */
-	pokerHand->cardSum = 0;
+	playerHand *blackjackHand;
+	blackjackHand = (playerHand *) malloc(initialSize); 
+	blackjackHand->cardsInHand = 0;
+	blackjackHand->cardCapacity = INITIALPLAYERCARDS;
+	/* blackjackHand->bet = 0; */
+	blackjackHand->cardSum = 0;
 	
-	return pokerHand;
+	return blackjackHand;
 }
 
 void removeHand(playerHand *playerHandPtr) {

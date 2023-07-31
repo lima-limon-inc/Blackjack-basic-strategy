@@ -1,6 +1,6 @@
 #include <unistd.h>
 
-#include "pokerTable.h"
+#include "blackjackTable.h"
 
 #include "player.h"
 #include "graphics.h"
@@ -17,63 +17,63 @@
 #define AMOUNTOFCARDSFORBLACKJACK 2
 #define SLEEPAMOUNT 1.5
 
-pokerTable *createPokerTable(int initialFunds) {
+blackjackTable *createBlackjackTable(int initialFunds) {
 	dealer *dealerPtr = createDealer(initialFunds);
 
-	pokerTable *newPokerTable;	
-	newPokerTable =  (pokerTable *) malloc(sizeof(pokerTable) +
+	blackjackTable *newBlackjackTable;	
+	newBlackjackTable =  (blackjackTable *) malloc(sizeof(blackjackTable) +
 			INITIALCAPACITY * sizeof(player *));
 
-	newPokerTable->pokerDealer = dealerPtr;
-	newPokerTable->playerCapacity = INITIALCAPACITY;
-	newPokerTable->playerAmount = 0;
+	newBlackjackTable->blackjackDealer = dealerPtr;
+	newBlackjackTable->playerCapacity = INITIALCAPACITY;
+	newBlackjackTable->playerAmount = 0;
 
-	return newPokerTable;
+	return newBlackjackTable;
 }
 
-void destroyPokerTable(pokerTable *pokerTablePtr) {
-	killDealer(pokerTablePtr->pokerDealer);
+void destroyBlackjackTable(blackjackTable *blackjackTablePtr) {
+	killDealer(blackjackTablePtr->blackjackDealer);
 
-	for (int i = 0; i < pokerTablePtr->playerAmount; i++) {
-		killPlayer(pokerTablePtr->players[i]);
+	for (int i = 0; i < blackjackTablePtr->playerAmount; i++) {
+		killPlayer(blackjackTablePtr->players[i]);
 	}
-	free(pokerTablePtr);
+	free(blackjackTablePtr);
 }
 
-pokerTable *addPlayer(pokerTable *pokerTablePtr, char name[], int initialFunds) {
+blackjackTable *addPlayer(blackjackTable *blackjackTablePtr, char name[], int initialFunds) {
 	player *newPlayer = createPlayer(name,  initialFunds);
 
-	pokerTablePtr->players[pokerTablePtr->playerAmount] = newPlayer;
-	pokerTablePtr->playerAmount += 1;
+	blackjackTablePtr->players[blackjackTablePtr->playerAmount] = newPlayer;
+	blackjackTablePtr->playerAmount += 1;
 
 	//TODO: Add resize down function
-	if (pokerTablePtr->playerAmount == pokerTablePtr->playerCapacity) {
+	if (blackjackTablePtr->playerAmount == blackjackTablePtr->playerCapacity) {
 		printf("REALLOC\n");
-		int newSize = sizeof(pokerTable) +
-			 pokerTablePtr->playerCapacity * 2 * sizeof(player *);
-		pokerTablePtr = realloc(pokerTablePtr, newSize);
+		int newSize = sizeof(blackjackTable) +
+			 blackjackTablePtr->playerCapacity * 2 * sizeof(player *);
+		blackjackTablePtr = realloc(blackjackTablePtr, newSize);
 	}
 	
-	return pokerTablePtr;
+	return blackjackTablePtr;
 }
 
-static player *getPlayerAtPosition(pokerTable *pokerTablePtr, int position) {
-	return pokerTablePtr->players[position];
+static player *getPlayerAtPosition(blackjackTable *blackjackTablePtr, int position) {
+	return blackjackTablePtr->players[position];
 }
 
-static inline void dealInitialCards(pokerTable *pokerTablePtr, int initialCard, dealer *pokerDealer) {
+static inline void dealInitialCards(blackjackTable *blackjackTablePtr, int initialCard, dealer *blackjackDealer) {
 	for (int i = 0; i < initialCard; i++) {
-		for (int j = 0; j < pokerTablePtr->playerAmount; j++) {
-			player *activePlayer = pokerTablePtr->players[j];
+		for (int j = 0; j < blackjackTablePtr->playerAmount; j++) {
+			player *activePlayer = blackjackTablePtr->players[j];
 
-			card *topCard = dealACard(pokerDealer);
+			card *topCard = dealACard(blackjackDealer);
 
 			//0 Because it's the initial hand
 			receiveCard(activePlayer,  topCard, 0);
 		}
-		card *dealersCard = dealACard(pokerDealer);
+		card *dealersCard = dealACard(blackjackDealer);
 
-		dealDealersHand(pokerDealer, dealersCard);
+		dealDealersHand(blackjackDealer, dealersCard);
 	}
 }
 
@@ -164,30 +164,30 @@ static inline void askPlayerForBet(player *activePlayer, int whichHand) {
 	makeABet(activePlayer, playerBet, whichHand);
 }
 
-static inline void asksPlayerForBet(pokerTable *pokerTablePtr) {
-	for (int position = 0; position < pokerTablePtr->playerAmount; position++) {
+static inline void asksPlayerForBet(blackjackTable *blackjackTablePtr) {
+	for (int position = 0; position < blackjackTablePtr->playerAmount; position++) {
 		player *activePlayer;
-		activePlayer = getPlayerAtPosition(pokerTablePtr, position);
+		activePlayer = getPlayerAtPosition(blackjackTablePtr, position);
 
 		askPlayerForBet(activePlayer, 0);
 	}
 }
 
-static dealer *getDealer(pokerTable *pokerTablePtr) {
-	return pokerTablePtr->pokerDealer;
+static dealer *getDealer(blackjackTable *blackjackTablePtr) {
+	return blackjackTablePtr->blackjackDealer;
 }
 
-static inline void printDealersCards(dealer *pokerDealer, bool showAllCards) {
+static inline void printDealersCards(dealer *blackjackDealer, bool showAllCards) {
 	int howManyCards;
 
 	playerHand *dealersHand;
-	dealersHand = getSpecificHandDealer(pokerDealer);
+	dealersHand = getSpecificHandDealer(blackjackDealer);
 
 	if (showAllCards == false) {
 		howManyCards = 1;
 	}
 	else {
-		howManyCards = getAmountOfCardsInHand(dealersHand);//pokerDealer->cardsInHand;
+		howManyCards = getAmountOfCardsInHand(dealersHand);//blackjackDealer->cardsInHand;
 	}
 	printf("DEALER: \n");
 	asciiRepresentation(getCards(dealersHand), howManyCards);
@@ -218,11 +218,11 @@ static void printPlayerAndHand(player *activePlayer, int whichHand) {
 	printf("hand");
 }
 
-static inline void printVisualRepresentation(player *activePlayer, int whichHand, dealer *pokerDealer, bool showAllDealerCards) {
+static inline void printVisualRepresentation(player *activePlayer, int whichHand, dealer *blackjackDealer, bool showAllDealerCards) {
 	playerHand *activePlayerHand;
 	activePlayerHand = getSpecificHand(activePlayer, whichHand);
 
-	printDealersCards(pokerDealer, showAllDealerCards);
+	printDealersCards(blackjackDealer, showAllDealerCards);
 
 	printPlayerAndHand(activePlayer, whichHand);
 	printf("\n");
@@ -232,7 +232,7 @@ static inline void printVisualRepresentation(player *activePlayer, int whichHand
 
 
 
-static inline void activePlayerTurn(player *activePlayer, dealer *pokerDealer) {
+static inline void activePlayerTurn(player *activePlayer, dealer *blackjackDealer) {
 	playerDecision playersDecision;
 
 	card *topCard;
@@ -254,7 +254,7 @@ static inline void activePlayerTurn(player *activePlayer, dealer *pokerDealer) {
 		//are originally dealt cards
 		if (firstHand == true && playersSum == BLACKJACK) {
 			system("clear");
-			printVisualRepresentation(activePlayer, 0, pokerDealer, false);
+			printVisualRepresentation(activePlayer, 0, blackjackDealer, false);
 			sleep(SLEEPAMOUNT);
 			saveCardSum(activePlayerHand, playersSum);
 			return;
@@ -263,7 +263,7 @@ static inline void activePlayerTurn(player *activePlayer, dealer *pokerDealer) {
 		//Main player turn loop
 		while (playersTurnContinues == true && playersSum < CARDSUMBEFOREBUST) {
 			system("clear");
-			printVisualRepresentation(activePlayer, currentHand, pokerDealer, false);
+			printVisualRepresentation(activePlayer, currentHand, blackjackDealer, false);
 
 			//If the player busts, then he lost his turn
 			if (playersSum > CARDSUMBEFOREBUST) {
@@ -273,14 +273,14 @@ static inline void activePlayerTurn(player *activePlayer, dealer *pokerDealer) {
 			playersDecision = askForDecision(activePlayerHand, getNumberOfHands(activePlayer));
 
 			playerDecision correctDecision;
-			correctDecision = getCorrectChoice(getCards(activePlayerHand), getAmountOfCardsInHand(activePlayerHand), getCards(getSpecificHandDealer(pokerDealer))[0]);
+			correctDecision = getCorrectChoice(getCards(activePlayerHand), getAmountOfCardsInHand(activePlayerHand), getCards(getSpecificHandDealer(blackjackDealer))[0]);
 
 			bool isItCorrectChoice;
 			isItCorrectChoice = (correctDecision == playersDecision);
 
 			switch (playersDecision) {
 				case Hit:
-					topCard = dealACard(pokerDealer);
+					topCard = dealACard(blackjackDealer);
 
 					receiveCard(activePlayer, topCard, currentHand);
 					break;
@@ -294,7 +294,7 @@ static inline void activePlayerTurn(player *activePlayer, dealer *pokerDealer) {
 					//Once the bet is increased, the player can 
 					//only get one more card, so we deal a card and 
 					//exit the loop
-					topCard = dealACard(pokerDealer);
+					topCard = dealACard(blackjackDealer);
 					receiveCard(activePlayer, topCard, currentHand);
 					playersTurnContinues = false;
 					break;
@@ -302,10 +302,10 @@ static inline void activePlayerTurn(player *activePlayer, dealer *pokerDealer) {
 					splitCards(activePlayer, currentHand);
 					//We deal an addtional to the newly
 					//created hand
-					topCard = dealACard(pokerDealer);
+					topCard = dealACard(blackjackDealer);
 					receiveCard(activePlayer, topCard, currentHand);
 
-					topCard = dealACard(pokerDealer);
+					topCard = dealACard(blackjackDealer);
 					receiveCard(activePlayer, topCard, getNumberOfHands(activePlayer) - 1);
 					break;
 			}
@@ -320,7 +320,7 @@ static inline void activePlayerTurn(player *activePlayer, dealer *pokerDealer) {
 	firstHand = false;
 
 	system("clear");
-	printVisualRepresentation(activePlayer, currentHand, pokerDealer, false);
+	printVisualRepresentation(activePlayer, currentHand, blackjackDealer, false);
 	saveCardSum(activePlayerHand, playersSum);
 	sleep(SLEEPAMOUNT);
 	}
@@ -328,20 +328,20 @@ static inline void activePlayerTurn(player *activePlayer, dealer *pokerDealer) {
 	return;
 }
 
-static inline void playersTurns(pokerTable *pokerTablePtr, dealer *pokerDealer) {
-	for (int i = 0; i < pokerTablePtr->playerAmount; i++) {
+static inline void playersTurns(blackjackTable *blackjackTablePtr, dealer *blackjackDealer) {
+	for (int i = 0; i < blackjackTablePtr->playerAmount; i++) {
 		player *activePlayer;
-		activePlayer = pokerTablePtr->players[i];
+		activePlayer = blackjackTablePtr->players[i];
 		
-		activePlayerTurn(activePlayer, pokerDealer);
+		activePlayerTurn(activePlayer, blackjackDealer);
 	}
 }
 
-static inline dealer *dealersTurn(pokerTable *pokerTablePtr, dealer *pokerDealer) {
+static inline dealer *dealersTurn(blackjackTable *blackjackTablePtr, dealer *blackjackDealer) {
 	int dealersSum;
 	
 	playerHand *dealersHand;
-	dealersHand = getSpecificHandDealer(pokerDealer);
+	dealersHand = getSpecificHandDealer(blackjackDealer);
 
 	int howManyCardsDealer;
 	howManyCardsDealer= getAmountOfCardsInHand(dealersHand);
@@ -351,9 +351,9 @@ static inline dealer *dealersTurn(pokerTable *pokerTablePtr, dealer *pokerDealer
 
 	//TODO: Remove this bit, IDK why I wrote it twice
 	system("clear");
-	for (int position = 0; position < pokerTablePtr->playerAmount; position++) {
+	for (int position = 0; position < blackjackTablePtr->playerAmount; position++) {
 		player *activePlayer;
-		activePlayer = getPlayerAtPosition(pokerTablePtr, position);
+		activePlayer = getPlayerAtPosition(blackjackTablePtr, position);
 
 		for (int currentHand = 0; currentHand < getNumberOfHands(activePlayer); currentHand++) {
 
@@ -363,14 +363,14 @@ static inline dealer *dealersTurn(pokerTable *pokerTablePtr, dealer *pokerDealer
 			printf(" sum: %d\n", getHandSum(activePlayerHand));
 		}
 	}
-	printDealersCards(pokerDealer, true);
+	printDealersCards(blackjackDealer, true);
 	sleep(SLEEPAMOUNT);
 
 	while (dealersSum < DEALERLIMIT) {
 		system("clear");
-		for (int position = 0; position < pokerTablePtr->playerAmount; position++) {
+		for (int position = 0; position < blackjackTablePtr->playerAmount; position++) {
 			player *activePlayer;
-			activePlayer = getPlayerAtPosition(pokerTablePtr, position);
+			activePlayer = getPlayerAtPosition(blackjackTablePtr, position);
 
 			for (int currentHand = 0; currentHand < getNumberOfHands(activePlayer); currentHand++) {
 
@@ -382,23 +382,23 @@ static inline dealer *dealersTurn(pokerTable *pokerTablePtr, dealer *pokerDealer
 				printf(" sum: %d\n", getHandSum(activePlayerHand));
 			}
 		}
-		card *topCard = dealACard(pokerDealer);
+		card *topCard = dealACard(blackjackDealer);
 
-		dealDealersHand(pokerDealer,  topCard);
+		dealDealersHand(blackjackDealer,  topCard);
 		//dealersHand changed from its initical call to here, due to
 		//the dealDealersHand function, that's why we have to
 		//redefine it
-		dealersHand = getSpecificHandDealer(pokerDealer);
+		dealersHand = getSpecificHandDealer(blackjackDealer);
 		howManyCardsDealer= getAmountOfCardsInHand(dealersHand);
 
 		dealersSum = sumCards(getCards(dealersHand), howManyCardsDealer);
-		printDealersCards(pokerDealer, true);
+		printDealersCards(blackjackDealer, true);
 		sleep(SLEEPAMOUNT);
 	}
 
 	saveCardSum(dealersHand, dealersSum);
 	printf("\nDealers sum :%d\n", dealersSum);
-	return pokerDealer;
+	return blackjackDealer;
 
 }
 
@@ -450,10 +450,10 @@ static inline playerRoundResult roundEndedIn(playerHand *activeHand, dealer *dea
 	return Lost;
 }
 
-static inline void losersAndWiners(pokerTable *pokerTablePtr, dealer *dealerPtr) {
-	for (int i = 0; i < pokerTablePtr->playerAmount; i++) {
+static inline void losersAndWiners(blackjackTable *blackjackTablePtr, dealer *dealerPtr) {
+	for (int i = 0; i < blackjackTablePtr->playerAmount; i++) {
 		player *activePlayer;
-		activePlayer = pokerTablePtr->players[i];
+		activePlayer = blackjackTablePtr->players[i];
 
 		for (int currentHand = 0; currentHand < getNumberOfHands(activePlayer); currentHand++) {
 			playerHand *playersHand;
@@ -503,11 +503,11 @@ static inline void losersAndWiners(pokerTable *pokerTablePtr, dealer *dealerPtr)
 	printf("\n");
 }
 
-static inline void showMoney(pokerTable *pokerTablePtr) {
+static inline void showMoney(blackjackTable *blackjackTablePtr) {
 	system("clear");
-	for (int i = 0; i < pokerTablePtr->playerAmount; i++) {
+	for (int i = 0; i < blackjackTablePtr->playerAmount; i++) {
 		player *activePlayer;
-		activePlayer = pokerTablePtr->players[i];
+		activePlayer = blackjackTablePtr->players[i];
 
 		int activePlayersMoney;
 		activePlayersMoney = getFunds(activePlayer);
@@ -518,10 +518,10 @@ static inline void showMoney(pokerTable *pokerTablePtr) {
 	printf("\n");
 }
 
-static inline void resetPlayers(pokerTable *pokerTablePtr, dealer *dealerPtr) {
-	for (int i = 0; i < pokerTablePtr->playerAmount; i++) {
+static inline void resetPlayers(blackjackTable *blackjackTablePtr, dealer *dealerPtr) {
+	for (int i = 0; i < blackjackTablePtr->playerAmount; i++) {
 		player *activePlayer;
-		activePlayer = pokerTablePtr->players[i];
+		activePlayer = blackjackTablePtr->players[i];
 
 		resetPlayer(activePlayer);
 	}
@@ -529,16 +529,16 @@ static inline void resetPlayers(pokerTable *pokerTablePtr, dealer *dealerPtr) {
 
 }
 
-void pokerRound(pokerTable *pokerTablePtr) {
+void blackjackRound(blackjackTable *blackjackTablePtr) {
 	while (true) {
-		dealer *pokerDealer = getDealer(pokerTablePtr);
+		dealer *blackjackDealer = getDealer(blackjackTablePtr);
 
-		showMoney(pokerTablePtr);
-		asksPlayerForBet(pokerTablePtr);
-		dealInitialCards(pokerTablePtr, INITIALCARDCOUNT, pokerDealer);
-		playersTurns(pokerTablePtr, pokerDealer);
-		pokerDealer = dealersTurn(pokerTablePtr, pokerDealer);
-		losersAndWiners(pokerTablePtr, pokerDealer);
-		resetPlayers(pokerTablePtr, pokerDealer);
+		showMoney(blackjackTablePtr);
+		asksPlayerForBet(blackjackTablePtr);
+		dealInitialCards(blackjackTablePtr, INITIALCARDCOUNT, blackjackDealer);
+		playersTurns(blackjackTablePtr, blackjackDealer);
+		blackjackDealer = dealersTurn(blackjackTablePtr, blackjackDealer);
+		losersAndWiners(blackjackTablePtr, blackjackDealer);
+		resetPlayers(blackjackTablePtr, blackjackDealer);
 	}
 }

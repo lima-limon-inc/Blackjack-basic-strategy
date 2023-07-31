@@ -10,7 +10,7 @@ typedef struct dealer{
 	//Money!
 	int funds;
 
-	shoe *pokerShoe;
+	shoe *blackjackShoe;
 
 	/* int cardsInHand; */
 

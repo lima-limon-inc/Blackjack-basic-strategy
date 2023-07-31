@@ -5,19 +5,19 @@ player *createPlayer(char *playerName, int initialFunds) {
 	int initialSize;
 	initialSize = sizeof(player);
 
-	player *pokerPlayer;
-	pokerPlayer = (player *) malloc(initialSize); 
+	player *blackjackPlayer;
+	blackjackPlayer = (player *) malloc(initialSize); 
 
 	playerHand *playersHand;
 	playersHand = createPlayerHand();
 
-	strcpy(pokerPlayer->name, playerName);
-	pokerPlayer->funds = initialFunds;
-	pokerPlayer->howManyHands = 1;
-	pokerPlayer->playerHands[pokerPlayer->howManyHands - 1] = playersHand;
-	pokerPlayer->bets[0] = 0;
+	strcpy(blackjackPlayer->name, playerName);
+	blackjackPlayer->funds = initialFunds;
+	blackjackPlayer->howManyHands = 1;
+	blackjackPlayer->playerHands[blackjackPlayer->howManyHands - 1] = playersHand;
+	blackjackPlayer->bets[0] = 0;
 
-	return pokerPlayer;
+	return blackjackPlayer;
 }
 
 //TODO: Change function name if I want to get PEGI 13
