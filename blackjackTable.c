@@ -231,16 +231,52 @@ static inline void printVisualRepresentation(player *activePlayer, int whichHand
 	asciiRepresentation(getCards(activePlayerHand), getAmountOfCardsInHand(activePlayerHand));
 }
 
+static inline bool processPlayerMove(player *activePlayer, int currentHand, playerDecision playersDecision, dealer *blackjackDealer) {
+	card *topCard;
+
+	bool playersTurnContinues;
+	switch (playersDecision) {
+		case Hit:
+			topCard = dealACard(blackjackDealer);
+
+			receiveCard(activePlayer, topCard, currentHand);
+			playersTurnContinues = true;
+			break;
+		case Stand:
+			playersTurnContinues = false;
+			break;
+		case DoubleDown:
+			int increaseAmount;
+			increaseAmount = getBet(activePlayer, currentHand);
+			increaseBet(activePlayer, increaseAmount, currentHand);
+			//Once the bet is increased, the player can 
+			//only get one more card, so we deal a card and 
+			//exit the loop
+			topCard = dealACard(blackjackDealer);
+			receiveCard(activePlayer, topCard, currentHand);
+			playersTurnContinues = false;
+			break;
+		case Split:
+			splitCards(activePlayer, currentHand);
+			//We deal an addtional to the newly
+			//created hand
+			topCard = dealACard(blackjackDealer);
+			receiveCard(activePlayer, topCard, currentHand);
+
+			topCard = dealACard(blackjackDealer);
+			receiveCard(activePlayer, topCard, getNumberOfHands(activePlayer) - 1);
+			playersTurnContinues = true;
+			break;
+	}
+
+	return playersTurnContinues;
+}
 
 
 static inline void activePlayerTurn(player *activePlayer, dealer *blackjackDealer) {
 	playerDecision playersDecision;
 
-	card *topCard;
-
-	int playersSum;
-
-	playerHand *activePlayerHand;
+	int playersSum; playerHand *activePlayerHand;
 
 	bool firstHand;
 
@@ -273,43 +309,21 @@ static inline void activePlayerTurn(player *activePlayer, dealer *blackjackDeale
 
 			playersDecision = askForDecision(activePlayerHand, getNumberOfHands(activePlayer));
 
+			//This bit is horrible. I hate it so much. Will refactor
+			//eventually
+			//                         ||
+			//                         ||
+			//                         \/
 			playerDecision correctDecision;
 			correctDecision = getCorrectChoice(getCards(activePlayerHand), getAmountOfCardsInHand(activePlayerHand), getCards(getSpecificHandDealer(blackjackDealer))[0]);
-
 			bool isItCorrectChoice;
 			isItCorrectChoice = (correctDecision == playersDecision);
+			//                         /\
+			//                         ||
+			//                         ||
 
-			switch (playersDecision) {
-				case Hit:
-					topCard = dealACard(blackjackDealer);
+			playersTurnContinues = processPlayerMove(activePlayer, currentHand, playersDecision, blackjackDealer);
 
-					receiveCard(activePlayer, topCard, currentHand);
-					break;
-				case Stand:
-					playersTurnContinues = false;
-					break;
-				case DoubleDown:
-					int increaseAmount;
-					increaseAmount = getBet(activePlayer, currentHand);
-					increaseBet(activePlayer, increaseAmount, currentHand);
-					//Once the bet is increased, the player can 
-					//only get one more card, so we deal a card and 
-					//exit the loop
-					topCard = dealACard(blackjackDealer);
-					receiveCard(activePlayer, topCard, currentHand);
-					playersTurnContinues = false;
-					break;
-				case Split:
-					splitCards(activePlayer, currentHand);
-					//We deal an addtional to the newly
-					//created hand
-					topCard = dealACard(blackjackDealer);
-					receiveCard(activePlayer, topCard, currentHand);
-
-					topCard = dealACard(blackjackDealer);
-					receiveCard(activePlayer, topCard, getNumberOfHands(activePlayer) - 1);
-					break;
-			}
 			printCorrectOrNot(isItCorrectChoice, correctDecision);
 			sleep(SLEEPAMOUNT);
 
