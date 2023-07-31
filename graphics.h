@@ -5,8 +5,9 @@
 
 #include "cards.h"
 #include "playerDecision.h"
+#include "playerHand.h"
 
-void asciiRepresentation(card *cards[], int amountOfCards, bool lastCardBlank);
+void asciiRepresentation(playerHand *playersHand, bool lastCardBlank);
 
 void printCorrectOrNot(bool isCorrect, playerDecision correctDecision);
 

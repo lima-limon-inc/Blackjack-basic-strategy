@@ -96,14 +96,24 @@ static inline char *intToSuit(suits cardSuits) {
 
 //This function isn't pretty. In fact, it's pretty ugly. It simply prints a card
 //TODO: Change argument to playerHand
-void asciiRepresentation(card *cards[], int amountOfCards, bool lastCardBlank) {
-	int amountOfCardsToPrint;
-	amountOfCardsToPrint = amountOfCards;
-	if (lastCardBlank == true){
-		amountOfCardsToPrint += 1;
-	}
+void asciiRepresentation(playerHand *playersHand, bool lastCardBlank)
+{
+/* void asciiRepresentation(card *cards[], int amountOfCards, bool lastCardBlank) { */
 
-	int lengthOfAllTheCards = CARDWIDTH * amountOfCardsToPrint + SPACESBETWEENCARDS * amountOfCards;
+	card **cards;
+	cards = getCards(playersHand);
+
+	int amountOfCards;
+	amountOfCards = getAmountOfCards(playersHand);
+
+	/* int amountOfCardsToPrint; */
+	/* amountOfCardsToPrint = amountOfCards; */
+
+	int lengthOfAllTheCards = CARDWIDTH * amountOfCards + SPACESBETWEENCARDS * amountOfCards;
+
+	if (lastCardBlank == true){
+		amountOfCards -= 1;
+	}
 	char cardRepresentation[lengthOfAllTheCards];
 	/* char cardRepresentation[1]; */
 	char bufferCard[CARDWIDTH];

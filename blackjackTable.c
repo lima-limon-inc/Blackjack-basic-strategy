@@ -106,7 +106,7 @@ static inline char *askForPlayerMessage(bool canDoubleDown, bool canSplit) {
 static inline playerDecision askForDecision(playerHand *activePlayerHand, int howManyHands) {
 	bool canSplit;
 	if (howManyHands < MAXAMOUNTOFSPLITS) {
-		canSplit = checkForSplit(getCards(activePlayerHand), getAmountOfCardsInHand(activePlayerHand));
+		canSplit = checkForSplit(getCards(activePlayerHand), getAmountOfCards(activePlayerHand));
 	}
 	else {
 		//If the player has exceeded the amount of valid splits, then
@@ -115,7 +115,7 @@ static inline playerDecision askForDecision(playerHand *activePlayerHand, int ho
 	}
 
 	bool canDoubleDown;
-	canDoubleDown = checkForDoubleDown(getAmountOfCardsInHand(activePlayerHand));
+	canDoubleDown = checkForDoubleDown(getAmountOfCards(activePlayerHand));
 
 	char userInput[10];
 
@@ -195,22 +195,19 @@ static dealer *getDealer(blackjackTable *blackjackTablePtr) {
 }
 
 static void printDealersCards(dealer *blackjackDealer, bool showAllCards) {
-	int howManyCards;
-
 	playerHand *dealersHand;
 	dealersHand = getSpecificHandDealer(blackjackDealer);
 
 	bool lastCardBlank;
 	if (showAllCards == false) {
-		howManyCards = 1;
 		lastCardBlank =  true;
 	}
 	else {
-		howManyCards = getAmountOfCardsInHand(dealersHand);//blackjackDealer->cardsInHand;
+		/* howManyCards = getAmountOfCards(dealersHand);//blackjackDealer->cardsInHand; */
 		lastCardBlank =  false;
 	}
 	printf("DEALER: \n");
-	asciiRepresentation(getCards(dealersHand), howManyCards, lastCardBlank);
+	asciiRepresentation(dealersHand, lastCardBlank);
 }
 
 static inline char *cardinalToOrdinal(int cardinal) {
@@ -247,7 +244,7 @@ static void printVisualRepresentation(player *activePlayer, int whichHand, deale
 	printPlayerAndHand(activePlayer, whichHand);
 	printf("\n");
 
-	asciiRepresentation(getCards(activePlayerHand), getAmountOfCardsInHand(activePlayerHand), false);
+	asciiRepresentation(activePlayerHand, false);
 }
 
 static inline bool processPlayerMove(player *activePlayer, int currentHand, playerDecision playersDecision, dealer *blackjackDealer) {
@@ -304,7 +301,7 @@ static inline void activePlayerTurn(player *activePlayer, dealer *blackjackDeale
 		playersTurnContinues = true;
 
 		activePlayerHand = getSpecificHand(activePlayer, currentHand);
-		playersSum = sumCards(getCards(activePlayerHand), getAmountOfCardsInHand(activePlayerHand));
+		playersSum = sumCards(getCards(activePlayerHand), getAmountOfCards(activePlayerHand));
 
 		//You can only get a Blackjack in you first hand when you
 		//are originally dealt cards
@@ -335,7 +332,7 @@ static inline void activePlayerTurn(player *activePlayer, dealer *blackjackDeale
 			 *                         \/
 			 */
 			playerDecision correctDecision;
-			correctDecision = getCorrectChoice(getCards(activePlayerHand), getAmountOfCardsInHand(activePlayerHand), getCards(getSpecificHandDealer(blackjackDealer))[0]);
+			correctDecision = getCorrectChoice(getCards(activePlayerHand), getAmountOfCards(activePlayerHand), getCards(getSpecificHandDealer(blackjackDealer))[0]);
 			bool isItCorrectChoice;
 			isItCorrectChoice = (correctDecision == playersDecision);
 			/*                         /\
@@ -350,7 +347,7 @@ static inline void activePlayerTurn(player *activePlayer, dealer *blackjackDeale
 
 
 			activePlayerHand = getSpecificHand(activePlayer, currentHand);
-			playersSum = sumCards(getCards(activePlayerHand), getAmountOfCardsInHand(activePlayerHand));
+			playersSum = sumCards(getCards(activePlayerHand), getAmountOfCards(activePlayerHand));
 		}
 	//This will over write the value everytime. This is fine (I think)
 	firstHand = false;
@@ -380,7 +377,7 @@ static inline void dealersTurn(blackjackTable *blackjackTablePtr, dealer *blackj
 	dealersHand = getSpecificHandDealer(blackjackDealer);
 
 	int howManyCardsDealer;
-	howManyCardsDealer= getAmountOfCardsInHand(dealersHand);
+	howManyCardsDealer= getAmountOfCards(dealersHand);
 
 	dealersSum = sumCards(getCards(dealersHand), howManyCardsDealer);
 
@@ -425,7 +422,7 @@ static inline void dealersTurn(blackjackTable *blackjackTablePtr, dealer *blackj
 		//the dealDealersHand function, that's why we have to
 		//redefine it
 		dealersHand = getSpecificHandDealer(blackjackDealer);
-		howManyCardsDealer= getAmountOfCardsInHand(dealersHand);
+		howManyCardsDealer= getAmountOfCards(dealersHand);
 
 		dealersSum = sumCards(getCards(dealersHand), howManyCardsDealer);
 		printDealersCards(blackjackDealer, true);
@@ -448,7 +445,7 @@ static inline playerRoundResult roundEndedIn(playerHand *activeHand, dealer *dea
 	dealersSum = getHandSum(dealersHand);
 
 	int playersAmountOfCards;
-	playersAmountOfCards = getAmountOfCardsInHand(activeHand);
+	playersAmountOfCards = getAmountOfCards(activeHand);
 
 	//Player lost, he busted
 	if (playersSum > CARDSUMBEFOREBUST) {

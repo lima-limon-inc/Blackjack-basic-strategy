@@ -28,7 +28,7 @@ void saveCardSum(playerHand *playersHand, int newSum);
  
 card **getCards(playerHand *playersHand);
 
-int getAmountOfCardsInHand(playerHand *playersHand);
+int getAmountOfCards(playerHand *playersHand);
 
 int getHandSum(playerHand *playersHand);
 

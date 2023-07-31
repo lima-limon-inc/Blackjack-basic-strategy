@@ -35,7 +35,7 @@ card **getCards(playerHand *playersHand) {
 	return playersHand->hand;
 }
 
-int getAmountOfCardsInHand(playerHand *playersHand) {
+int getAmountOfCards(playerHand *playersHand) {
 	return playersHand->cardsInHand;
 }
 
