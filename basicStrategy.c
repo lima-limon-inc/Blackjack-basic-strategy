@@ -98,13 +98,6 @@ static inline playerDecision isCorrectHard(card *playersCard[], int amountOfCard
 
 	playerDecision correctDecision = hardHands[verticalPosition][horizontalPosition];
 	
-	//If you can't DoubleDown, then the best thing is to Hit
-	bool canDoubleDown;
-	if (correctDecision == DD) {
-		canDoubleDown = checkForDoubleDown(amountOfCards);
-		correctDecision = (canDoubleDown == true) ? DD : HT;
-
-	}
 
 	return correctDecision;
 
@@ -140,20 +133,28 @@ playerDecision getCorrectChoice(card *playersCard[], int amountOfCards, card *de
 	bool canSplit;
 	canSplit = checkForSplit(playersCard, amountOfCards);
 
-	if (canSplit == true) {
-		correctDecision = isCorrectSplit(playersCard, dealersCard);
-		return correctDecision;
-	}
-
-	//AKA has an ace
+	//This will compute the boolean even when it's not needed. However
+	//it makes the code cleaner and the isSoftHand function is pretty
+	//light
 	bool isSoft;
 	isSoft  = isSoftHand(playersCard, amountOfCards);
-	if (isSoft == true) {
+
+	if (canSplit == true) {
+		correctDecision = isCorrectSplit(playersCard, dealersCard);
+
+	} else if (isSoft == true) {
 		correctDecision = isCorrectSoft(playersCard, amountOfCards, dealersCard);
-		return correctDecision;
+
+	} else {
+		correctDecision = isCorrectHard(playersCard, amountOfCards, dealersCard);
 	}
 
-	correctDecision = isCorrectHard(playersCard, amountOfCards, dealersCard);
+	//If you can't DoubleDown, then the best thing is to Hit
+	bool canDoubleDown;
+	if (correctDecision == DD) {
+		canDoubleDown = checkForDoubleDown(amountOfCards);
+		correctDecision = (canDoubleDown == true) ? DD : HT;
+	}
 
 	return correctDecision;
 }
