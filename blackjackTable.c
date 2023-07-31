@@ -49,8 +49,9 @@ blackjackTable *addPlayer(blackjackTable *blackjackTablePtr, char name[], int in
 	//TODO: Add resize down function
 	if (blackjackTablePtr->playerAmount == blackjackTablePtr->playerCapacity) {
 		printf("REALLOC\n");
+		blackjackTablePtr->playerCapacity *= 2;
 		int newSize = sizeof(blackjackTable) +
-			 blackjackTablePtr->playerCapacity * 2 * sizeof(player *);
+			 blackjackTablePtr->playerCapacity * sizeof(player *);
 		blackjackTablePtr = realloc(blackjackTablePtr, newSize);
 	}
 	

@@ -16,9 +16,9 @@ int main()
 	blackjackTable *newBlackjackTable = createBlackjackTable(1000);
 	char name[20];
 	while (scanf("%s",name) == 1) {
-		if (newBlackjackTable->playerAmount == PLAYERAMOUNT) {
-			break;
-		}
+		/* if (newBlackjackTable->playerAmount == PLAYERAMOUNT) { */
+		/* 	break; */
+		/* } */
 		if (strcmp(name,"No") == 0) {
 			break;
 		}
