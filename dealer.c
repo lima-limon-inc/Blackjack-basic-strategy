@@ -56,3 +56,13 @@ void removeMoneyFromFunds(dealer *dealerPtr, int moneyToPlayer) {
 playerHand *getSpecificHandDealer(dealer *dealersPtr) {
 	return dealersPtr->dealersHand;
 }
+
+void resetDealer(dealer *dealersPtr) {
+	playerHand *currentDealerHand;
+	currentDealerHand = getSpecificHandDealer(dealersPtr);
+
+	playerHand *resizeHand;
+	resizeHand = resetHand(currentDealerHand);
+
+	dealersPtr->dealersHand = resizeHand;
+}

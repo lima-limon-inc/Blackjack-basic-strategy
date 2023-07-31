@@ -515,15 +515,27 @@ static inline void showMoney(pokerTable *pokerTablePtr) {
 	printf("\n");
 }
 
+static inline void resetPlayers(pokerTable *pokerTablePtr, dealer *dealerPtr) {
+	for (int i = 0; i < pokerTablePtr->playerAmount; i++) {
+		player *activePlayer;
+		activePlayer = pokerTablePtr->players[i];
+
+		resetPlayer(activePlayer);
+	}
+	resetDealer(dealerPtr);
+
+}
+
 void pokerRound(pokerTable *pokerTablePtr) {
 	while (true) {
-	dealer *pokerDealer = pokerTablePtr->pokerDealer;
+		dealer *pokerDealer = pokerTablePtr->pokerDealer;
 
-	asksPlayerForBet(pokerTablePtr);
-	dealInitialCards(pokerTablePtr, INITIALCARDCOUNT, pokerDealer);
-	playersTurns(pokerTablePtr, pokerDealer);
-	pokerDealer = dealersTurn(pokerTablePtr, pokerDealer);
-	losersAndWiners(pokerTablePtr, pokerDealer);
-	showMoney(pokerTablePtr);
+		showMoney(pokerTablePtr);
+		asksPlayerForBet(pokerTablePtr);
+		dealInitialCards(pokerTablePtr, INITIALCARDCOUNT, pokerDealer);
+		playersTurns(pokerTablePtr, pokerDealer);
+		pokerDealer = dealersTurn(pokerTablePtr, pokerDealer);
+		losersAndWiners(pokerTablePtr, pokerDealer);
+		resetPlayers(pokerTablePtr, pokerDealer);
 	}
 }

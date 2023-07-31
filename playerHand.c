@@ -76,11 +76,6 @@ playerHand *resizeHand(playerHand *playerHandPtr) {
 	return resizedHand;
 }
 
-static void resetIndex(playerHand *playerHandPtr) {
-	//We simply move the index. The pointer will simply get removed by
-	//the receiveCard function (it will overwrite the value)
-	playerHandPtr->cardsInHand = 0;
-}
 
 card *removeSpecificCard(playerHand *playerHandPtr, int whichPosition) {
 	card *removedCard;
@@ -96,7 +91,20 @@ card *removeSpecificCard(playerHand *playerHandPtr, int whichPosition) {
 
 	return removedCard;
 }
-void removeCards(playerHand *playerHandPtr) {
+
+static inline void resetIndex(playerHand *playerHandPtr) {
+	//We simply move the index. The pointer will simply get removed by
+	//the receiveCard function (it will overwrite the value)
+	playerHandPtr->cardsInHand = 0;
+}
+
+playerHand *resetHand(playerHand *playerHandPtr) {
 	resetIndex(playerHandPtr);
 	//TODO add resize function call here
+	playerHand *resizedHand;
+	resizedHand = resizeHand(playerHandPtr);
+
+	resizedHand->cardSum = 0;
+
+	return resizedHand;
 }

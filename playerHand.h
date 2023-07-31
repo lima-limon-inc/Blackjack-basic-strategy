@@ -34,4 +34,6 @@ int getHandSum(playerHand *playersHand);
 
 card *removeSpecificCard(playerHand *playerHandPtr, int whichPosition);
 
+playerHand *resetHand(playerHand *playerHandPtr);
+
 #endif

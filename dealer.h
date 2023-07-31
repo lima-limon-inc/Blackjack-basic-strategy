@@ -42,4 +42,6 @@ void removeMoneyFromFunds(dealer *dealerPtr, int moneyToPlayer);
 
 playerHand *getSpecificHandDealer(dealer *dealersPtr);
 
+void resetDealer(dealer *dealersPtr);
+
 #endif

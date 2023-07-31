@@ -95,6 +95,7 @@ void increaseBet(player *playerPtr, int increaseAmount, int whichHand) {
 void splitCards(player *playerPtr, int whichHand) {
 	playerHand *newHand;	
 	newHand = createPlayerHand();
+	//TODO: Add if statement to check if the hand is already created
 
 	//We remove the last card from the hand you want to split
 	card *cardForNextHand;
@@ -114,3 +115,24 @@ void splitCards(player *playerPtr, int whichHand) {
 int getFunds(player *playerPtr) {
 	return playerPtr->funds;
 }
+
+void resetPlayer(player *playerPtr) {
+	int amountOfHands;
+	amountOfHands = getNumberOfHands(playerPtr);
+
+	for (int currentHand = 0; currentHand < amountOfHands; currentHand++) {
+		playerPtr->bets[currentHand] = 0;
+
+		playerHand *currentPlayerHand;
+		currentPlayerHand = getSpecificHand(playerPtr, currentHand);
+
+		playerHand *resizeHand;
+		resizeHand = resetHand(currentPlayerHand);
+
+		playerPtr->playerHands[currentHand] = resizeHand;
+	}
+
+	playerPtr->howManyHands = 1;
+}
+
+
