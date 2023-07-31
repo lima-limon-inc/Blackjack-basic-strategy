@@ -305,8 +305,6 @@ static inline int mainPlayerActionLoop(player *activePlayer, dealer *blackjackDe
 	bool playersTurnContinues;
 	playersTurnContinues = true;
 
-	/* bool playersTurnContinues; */
-	/* playersTurnContinues = true; */
 	playerDecision playersDecision;
 
 	playerHand *activePlayerHand;
