@@ -328,7 +328,6 @@ static inline int mainPlayerActionLoop(player *activePlayer, dealer *blackjackDe
 		playerDecision correctDecision;
 		correctDecision = getCorrectChoice(activePlayerHand, dealersCard);
 
-
 		bool isItCorrectChoice;
 		isItCorrectChoice = (correctDecision == playersDecision);
 
@@ -391,7 +390,6 @@ static inline void dealersTurn(blackjackTable *blackjackTablePtr, dealer *blackj
 	howManyCardsDealer= getAmountOfCards(dealersHand);
 
 	dealersSum = sumCards(getCards(dealersHand), howManyCardsDealer);
-
 
 	//TODO: Remove this bit, IDK why I wrote it twice
 	system("clear");
