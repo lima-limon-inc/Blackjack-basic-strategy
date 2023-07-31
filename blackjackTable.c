@@ -79,9 +79,6 @@ static inline void dealInitialCards(blackjackTable *blackjackTablePtr, int initi
 }
 
 #define FULLINPUTMESSAGE "What do you do? (H)it, (S)tand or (D)ouble Down or S(P)lit: "
-/* #define ASKFORDECISION "What do you do? (H)it, (S)tand or (D)ouble Down" */
-/* #define NOSPLIT                                                        ": " */
-/* #define CANSPLIT                                                       " */
 static inline char *askForPlayerMessage(bool canDoubleDown, bool canSplit) {
 	char *message = malloc(sizeof(FULLINPUTMESSAGE));
 	
@@ -569,8 +566,8 @@ static inline void resetPlayers(blackjackTable *blackjackTablePtr, dealer *deale
 void blackjackRound(blackjackTable *blackjackTablePtr) {
 	//This for loop is used for debugging
 	/* for (int i = 0; i < 2; i++) { */
+	dealer *blackjackDealer = getDealer(blackjackTablePtr);
 	while (true) {
-		dealer *blackjackDealer = getDealer(blackjackTablePtr);
 
 		showMoney(blackjackTablePtr);
 		asksPlayerForBet(blackjackTablePtr);
