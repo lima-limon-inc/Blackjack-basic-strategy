@@ -17,6 +17,14 @@
 #define BRANKCARD  "│        %s%s│"
 #define BOTTOMCARD "└───────────┘"
 
+#define TOPCARDBACKSIDE    "┌───────────┐"
+#define RANKCARDBACKSIDE   "│░░░░░░░░░░░│"
+#define MIDDLECARDBACKSIDE "│░░░░░░░░░░░│"
+#define SUITCARDBACKSIDE   "│░░░░░░░░░░░│"
+#define BRANKCARDBACKSIDE  "│░░░░░░░░░░░│"
+#define BOTTOMCARDBACKSIDE "└───────────┘"
+
+
 //Got from printf("%ld\n", sizeof("┌─────────┐"));
 #define COLORSIZE sizeof(RED)
 //Represents the length of the rank character (including color)
@@ -87,8 +95,14 @@ static inline char *intToSuit(suits cardSuits) {
 }
 
 //This function isn't pretty. In fact, it's pretty ugly. It simply prints a card
-void asciiRepresentation(card *cards[], int amountOfCards) {
-	int lengthOfAllTheCards = CARDWIDTH * amountOfCards + SPACESBETWEENCARDS * amountOfCards;
+void asciiRepresentation(card *cards[], int amountOfCards, bool lastCardBlank) {
+	int amountOfCardsToPrint;
+	amountOfCardsToPrint = amountOfCards;
+	if (lastCardBlank == true){
+		amountOfCardsToPrint += 1;
+	}
+
+	int lengthOfAllTheCards = CARDWIDTH * amountOfCardsToPrint + SPACESBETWEENCARDS * amountOfCards;
 	char cardRepresentation[lengthOfAllTheCards];
 	/* char cardRepresentation[1]; */
 	char bufferCard[CARDWIDTH];
@@ -96,6 +110,10 @@ void asciiRepresentation(card *cards[], int amountOfCards) {
 	strcpy(cardRepresentation, " ");
 	for (int i = 0; i < amountOfCards; i++) {
 		strcat(cardRepresentation, TOPCARD);
+		strcat(cardRepresentation, "  ");
+	}
+	if (lastCardBlank == true) {
+		strcat(cardRepresentation, TOPCARDBACKSIDE);
 		strcat(cardRepresentation, "  ");
 	}
 	printf(cardRepresentation);
@@ -120,6 +138,10 @@ void asciiRepresentation(card *cards[], int amountOfCards) {
 		strcat(cardRepresentation, "  ");
 		free(rank);
 	}
+	if (lastCardBlank == true) {
+		strcat(cardRepresentation, RANKCARDBACKSIDE);
+		strcat(cardRepresentation, "  ");
+	}
 	printf(cardRepresentation);
 	printf("\n");
 
@@ -127,6 +149,10 @@ void asciiRepresentation(card *cards[], int amountOfCards) {
 		strcpy(cardRepresentation, " ");
 		for (int i = 0; i < amountOfCards; i++) {
 			strcat(cardRepresentation, MIDDLECARD);
+			strcat(cardRepresentation, "  ");
+		}
+		if (lastCardBlank == true) {
+			strcat(cardRepresentation, MIDDLECARDBACKSIDE);
 			strcat(cardRepresentation, "  ");
 		}
 	printf(cardRepresentation);
@@ -143,6 +169,10 @@ void asciiRepresentation(card *cards[], int amountOfCards) {
 		strcat(cardRepresentation, "  ");
 		free(suit);
 	}
+	if (lastCardBlank == true) {
+		strcat(cardRepresentation, SUITCARDBACKSIDE);
+		strcat(cardRepresentation, "  ");
+	}
 	printf(cardRepresentation);
 	printf("\n");
 
@@ -150,6 +180,10 @@ void asciiRepresentation(card *cards[], int amountOfCards) {
 		strcpy(cardRepresentation, " ");
 		for (int i = 0; i < amountOfCards; i++) {
 			strcat(cardRepresentation, MIDDLECARD);
+			strcat(cardRepresentation, "  ");
+		}
+		if (lastCardBlank == true) {
+			strcat(cardRepresentation, MIDDLECARDBACKSIDE);
 			strcat(cardRepresentation, "  ");
 		}
 	printf(cardRepresentation);
@@ -173,12 +207,20 @@ void asciiRepresentation(card *cards[], int amountOfCards) {
 		strcat(cardRepresentation, "  ");
 		free(rank);
 	}
+	if (lastCardBlank == true) {
+		strcat(cardRepresentation, BRANKCARDBACKSIDE);
+		strcat(cardRepresentation, "  ");
+	}
 	printf(cardRepresentation);
 	printf("\n");
 
 	strcpy(cardRepresentation, " ");
 	for (int i = 0; i < amountOfCards; i++) {
 		strcat(cardRepresentation, BOTTOMCARD);
+		strcat(cardRepresentation, "  ");
+	}
+	if (lastCardBlank == true) {
+		strcat(cardRepresentation, BOTTOMCARDBACKSIDE);
 		strcat(cardRepresentation, "  ");
 	}
 	printf(cardRepresentation);

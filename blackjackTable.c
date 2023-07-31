@@ -184,14 +184,17 @@ static inline void printDealersCards(dealer *blackjackDealer, bool showAllCards)
 	playerHand *dealersHand;
 	dealersHand = getSpecificHandDealer(blackjackDealer);
 
+	bool lastCardBlank;
 	if (showAllCards == false) {
 		howManyCards = 1;
+		lastCardBlank =  true;
 	}
 	else {
 		howManyCards = getAmountOfCardsInHand(dealersHand);//blackjackDealer->cardsInHand;
+		lastCardBlank =  false;
 	}
 	printf("DEALER: \n");
-	asciiRepresentation(getCards(dealersHand), howManyCards);
+	asciiRepresentation(getCards(dealersHand), howManyCards, lastCardBlank);
 }
 
 static inline char *cardinalToOrdinal(int cardinal) {
@@ -228,7 +231,7 @@ static inline void printVisualRepresentation(player *activePlayer, int whichHand
 	printPlayerAndHand(activePlayer, whichHand);
 	printf("\n");
 
-	asciiRepresentation(getCards(activePlayerHand), getAmountOfCardsInHand(activePlayerHand));
+	asciiRepresentation(getCards(activePlayerHand), getAmountOfCardsInHand(activePlayerHand), false);
 }
 
 static inline bool processPlayerMove(player *activePlayer, int currentHand, playerDecision playersDecision, dealer *blackjackDealer) {
@@ -311,16 +314,18 @@ static inline void activePlayerTurn(player *activePlayer, dealer *blackjackDeale
 
 			//This bit is horrible. I hate it so much. Will refactor
 			//eventually
-			//                         ||
-			//                         ||
-			//                         \/
+			/*                         ||
+			 *                         ||
+			 *                         \/
+			 */
 			playerDecision correctDecision;
 			correctDecision = getCorrectChoice(getCards(activePlayerHand), getAmountOfCardsInHand(activePlayerHand), getCards(getSpecificHandDealer(blackjackDealer))[0]);
 			bool isItCorrectChoice;
 			isItCorrectChoice = (correctDecision == playersDecision);
-			//                         /\
-			//                         ||
-			//                         ||
+			/*                         /\
+			 *                         ||
+			 *                         ||
+			 */
 
 			playersTurnContinues = processPlayerMove(activePlayer, currentHand, playersDecision, blackjackDealer);
 
