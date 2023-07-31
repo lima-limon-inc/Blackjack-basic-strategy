@@ -298,65 +298,115 @@ static void endPlayerTurn(player *activePlayer, int currentHand, dealer *blackja
 	saveCardSum(activePlayerHand, playersSum);
 }
 
-static inline void activePlayerTurn(player *activePlayer, dealer *blackjackDealer) {
+static inline int mainPlayerActionLoop(player *activePlayer, dealer *blackjackDealer, int currentHand, int initialSum) {
+	int playersSum;
+	playersSum = initialSum;
+
+	bool playersTurnContinues;
+	playersTurnContinues = true;
+
+	/* bool playersTurnContinues; */
+	/* playersTurnContinues = true; */
 	playerDecision playersDecision;
 
-	int playersSum; 
-
 	playerHand *activePlayerHand;
+	activePlayerHand = getSpecificHand(activePlayer, currentHand);
+
+	//Main player turn loop
+	while (playersTurnContinues == true && playersSum < CARDSUMBEFOREBUST) {
+		system("clear");
+		printVisualRepresentation(activePlayer, currentHand, blackjackDealer, false);
+
+		//If the player busts, then he lost his turn
+		if (playersSum > CARDSUMBEFOREBUST) {
+			break;
+		}
+
+		playersDecision = askForDecision(activePlayerHand, getNumberOfHands(activePlayer));
+
+		card *dealersCard;
+		dealersCard = getCards(getSpecificHandDealer(blackjackDealer))[0];
+
+		playerDecision correctDecision;
+		correctDecision = getCorrectChoice(activePlayerHand, dealersCard);
+
+
+		bool isItCorrectChoice;
+		isItCorrectChoice = (correctDecision == playersDecision);
+
+		playersTurnContinues = processPlayerMove(activePlayer, currentHand, playersDecision, blackjackDealer);
+
+		printCorrectOrNot(isItCorrectChoice, correctDecision);
+		sleep(SLEEPAMOUNT);
+
+
+		activePlayerHand = getSpecificHand(activePlayer, currentHand);
+		playersSum = sumCards(getCards(activePlayerHand), getAmountOfCards(activePlayerHand));
+	}
+
+	return playersSum;
+}
+
+static inline void activePlayerTurn(player *activePlayer, dealer *blackjackDealer) {
 
 	bool firstHand;
 	firstHand = true;
 
 	for (int currentHand = 0; currentHand < getNumberOfHands(activePlayer); currentHand++) {
-		bool playersTurnContinues;
-		playersTurnContinues = true;
+		/* bool playersTurnContinues; */
+		/* playersTurnContinues = true; */
+		/* playerDecision playersDecision; */
 
+		playerHand *activePlayerHand;
 		activePlayerHand = getSpecificHand(activePlayer, currentHand);
+
+		int playersSum; 
 		playersSum = sumCards(getCards(activePlayerHand), getAmountOfCards(activePlayerHand));
 
 		//You can only get a Blackjack in you first hand when you
-		//are originally dealt cards
+		//are originally dealt cards. If you get it, your turn finishes
 		if (firstHand == true && playersSum == BLACKJACK) {
 			endPlayerTurn(activePlayer, currentHand, blackjackDealer, playersSum);
 			break;
 		}
 
-		//Main player turn loop
-		while (playersTurnContinues == true && playersSum < CARDSUMBEFOREBUST) {
-			system("clear");
-			printVisualRepresentation(activePlayer, currentHand, blackjackDealer, false);
+		/* //Main player turn loop */
+		/* while (playersTurnContinues == true && playersSum < CARDSUMBEFOREBUST) { */
+		/* 	system("clear"); */
+		/* 	printVisualRepresentation(activePlayer, currentHand, blackjackDealer, false); */
 
-			//If the player busts, then he lost his turn
-			if (playersSum > CARDSUMBEFOREBUST) {
-				break;
-			}
+		/* 	//If the player busts, then he lost his turn */
+		/* 	if (playersSum > CARDSUMBEFOREBUST) { */
+		/* 		break; */
+		/* 	} */
 
-			playersDecision = askForDecision(activePlayerHand, getNumberOfHands(activePlayer));
+		/* 	playersDecision = askForDecision(activePlayerHand, getNumberOfHands(activePlayer)); */
 
-			card *dealersCard;
-			dealersCard = getCards(getSpecificHandDealer(blackjackDealer))[0];
+		/* 	card *dealersCard; */
+		/* 	dealersCard = getCards(getSpecificHandDealer(blackjackDealer))[0]; */
 
-			playerDecision correctDecision;
-			correctDecision = getCorrectChoice(activePlayerHand, dealersCard);
-
-
-			bool isItCorrectChoice;
-			isItCorrectChoice = (correctDecision == playersDecision);
-
-			playersTurnContinues = processPlayerMove(activePlayer, currentHand, playersDecision, blackjackDealer);
-
-			printCorrectOrNot(isItCorrectChoice, correctDecision);
-			sleep(SLEEPAMOUNT);
+		/* 	playerDecision correctDecision; */
+		/* 	correctDecision = getCorrectChoice(activePlayerHand, dealersCard); */
 
 
-			activePlayerHand = getSpecificHand(activePlayer, currentHand);
-			playersSum = sumCards(getCards(activePlayerHand), getAmountOfCards(activePlayerHand));
-		}
-	//This will over write the value everytime. This is fine (I think)
-	firstHand = false;
+		/* 	bool isItCorrectChoice; */
+		/* 	isItCorrectChoice = (correctDecision == playersDecision); */
 
-	endPlayerTurn(activePlayer, currentHand, blackjackDealer, playersSum);
+		/* 	playersTurnContinues = processPlayerMove(activePlayer, currentHand, playersDecision, blackjackDealer); */
+
+		/* 	printCorrectOrNot(isItCorrectChoice, correctDecision); */
+		/* 	sleep(SLEEPAMOUNT); */
+
+
+		/* 	activePlayerHand = getSpecificHand(activePlayer, currentHand); */
+		/* 	playersSum = sumCards(getCards(activePlayerHand), getAmountOfCards(activePlayerHand)); */
+		/* } */
+
+		playersSum =  mainPlayerActionLoop(activePlayer, blackjackDealer, currentHand, playersSum);
+		//This will over write the value everytime. This is fine (I think)
+		firstHand = false;
+
+		endPlayerTurn(activePlayer, currentHand, blackjackDealer, playersSum);
 	}
 }
 
