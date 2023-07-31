@@ -353,10 +353,6 @@ static inline void activePlayerTurn(player *activePlayer, dealer *blackjackDeale
 	firstHand = true;
 
 	for (int currentHand = 0; currentHand < getNumberOfHands(activePlayer); currentHand++) {
-		/* bool playersTurnContinues; */
-		/* playersTurnContinues = true; */
-		/* playerDecision playersDecision; */
-
 		playerHand *activePlayerHand;
 		activePlayerHand = getSpecificHand(activePlayer, currentHand);
 
@@ -369,38 +365,6 @@ static inline void activePlayerTurn(player *activePlayer, dealer *blackjackDeale
 			endPlayerTurn(activePlayer, currentHand, blackjackDealer, playersSum);
 			break;
 		}
-
-		/* //Main player turn loop */
-		/* while (playersTurnContinues == true && playersSum < CARDSUMBEFOREBUST) { */
-		/* 	system("clear"); */
-		/* 	printVisualRepresentation(activePlayer, currentHand, blackjackDealer, false); */
-
-		/* 	//If the player busts, then he lost his turn */
-		/* 	if (playersSum > CARDSUMBEFOREBUST) { */
-		/* 		break; */
-		/* 	} */
-
-		/* 	playersDecision = askForDecision(activePlayerHand, getNumberOfHands(activePlayer)); */
-
-		/* 	card *dealersCard; */
-		/* 	dealersCard = getCards(getSpecificHandDealer(blackjackDealer))[0]; */
-
-		/* 	playerDecision correctDecision; */
-		/* 	correctDecision = getCorrectChoice(activePlayerHand, dealersCard); */
-
-
-		/* 	bool isItCorrectChoice; */
-		/* 	isItCorrectChoice = (correctDecision == playersDecision); */
-
-		/* 	playersTurnContinues = processPlayerMove(activePlayer, currentHand, playersDecision, blackjackDealer); */
-
-		/* 	printCorrectOrNot(isItCorrectChoice, correctDecision); */
-		/* 	sleep(SLEEPAMOUNT); */
-
-
-		/* 	activePlayerHand = getSpecificHand(activePlayer, currentHand); */
-		/* 	playersSum = sumCards(getCards(activePlayerHand), getAmountOfCards(activePlayerHand)); */
-		/* } */
 
 		playersSum =  mainPlayerActionLoop(activePlayer, blackjackDealer, currentHand, playersSum);
 		//This will over write the value everytime. This is fine (I think)
