@@ -1,7 +1,9 @@
 #include <unistd.h>
+#include <stdio.h>
 
 #include "blackjackTable.h"
 
+#include "globalMacros.h"
 #include "player.h"
 #include "graphics.h"
 #include "playerDecision.h"
@@ -131,6 +133,7 @@ static inline playerDecision askForDecision(playerHand *activePlayerHand, int ho
 		free(askForDecisionMessage);
 		
 		scanf("%s", userInput);
+		FLUSHSTDIN;
 
 		if (strcmp(userInput, "H") == 0) {
 			playersDecision = Hit;
@@ -163,6 +166,7 @@ static inline void askPlayerForBet(player *activePlayer, int whichHand) {
 	while (canMakeBet == false) {
 		printf("%s, what's your bet?\n", activePlayer->name); 
 		scanf("%d", &playerBet);
+		FLUSHSTDIN;
 
 		if (playerBet <= 0) {
 			printf("Bet's can't be negative or 0\n");
@@ -380,19 +384,7 @@ static inline void playersTurns(blackjackTable *blackjackTablePtr, dealer *black
 	}
 }
 
-static inline void dealersTurn(blackjackTable *blackjackTablePtr, dealer *blackjackDealer) {
-	int dealersSum;
-	
-	playerHand *dealersHand;
-	dealersHand = getSpecificHandDealer(blackjackDealer);
-
-	int howManyCardsDealer;
-	howManyCardsDealer= getAmountOfCards(dealersHand);
-
-	dealersSum = sumCards(getCards(dealersHand), howManyCardsDealer);
-
-	//TODO: Remove this bit, IDK why I wrote it twice
-	system("clear");
+static inline void showPlayersSums(blackjackTable *blackjackTablePtr) {
 	for (int position = 0; position < blackjackTablePtr->playerAmount; position++) {
 		player *activePlayer;
 		activePlayer = getPlayerAtPosition(blackjackTablePtr, position);
@@ -405,25 +397,27 @@ static inline void dealersTurn(blackjackTable *blackjackTablePtr, dealer *blackj
 			printf(" sum: %d\n", getHandSum(activePlayerHand));
 		}
 	}
+}
+
+static inline void dealersTurn(blackjackTable *blackjackTablePtr, dealer *blackjackDealer) {
+	int dealersSum;
+	
+	playerHand *dealersHand;
+	dealersHand = getSpecificHandDealer(blackjackDealer);
+
+	int howManyCardsDealer;
+	howManyCardsDealer= getAmountOfCards(dealersHand);
+
+	dealersSum = sumCards(getCards(dealersHand), howManyCardsDealer);
+
+	system("clear");
+	showPlayersSums(blackjackTablePtr);
 	printDealersCards(blackjackDealer, true);
 	sleep(SLEEPAMOUNT);
 
 	while (dealersSum < DEALERLIMIT) {
 		system("clear");
-		for (int position = 0; position < blackjackTablePtr->playerAmount; position++) {
-			player *activePlayer;
-			activePlayer = getPlayerAtPosition(blackjackTablePtr, position);
-
-			for (int currentHand = 0; currentHand < getNumberOfHands(activePlayer); currentHand++) {
-
-				playerHand *activePlayerHand;
-				activePlayerHand = getSpecificHand(activePlayer, currentHand);
-				/* printf("%s's sum: %d\n", activePlayer->name, */
-				/* 			getHandSum(activePlayerHand)); */
-				printPlayerAndHand(activePlayer, currentHand);
-				printf(" sum: %d\n", getHandSum(activePlayerHand));
-			}
-		}
+		showPlayersSums(blackjackTablePtr);
 		card *topCard = dealACard(blackjackDealer);
 
 		dealDealersHand(blackjackDealer,  topCard);
@@ -539,7 +533,10 @@ static inline void losersAndWiners(blackjackTable *blackjackTablePtr, dealer *de
 			}
 		}
 	}
-	sleep(SLEEPAMOUNT);
+	printf("Press any key to continue");
+	getchar();
+
+
 	printf("\n");
 }
 

@@ -3,6 +3,7 @@
 
 #include "cards.h"
 /* #include "cardArithmetic.h" */
+#include "globalMacros.h"
 #include "player.h"
 #include "dealer.h"
 #include "blackjackTable.h"
@@ -16,7 +17,9 @@ int main()
 	blackjackTable *newBlackjackTable = createBlackjackTable(1000);
 	char name[20];
 	printf("Enter the name of the players.\nWrite '0' when done\n");
-	while (scanf("%s",name) == 1) {
+	while (true) {
+		scanf("%s",name);
+		FLUSHSTDIN;
 		/* if (newBlackjackTable->playerAmount == PLAYERAMOUNT) { */
 		/* 	break; */
 		/* } */
