@@ -62,7 +62,7 @@ const playerDecision splitHands[10][10] = {
 #define VERTICALOFFSETHARD 5
 
 static inline playerDecision isCorrectSplit(card *playersCard[], card *dealersCard) {
-	int cardRrank = playersCard[0]->rank;
+	int cardRrank = getRank(playersCard[0]);
 
 	int horizontalPosition = dealersCard->rank - HORIZONTALOFFSET;
 	int verticalPosition = cardRrank - VERTICALOFFSET;

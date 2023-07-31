@@ -77,7 +77,6 @@ static inline void dealInitialCards(pokerTable *pokerTablePtr, int initialCard, 
 	}
 }
 
-
 #define FULLINPUTMESSAGE "What do you do? (H)it, (S)tand or (D)ouble Down or S(P)lit: "
 /* #define ASKFORDECISION "What do you do? (H)it, (S)tand or (D)ouble Down" */
 /* #define NOSPLIT                                                        ": " */
@@ -172,6 +171,10 @@ static inline void asksPlayerForBet(pokerTable *pokerTablePtr) {
 
 		askPlayerForBet(activePlayer, 0);
 	}
+}
+
+static dealer *getDealer(pokerTable *pokerTablePtr) {
+	return pokerTablePtr->pokerDealer;
 }
 
 static inline void printDealersCards(dealer *pokerDealer, bool showAllCards) {
@@ -528,7 +531,7 @@ static inline void resetPlayers(pokerTable *pokerTablePtr, dealer *dealerPtr) {
 
 void pokerRound(pokerTable *pokerTablePtr) {
 	while (true) {
-		dealer *pokerDealer = pokerTablePtr->pokerDealer;
+		dealer *pokerDealer = getDealer(pokerTablePtr);
 
 		showMoney(pokerTablePtr);
 		asksPlayerForBet(pokerTablePtr);
