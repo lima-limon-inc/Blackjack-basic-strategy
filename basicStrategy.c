@@ -3,16 +3,11 @@
 #include "playerDecision.h"
 #include "blackjackRules.h"
 
-/* typedef enum playerDecision {Hit, Stand, DoubleDown, Split} playerDecision; */
-
 //This macro makes the table smaller, just aesthetics
 #define DD DoubleDown
 #define ST Stand
 #define SP Split
 #define HT Hit
-
-
-/* efjknfen */
 
 const playerDecision hardHands[17][10] = {
 //      2   3   4   5   6   7   8   9  10   A
