@@ -325,20 +325,23 @@ static inline void activePlayerTurn(player *activePlayer, dealer *blackjackDeale
 
 			playersDecision = askForDecision(activePlayerHand, getNumberOfHands(activePlayer));
 
-			//This bit is horrible. I hate it so much. Will refactor
-			//eventually
-			/*                         ||
+			/*
+			 *This bit is horrible. I hate it so much. Will refactor
+			 *eventually
+			 *Edit (from the future): Probably not
+			 *                         ||
 			 *                         ||
 			 *                         \/
 			 */
 			playerDecision correctDecision;
-			correctDecision = getCorrectChoice(getCards(activePlayerHand), getAmountOfCards(activePlayerHand), getCards(getSpecificHandDealer(blackjackDealer))[0]);
+			card **activePlayerCards = getCards(activePlayerHand);
+			int amountOfCards = getAmountOfCards(activePlayerHand);
+			card *dealersCard = getCards(getSpecificHandDealer(blackjackDealer))[0];
+			correctDecision = getCorrectChoice(activePlayerCards, amountOfCards, dealersCard);
+
+
 			bool isItCorrectChoice;
 			isItCorrectChoice = (correctDecision == playersDecision);
-			/*                         /\
-			 *                         ||
-			 *                         ||
-			 */
 
 			playersTurnContinues = processPlayerMove(activePlayer, currentHand, playersDecision, blackjackDealer);
 
