@@ -62,9 +62,10 @@ const playerDecision splitHands[10][10] = {
 #define VERTICALOFFSETHARD 5
 
 static inline playerDecision isCorrectSplit(card *playersCard[], card *dealersCard) {
-	int cardRrank = getRank(playersCard[0]);
+	int cardRrank = getValue(playersCard[0]);
 
-	int horizontalPosition = dealersCard->rank - HORIZONTALOFFSET;
+	int dealersRank = getValue(dealersCard);
+	int horizontalPosition = dealersRank - HORIZONTALOFFSET;
 	int verticalPosition = cardRrank - VERTICALOFFSET;
 
 	playerDecision correctDecision = splitHands[verticalPosition][horizontalPosition];
@@ -77,7 +78,7 @@ static inline playerDecision isCorrectHard(card *playersCard[], int amountOfCard
 	/* int cardRrank = playersCard[0]->rank; */
 	int cardSum = sumCards(playersCard, amountOfCards);
 
-	int dealersRank = dealersCard->rank;
+	int dealersRank = getValue(dealersCard);
 	if (dealersRank == 1) {
 		//A is 11 in the chart
 		dealersRank = 11;
@@ -109,7 +110,7 @@ static inline playerDecision isCorrectSoft(card *playersCard[], int amountOfCard
 	//and so on.
 	cardSum -= 11;
 
-	int dealersRank = dealersCard->rank;
+	int dealersRank = getValue(dealersCard);
 	if (dealersRank == 1) {
 		//A is 11 in the chart
 		dealersRank = 11;

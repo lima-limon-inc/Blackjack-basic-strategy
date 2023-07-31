@@ -550,7 +550,8 @@ static inline void resetPlayers(blackjackTable *blackjackTablePtr, dealer *deale
 }
 
 void blackjackRound(blackjackTable *blackjackTablePtr) {
-	while (true) {
+	for (int i = 0; i < 2; i++) {
+	/* while (true) { */
 		dealer *blackjackDealer = getDealer(blackjackTablePtr);
 
 		showMoney(blackjackTablePtr);
