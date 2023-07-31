@@ -63,8 +63,17 @@ const playerDecision splitHands[10][10] = {
 
 static inline playerDecision isCorrectSplit(card *playersCard[], card *dealersCard) {
 	int cardRrank = getBlackjackValue(playersCard[0]);
+	if (cardRrank == 1) {
+		//A is 11 in the chart
+		cardRrank = 11;
+	}
 
 	int dealersRank = getBlackjackValue(dealersCard);
+	if (dealersRank == 1) {
+		//A is 11 in the chart
+		dealersRank = 11;
+	}
+
 	int horizontalPosition = dealersRank - HORIZONTALOFFSET;
 	int verticalPosition = cardRrank - VERTICALOFFSET;
 
