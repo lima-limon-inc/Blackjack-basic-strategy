@@ -15,6 +15,8 @@ static deck *createDeckOfCards()
 			uint posInArray = rankNumer + offset;
 
 			card newCard = { .rank = rankNumer + 1, .suit = suitType };
+
+			deckOfCards->cards[posInArray] = newCard;
 		}
 	}
 
