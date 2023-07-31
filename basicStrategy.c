@@ -89,7 +89,7 @@ static inline playerDecision isCorrectHard(card *playersCard[], int amountOfCard
 
 	playerDecision correctDecision = hardHands[verticalPosition][horizontalPosition];
 	
-	//If you can't DoubleDown, then the best thing is to hit
+	//If you can't DoubleDown, then the best thing is to Hit
 	bool canDoubleDown;
 	if (correctDecision == DD) {
 		canDoubleDown = checkForDoubleDown(amountOfCards);

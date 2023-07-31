@@ -5,6 +5,7 @@ CFLAGS = -g -W -Wall -Werror
 OBJECTFILES = cards.o player.o dealer.o blackjackTable.o graphics.o playerHand.o blackjackRules.o basicStrategy.o main.o
 
 run: build
+	clear
 	./main.out
 
 cards.o: cards.c
@@ -35,7 +36,6 @@ basicStrategy.o: basicStrategy.c
 	$(CC) $(CFLAGS) -c basicStrategy.c
 
 build: $(OBJECTFILES)
-	clear
 	$(CC) $(CFLAGS) -o main.out $(OBJECTFILES)
 
 valgrind: build
