@@ -501,7 +501,7 @@ static inline void losersAndWiners(pokerTable *pokerTablePtr, dealer *dealerPtr)
 }
 
 static inline void showMoney(pokerTable *pokerTablePtr) {
-	/* system("clear"); */
+	system("clear");
 	for (int i = 0; i < pokerTablePtr->playerAmount; i++) {
 		player *activePlayer;
 		activePlayer = pokerTablePtr->players[i];
