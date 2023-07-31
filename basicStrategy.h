@@ -5,7 +5,8 @@
 
 #include "playerDecision.h"
 #include "cards.h"
+#include "playerHand.h"
 
-playerDecision getCorrectChoice(card *playersCard[], int amountOfCards, card *dealersCard);
+playerDecision getCorrectChoice(playerHand *playersHand, card *dealersCard);
 
 #endif

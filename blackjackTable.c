@@ -307,7 +307,7 @@ static inline void activePlayerTurn(player *activePlayer, dealer *blackjackDeale
 		//are originally dealt cards
 		if (firstHand == true && playersSum == BLACKJACK) {
 			system("clear");
-			printVisualRepresentation(activePlayer, 0, blackjackDealer, false);
+			printVisualRepresentation(activePlayer, currentHand, blackjackDealer, false);
 			sleep(SLEEPAMOUNT);
 			saveCardSum(activePlayerHand, playersSum);
 			return;
@@ -325,19 +325,11 @@ static inline void activePlayerTurn(player *activePlayer, dealer *blackjackDeale
 
 			playersDecision = askForDecision(activePlayerHand, getNumberOfHands(activePlayer));
 
-			/*
-			 *This bit is horrible. I hate it so much. Will refactor
-			 *eventually
-			 *Edit (from the future): Probably not
-			 *                         ||
-			 *                         ||
-			 *                         \/
-			 */
+			card *dealersCard;
+			dealersCard = getCards(getSpecificHandDealer(blackjackDealer))[0];
+
 			playerDecision correctDecision;
-			card **activePlayerCards = getCards(activePlayerHand);
-			int amountOfCards = getAmountOfCards(activePlayerHand);
-			card *dealersCard = getCards(getSpecificHandDealer(blackjackDealer))[0];
-			correctDecision = getCorrectChoice(activePlayerCards, amountOfCards, dealersCard);
+			correctDecision = getCorrectChoice(activePlayerHand, dealersCard);
 
 
 			bool isItCorrectChoice;

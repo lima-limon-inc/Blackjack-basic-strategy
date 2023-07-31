@@ -127,8 +127,14 @@ static inline playerDecision isCorrectSoft(card *playersCard[], int amountOfCard
 
 }
   
-playerDecision getCorrectChoice(card *playersCard[], int amountOfCards, card *dealersCard) {
+playerDecision getCorrectChoice(playerHand *playersHand, card *dealersCard) {
 	playerDecision correctDecision;
+
+	card **playersCard;
+	playersCard = getCards(playersHand);
+
+	int amountOfCards;
+	amountOfCards = getAmountOfCards(playersHand);
 
 	bool canSplit;
 	canSplit = checkForSplit(playersCard, amountOfCards);
