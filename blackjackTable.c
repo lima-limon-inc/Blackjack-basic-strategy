@@ -376,7 +376,7 @@ static inline void playersTurns(blackjackTable *blackjackTablePtr, dealer *black
 	}
 }
 
-static inline dealer *dealersTurn(blackjackTable *blackjackTablePtr, dealer *blackjackDealer) {
+static inline void dealersTurn(blackjackTable *blackjackTablePtr, dealer *blackjackDealer) {
 	int dealersSum;
 	
 	playerHand *dealersHand;
@@ -437,8 +437,6 @@ static inline dealer *dealersTurn(blackjackTable *blackjackTablePtr, dealer *bla
 
 	saveCardSum(dealersHand, dealersSum);
 	printf("\nDealers sum :%d\n", dealersSum);
-	return blackjackDealer;
-
 }
 
 typedef enum playerRoundResult {Win, Lost, Tie, Blackjack} playerRoundResult;
@@ -569,15 +567,16 @@ static inline void resetPlayers(blackjackTable *blackjackTablePtr, dealer *deale
 }
 
 void blackjackRound(blackjackTable *blackjackTablePtr) {
-	for (int i = 0; i < 2; i++) {
-	/* while (true) { */
+	//This for loop is used for debugging
+	/* for (int i = 0; i < 2; i++) { */
+	while (true) {
 		dealer *blackjackDealer = getDealer(blackjackTablePtr);
 
 		showMoney(blackjackTablePtr);
 		asksPlayerForBet(blackjackTablePtr);
 		dealInitialCards(blackjackTablePtr, INITIALCARDCOUNT, blackjackDealer);
 		playersTurns(blackjackTablePtr, blackjackDealer);
-		blackjackDealer = dealersTurn(blackjackTablePtr, blackjackDealer);
+		dealersTurn(blackjackTablePtr, blackjackDealer);
 		losersAndWiners(blackjackTablePtr, blackjackDealer);
 		resetPlayers(blackjackTablePtr, blackjackDealer);
 	}
