@@ -288,13 +288,25 @@ static inline bool processPlayerMove(player *activePlayer, int currentHand, play
 	return playersTurnContinues;
 }
 
+static void endPlayerTurn(player *activePlayer, int currentHand, dealer *blackjackDealer, int playersSum) {
+	playerHand *activePlayerHand;
+	activePlayerHand = getSpecificHand(activePlayer, currentHand);
+
+	system("clear");
+	printVisualRepresentation(activePlayer, currentHand, blackjackDealer, false);
+	sleep(SLEEPAMOUNT);
+	saveCardSum(activePlayerHand, playersSum);
+}
 
 static inline void activePlayerTurn(player *activePlayer, dealer *blackjackDealer) {
 	playerDecision playersDecision;
 
-	int playersSum; playerHand *activePlayerHand;
+	int playersSum; 
+
+	playerHand *activePlayerHand;
 
 	bool firstHand;
+	firstHand = true;
 
 	for (int currentHand = 0; currentHand < getNumberOfHands(activePlayer); currentHand++) {
 		bool playersTurnContinues;
@@ -306,11 +318,8 @@ static inline void activePlayerTurn(player *activePlayer, dealer *blackjackDeale
 		//You can only get a Blackjack in you first hand when you
 		//are originally dealt cards
 		if (firstHand == true && playersSum == BLACKJACK) {
-			system("clear");
-			printVisualRepresentation(activePlayer, currentHand, blackjackDealer, false);
-			sleep(SLEEPAMOUNT);
-			saveCardSum(activePlayerHand, playersSum);
-			return;
+			endPlayerTurn(activePlayer, currentHand, blackjackDealer, playersSum);
+			break;
 		}
 
 		//Main player turn loop
@@ -347,13 +356,8 @@ static inline void activePlayerTurn(player *activePlayer, dealer *blackjackDeale
 	//This will over write the value everytime. This is fine (I think)
 	firstHand = false;
 
-	system("clear");
-	printVisualRepresentation(activePlayer, currentHand, blackjackDealer, false);
-	saveCardSum(activePlayerHand, playersSum);
-	sleep(SLEEPAMOUNT);
+	endPlayerTurn(activePlayer, currentHand, blackjackDealer, playersSum);
 	}
-
-	return;
 }
 
 static inline void playersTurns(blackjackTable *blackjackTablePtr, dealer *blackjackDealer) {
