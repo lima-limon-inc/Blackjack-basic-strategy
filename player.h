@@ -32,6 +32,8 @@ void printCards(player *playerPtr, int whichHand);
 
 void makeABet(player *playerPtr, int bet, int whichHand);
 
+bool canMakeABet(player *playerPtr, int bet);
+
 int loseBet(player *playerPtr, int whichHand);
 		
 void winBet(player *playerPtr, int awardedMoney, int whichHand);

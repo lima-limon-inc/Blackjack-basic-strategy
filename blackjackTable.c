@@ -157,10 +157,29 @@ static inline playerDecision askForDecision(playerHand *activePlayerHand, int ho
 }
 
 static inline void askPlayerForBet(player *activePlayer, int whichHand) {
-	printf("%s, what's your bet?\n", activePlayer->name); 
 
 	int playerBet;
-	scanf("%d", &playerBet);
+
+	bool canMakeBet;
+	canMakeBet = false;
+
+	while (canMakeBet == false) {
+		printf("%s, what's your bet?\n", activePlayer->name); 
+		scanf("%d", &playerBet);
+
+		if (playerBet <= 0) {
+			printf("Bet's can't be negative or 0\n");
+			continue;
+		}
+
+		canMakeBet = canMakeABet(activePlayer, playerBet);
+		
+		if (canMakeBet == false) {
+			printf("You don't have enough funds\n");
+		}
+		
+	}
+
 
 	makeABet(activePlayer, playerBet, whichHand);
 }
@@ -178,7 +197,7 @@ static dealer *getDealer(blackjackTable *blackjackTablePtr) {
 	return blackjackTablePtr->blackjackDealer;
 }
 
-static inline void printDealersCards(dealer *blackjackDealer, bool showAllCards) {
+static void printDealersCards(dealer *blackjackDealer, bool showAllCards) {
 	int howManyCards;
 
 	playerHand *dealersHand;
@@ -222,7 +241,7 @@ static void printPlayerAndHand(player *activePlayer, int whichHand) {
 	printf("hand");
 }
 
-static inline void printVisualRepresentation(player *activePlayer, int whichHand, dealer *blackjackDealer, bool showAllDealerCards) {
+static void printVisualRepresentation(player *activePlayer, int whichHand, dealer *blackjackDealer, bool showAllDealerCards) {
 	playerHand *activePlayerHand;
 	activePlayerHand = getSpecificHand(activePlayer, whichHand);
 

@@ -55,6 +55,16 @@ void makeABet(player *playerPtr, int bet, int whichHand) {
 	playerPtr->funds -= bet;
 }
 
+bool canMakeABet(player *playerPtr, int bet) {
+	int playersFunds;
+	playersFunds = getFunds(playerPtr);
+
+	bool canMakeSpecificBet;
+	canMakeSpecificBet = (playersFunds > bet);
+
+	return canMakeSpecificBet;
+}
+
 static void resetBet(player *playerPtr, int whichHand) {
 	playerPtr->bets[whichHand] = 0;
 
