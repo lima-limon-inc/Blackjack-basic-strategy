@@ -206,6 +206,9 @@ static inline void asksPlayerForBet(blackjackTable *blackjackTablePtr) {
 		player *activePlayer;
 		activePlayer = getPlayerAtPosition(blackjackTablePtr, position);
 
+		//This could and possibly should be its own function. However,
+		//it would be annoying to ask ALL players each time if they
+		//want to exit the table
 		bool wantsToKeepPlaying;
 		wantsToKeepPlaying = askPlayerForBet(activePlayer, 0);
 		if (wantsToKeepPlaying == false) {
