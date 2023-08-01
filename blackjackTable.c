@@ -11,7 +11,7 @@
 #include "basicStrategy.h"
 
 #define MAXAMOUNTOFSPLITS 4
-#define INITIALCAPACITY 5
+#define INITIALCAPACITY 8
 #define INITIALCARDCOUNT 2
 #define CARDSUMBEFOREBUST 21
 #define BLACKJACK 21
