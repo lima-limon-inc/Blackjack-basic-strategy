@@ -67,11 +67,11 @@ playerHand *resizeHand(playerHand *playerHandPtr) {
 		playerHandPtr->cardCapacity *= 2; //Multiply equal (fancy notation)
 	}
 		
-	playerHand *resizedHand;
 	int newSize = sizeof(playerHand) + 
 			playerHandPtr->cardCapacity * sizeof(card *);
 
 
+	playerHand *resizedHand;
 	resizedHand = realloc(playerHandPtr, newSize);
 	return resizedHand;
 }
@@ -100,7 +100,6 @@ static inline void resetIndex(playerHand *playerHandPtr) {
 
 playerHand *resetHand(playerHand *playerHandPtr) {
 	resetIndex(playerHandPtr);
-	//TODO add resize function call here
 	playerHand *resizedHand;
 	resizedHand = resizeHand(playerHandPtr);
 
