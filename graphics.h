@@ -11,4 +11,6 @@ void asciiRepresentation(playerHand *playersHand, bool lastCardBlank);
 
 void printCorrectOrNot(bool isCorrect, playerDecision correctDecision);
 
+void printCasinoWelcomeSign();
+
 #endif

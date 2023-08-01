@@ -268,3 +268,12 @@ void printCorrectOrNot(bool isCorrect, playerDecision correctDecision) {
 	free(message);
 	/* printf(message); */
 }
+
+void printCasinoWelcomeSign() {
+	printf("%s\n", RED "   _____           _____ _____ _   _  ____  " RESET);
+	printf("%s\n",     "  / ____|   /\\    / ____|_   _| \\ | |/ __ \\ ");
+	printf("%s\n", RED " | |       /  \\  | (___   | | |  \\| | |  | |" RESET);
+	printf("%s\n",     " | |      / /\\ \\  \\___ \\  | | | . ` | |  | |");
+	printf("%s\n", RED " | |____ / ____ \\ ____) |_| |_| |\\  | |__| |" RESET);
+	printf("%s\n",     "  \\_____/_/    \\_\\_____/|_____|_| \\_|\\____/ ");
+}
