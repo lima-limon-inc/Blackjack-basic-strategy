@@ -91,6 +91,8 @@ static inline void dealInitialCards(blackjackTable *blackjackTablePtr, int initi
 	}
 }
 
+
+
 #define FULLINPUTMESSAGE "What do you do? (H)it, (S)tand or (D)ouble Down or S(P)lit: "
 static inline char *askForPlayerMessage(bool canDoubleDown, bool canSplit) {
 	char *message = malloc(sizeof(FULLINPUTMESSAGE));
@@ -238,6 +240,61 @@ static void printDealersCards(dealer *blackjackDealer, bool showAllCards) {
 	asciiRepresentation(dealersHand, lastCardBlank);
 }
 
+static inline bool offerPlayerForInsurance(player *activePlayer) {
+	bool wantsInsurance;
+
+	bool validAnswer;
+	validAnswer = false;
+
+	char userInput[10];
+
+	while (validAnswer == false) {
+		printf("Would %s like Insurance? (Y/N): ", activePlayer->name);
+		scanf("%s", userInput);
+		FLUSHSTDIN;
+
+		if (strcmp(userInput, "Y") == 0) {
+			wantsInsurance = true;
+			validAnswer = true;
+		}
+		else if (strcmp(userInput, "N") == 0) {
+			wantsInsurance = false;
+			validAnswer = true;
+		}
+	}
+
+	return wantsInsurance;
+}
+
+static inline void offerEveryoneInsurance(blackjackTable *blackjackTablePtr, dealer *blackjackDealer) {
+	playerHand *dealersHand;
+	dealersHand = getSpecificHandDealer(blackjackDealer);
+
+	card *dealerTopCard;
+	dealerTopCard = getCards(dealersHand)[0];
+
+	int topCardRank;
+	topCardRank = getRank(dealerTopCard);
+
+	//Insurance is only offered if the dealer has an Ace
+	if (topCardRank != 1) {
+		return;
+	}
+	system("clear");
+	printDealersCards(blackjackDealer, false);
+	for (int i = 0; i < blackjackTablePtr->playerAmount; i++) {
+		player *activePlayer;
+		activePlayer = blackjackTablePtr->players[i];
+
+		bool wantsInsurance;
+		wantsInsurance = offerPlayerForInsurance(activePlayer);
+		if (wantsInsurance == true) {
+			askForInsurance(activePlayer);
+		}
+	}
+}
+
+
 static inline char *cardinalToOrdinal(int cardinal) {
 	switch (cardinal) {
 		case 1:
@@ -310,6 +367,9 @@ static inline bool processPlayerMove(player *activePlayer, int currentHand, play
 			topCard = dealACard(blackjackDealer);
 			receiveCard(activePlayer, topCard, getNumberOfHands(activePlayer) - 1);
 			playersTurnContinues = true;
+			break;
+		case Insurance:
+			playersTurnContinues = false;
 			break;
 	}
 
@@ -610,6 +670,7 @@ void blackjackRound(blackjackTable *blackjackTablePtr) {
 		showMoney(blackjackTablePtr);
 		asksPlayerForBet(blackjackTablePtr);
 		dealInitialCards(blackjackTablePtr, INITIALCARDCOUNT, blackjackDealer);
+		offerEveryoneInsurance(blackjackTablePtr, blackjackDealer);
 		playersTurns(blackjackTablePtr, blackjackDealer);
 		dealersTurn(blackjackTablePtr, blackjackDealer);
 		losersAndWiners(blackjackTablePtr, blackjackDealer);

@@ -14,7 +14,7 @@ static deck *createDeckOfCards()
 		for (int rankNumer = 0; rankNumer < DECKLENGTH ; rankNumer++) {
 			uint posInArray = rankNumer + offset;
 
-			card newCard = { .rank = rankNumer + 1, .suit = suitType };
+			card newCard = { .rank = 1, .suit = suitType };
 
 			deckOfCards->cards[posInArray] = newCard;
 		}

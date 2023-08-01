@@ -18,6 +18,8 @@ typedef struct player{
 
 	int howManyHands;
 
+	int insuranceBet;
+
 	playerHand *playerHands[MAXAMOUNTOFSPLITS];
 
 }player;
@@ -52,5 +54,7 @@ void splitCards(player *playerPtr, int whichHand);
 int getFunds(player *playerPtr);
 
 void resetPlayer(player *playerPtr);
+
+void askForInsurance(player *playerPtr);
 
 #endif
