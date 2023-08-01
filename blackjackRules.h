@@ -13,4 +13,6 @@ int sumCards(card *cards[], int amountOfCards);
 
 int getBlackjackValue(card *cardPtr);
 
+bool isBlackjack(int playersSum, int amountOfCards);
+
 #endif

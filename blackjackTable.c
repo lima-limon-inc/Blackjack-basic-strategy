@@ -14,9 +14,9 @@
 #define INITIALCAPACITY 8
 #define INITIALCARDCOUNT 2
 #define CARDSUMBEFOREBUST 21
-#define BLACKJACK 21
+/* #define BLACKJACK 21 */
 #define DEALERLIMIT 17
-#define AMOUNTOFCARDSFORBLACKJACK 2
+/* #define AMOUNTOFCARDSFORBLACKJACK 2 */
 #define SLEEPAMOUNT 1.5
 
 blackjackTable *createBlackjackTable(int initialFunds) {
@@ -381,14 +381,23 @@ static inline void activePlayerTurn(player *activePlayer, dealer *blackjackDeale
 		playerHand *activePlayerHand;
 		activePlayerHand = getSpecificHand(activePlayer, currentHand);
 
+		int amountOfCards;
+		amountOfCards = getAmountOfCards(activePlayerHand);
+
 		int playersSum; 
-		playersSum = sumCards(getCards(activePlayerHand), getAmountOfCards(activePlayerHand));
+		playersSum = sumCards(getCards(activePlayerHand), amountOfCards);
+
+		/* if (firstHand == true && playersSum == BLACKJACK) { */
 
 		//You can only get a Blackjack in you first hand when you
 		//are originally dealt cards. If you get it, your turn finishes
-		if (firstHand == true && playersSum == BLACKJACK) {
-			endPlayerTurn(activePlayer, currentHand, blackjackDealer, playersSum);
-			break;
+		if (firstHand == true) {
+			bool hasBlackjack;
+			hasBlackjack = isBlackjack(playersSum, amountOfCards);
+			if (hasBlackjack == true) {
+				endPlayerTurn(activePlayer, currentHand, blackjackDealer, playersSum);
+				break;
+			}
 		}
 
 		playersSum =  mainPlayerActionLoop(activePlayer, blackjackDealer, currentHand, playersSum);
@@ -479,7 +488,9 @@ static inline playerRoundResult roundEndedIn(playerHand *activeHand, dealer *dea
 		return Lost;
 	}
 
-	if (playersSum == BLACKJACK && playersAmountOfCards == AMOUNTOFCARDSFORBLACKJACK) {
+	bool hasBlackjack;
+	hasBlackjack = isBlackjack(playersSum, playersAmountOfCards);
+	if (hasBlackjack == true) {
 		return Blackjack;
 	}
 

@@ -3,7 +3,10 @@
 
 //TODO: Move to playerHand
 
+#define BLACKJACK 21
+#define AMOUNTOFCARDSFORBLACKJACK 2
 #define AMOUNTOFCARDSNEEDEDFORSPLIT 2
+
 bool checkForSplit(card *cards[], int amountOfCards) {
 	bool areTheyTheSameRank;
 
@@ -94,4 +97,15 @@ int sumCards(card *cards[], int amountOfCards)
 	}
 
    return sum;
+}
+
+bool isBlackjack(int playersSum, int amountOfCards) {
+	bool hasBlackjack;
+	hasBlackjack = false;
+
+	if (playersSum == BLACKJACK && amountOfCards == AMOUNTOFCARDSFORBLACKJACK) {
+		hasBlackjack = true;
+	}
+	return hasBlackjack;
+
 }
