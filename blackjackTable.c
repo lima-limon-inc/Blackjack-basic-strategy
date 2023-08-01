@@ -177,15 +177,15 @@ static inline bool askPlayerForBet(player *activePlayer, int whichHand) {
 	canMakeBet = false;
 
 	while (canMakeBet == false) {
-		printf("%s, what's your bet?\n(Type '-1' to leave the table)\n", activePlayer->name); 
+		printf("%s, what's your bet?\n(Type '%s' to leave the table)\n", activePlayer->name, ENOUGHSYMBOLSTRING); 
 		scanf("%d", &playerBet);
 		FLUSHSTDIN;
 
-		if (playerBet == -1) {
+		if (playerBet == ENOUGHSYMBOL) {
 			wantsToKeepPlaying = false;
 			return wantsToKeepPlaying;
-		} else if (playerBet <= 0) {
-			printf("Bet's can't be negative or 0\n");
+		} else if (playerBet < 0) {
+			printf("Bet's can't be negative\n");
 			continue;
 		}
 
@@ -594,7 +594,7 @@ void blackjackRound(blackjackTable *blackjackTablePtr) {
 	//This for loop is used for debugging
 	/* for (int i = 0; i < 2; i++) { */
 	dealer *blackjackDealer = getDealer(blackjackTablePtr);
-	while (true) {
+	while (blackjackTablePtr->playerAmount > 0) {
 
 		showMoney(blackjackTablePtr);
 		asksPlayerForBet(blackjackTablePtr);
