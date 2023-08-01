@@ -60,7 +60,7 @@ bool canMakeABet(player *playerPtr, int bet) {
 	playersFunds = getFunds(playerPtr);
 
 	bool canMakeSpecificBet;
-	canMakeSpecificBet = (playersFunds > bet);
+	canMakeSpecificBet = (playersFunds >= bet);
 
 	return canMakeSpecificBet;
 }
