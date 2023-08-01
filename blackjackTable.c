@@ -42,6 +42,17 @@ void destroyBlackjackTable(blackjackTable *blackjackTablePtr) {
 	free(blackjackTablePtr);
 }
 
+void removePlayer(blackjackTable *blackjackTablePtr, int playerPosition) {
+	killPlayer(blackjackTablePtr->players[playerPosition]);
+
+	//Move player pointers to adjust position
+	for (int i = playerPosition; i < blackjackTablePtr->playerAmount; i++) {
+		blackjackTablePtr->players[i] = blackjackTablePtr->players[i + 1];
+	}
+
+	blackjackTablePtr->playerAmount -= 1;
+}
+
 blackjackTable *addPlayer(blackjackTable *blackjackTablePtr, char name[], int initialFunds) {
 	player *newPlayer = createPlayer(name,  initialFunds);
 
@@ -156,7 +167,9 @@ static inline playerDecision askForDecision(playerHand *activePlayerHand, int ho
 	return playersDecision;
 }
 
-static inline void askPlayerForBet(player *activePlayer, int whichHand) {
+static inline bool askPlayerForBet(player *activePlayer, int whichHand) {
+	bool wantsToKeepPlaying;
+	wantsToKeepPlaying = true;
 
 	int playerBet;
 
@@ -164,11 +177,14 @@ static inline void askPlayerForBet(player *activePlayer, int whichHand) {
 	canMakeBet = false;
 
 	while (canMakeBet == false) {
-		printf("%s, what's your bet?\n", activePlayer->name); 
+		printf("%s, what's your bet?\n(Type '-1' to leave the table)\n", activePlayer->name); 
 		scanf("%d", &playerBet);
 		FLUSHSTDIN;
 
-		if (playerBet <= 0) {
+		if (playerBet == -1) {
+			wantsToKeepPlaying = false;
+			return wantsToKeepPlaying;
+		} else if (playerBet <= 0) {
 			printf("Bet's can't be negative or 0\n");
 			continue;
 		}
@@ -181,8 +197,8 @@ static inline void askPlayerForBet(player *activePlayer, int whichHand) {
 		
 	}
 
-
 	makeABet(activePlayer, playerBet, whichHand);
+	return wantsToKeepPlaying;
 }
 
 static inline void asksPlayerForBet(blackjackTable *blackjackTablePtr) {
@@ -190,7 +206,12 @@ static inline void asksPlayerForBet(blackjackTable *blackjackTablePtr) {
 		player *activePlayer;
 		activePlayer = getPlayerAtPosition(blackjackTablePtr, position);
 
-		askPlayerForBet(activePlayer, 0);
+		bool wantsToKeepPlaying;
+		wantsToKeepPlaying = askPlayerForBet(activePlayer, 0);
+		if (wantsToKeepPlaying == false) {
+			removePlayer(blackjackTablePtr, position);
+			position--;
+		}
 	}
 }
 

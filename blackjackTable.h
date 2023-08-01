@@ -22,6 +22,8 @@ void destroyBlackjackTable(blackjackTable *blackjackTablePtr);
 
 blackjackTable *addPlayer(blackjackTable *blackjackTablePtr, char name[], int initialFunds);
 
+void removePlayer(blackjackTable *blackjackTablePtr, int playerPosition);
+
 void blackjackRound(blackjackTable *blackjackTablePtr);
 
 #endif
