@@ -286,8 +286,11 @@ static inline void awardPlayerInsurance(blackjackTable *blackjackTablePtr, bool 
 		player *activePlayer;
 		activePlayer = blackjackTablePtr->players[i];
 
+		int insurancePosition;
+		insurancePosition = getInsurancePosition();
+
 		int insuranceBetAmount;
-		insuranceBetAmount = getInsuranceBet(activePlayer);
+		insuranceBetAmount = getBet(activePlayer, insurancePosition);
 
 		//Did not ask for insurance, we skip it
 		if (insuranceBetAmount == 0) {
@@ -296,10 +299,10 @@ static inline void awardPlayerInsurance(blackjackTable *blackjackTablePtr, bool 
 		
 		if (dealerHadBlackjack == true) {
 			insuranceBetAmount *= 2;
-			awardInsurance(activePlayer, insuranceBetAmount);
+			winBet(activePlayer, insuranceBetAmount, insurancePosition);
 		} else {
 			int lostMoney;
-			lostMoney = loseInsurance(activePlayer);
+			lostMoney = loseBet(activePlayer, insurancePosition);
 			takeMoney(blackjackTablePtr->blackjackDealer, lostMoney);
 		}
 	}

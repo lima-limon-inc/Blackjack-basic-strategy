@@ -161,25 +161,6 @@ void askForInsurance(player *playerPtr) {
 	/* playerPtr->funds -= newInsuranceBet; */
 }
 
-int getInsuranceBet(player *playerPtr) {
-	int insuranceBet;
-	insuranceBet = getBet(playerPtr, INSURANCEBET);
-
-	return insuranceBet;
-}
-
-void awardInsurance(player *playerPtr, int insuranceBet) {
-	/* int insuranceBet; */
-	/* insuranceBet = getBet(playerPtr, INSURANCEBET); */
-
-	winBet(playerPtr, insuranceBet, INSURANCEBET);
-}
-
-int loseInsurance(player *playerPtr) {
-	int lostInsuranceBet;
-	lostInsuranceBet = getBet(playerPtr, INSURANCEBET);
-
-	resetBet(playerPtr, INSURANCEBET);
-
-	return lostInsuranceBet;
+int getInsurancePosition() {
+	return INSURANCEBET;
 }

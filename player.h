@@ -58,12 +58,6 @@ void resetPlayer(player *playerPtr);
 
 void askForInsurance(player *playerPtr);
 
-bool didAskForInsurance (player *playerPtr);
-
-void awardInsurance(player *playerPtr, int insuranceBet);
-
-int getInsuranceBet(player *playerPtr);
-
-int loseInsurance(player *playerPtr);
+int getInsurancePosition();
 
 #endif
