@@ -281,6 +281,30 @@ static inline void offerEveryoneInsurance(blackjackTable *blackjackTablePtr, dea
 	}
 }
 
+static inline void awardPlayerInsurance(blackjackTable *blackjackTablePtr, bool dealerHadBlackjack) {
+	for (int i = 0; i < blackjackTablePtr->playerAmount; i++) {
+		player *activePlayer;
+		activePlayer = blackjackTablePtr->players[i];
+
+		int insuranceBetAmount;
+		insuranceBetAmount = getInsuranceBet(activePlayer);
+
+		//Did not ask for insurance, we skip it
+		if (insuranceBetAmount == 0) {
+			return;
+		}
+		
+		if (dealerHadBlackjack == true) {
+			insuranceBetAmount *= 2;
+			awardInsurance(activePlayer, insuranceBetAmount);
+		} else {
+			int lostMoney;
+			lostMoney = loseInsurance(activePlayer);
+			takeMoney(blackjackTablePtr->blackjackDealer, lostMoney);
+		}
+	}
+}
+
 static inline void insuranceLoop(blackjackTable *blackjackTablePtr, dealer *blackjackDealer) {
 	playerHand *dealersHand;
 	dealersHand = getSpecificHandDealer(blackjackDealer);
@@ -297,6 +321,24 @@ static inline void insuranceLoop(blackjackTable *blackjackTablePtr, dealer *blac
 	}
 
 	offerEveryoneInsurance(blackjackTablePtr, blackjackDealer);
+
+	int amountOfCards;
+	amountOfCards = getAmountOfCards(dealersHand);
+
+	card **dealersCards;
+	dealersCards = getCards(dealersHand);
+
+	int dealersSum;
+	dealersSum = sumCards(dealersCards, amountOfCards);
+
+	bool dealerHasBlackjack;
+	dealerHasBlackjack = isBlackjack(dealersSum, amountOfCards);
+
+	/* if (dealerHasBlackjack == false) { */
+	/* 	return; */
+	/* } */
+
+	awardPlayerInsurance(blackjackTablePtr, dealerHasBlackjack);
 }
 
 

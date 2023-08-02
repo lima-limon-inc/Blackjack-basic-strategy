@@ -16,7 +16,7 @@
 int main()
 {
 	printCasinoWelcomeSign();
-	blackjackTable *newBlackjackTable = createBlackjackTable(1000);
+	blackjackTable *newBlackjackTable = createBlackjackTable(100000);
 	char name[20];
 	printf("Enter the name of the players.\nWrite '%s' when done\n", ENOUGHSYMBOLSTRING);
 	while (true) {

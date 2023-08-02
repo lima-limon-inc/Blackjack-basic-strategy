@@ -6,6 +6,7 @@
 #include "playerHand.h"
 
 #define MAXAMOUNTOFSPLITS 4
+#define INSURANCEBET (MAXAMOUNTOFSPLITS)
 
 typedef struct player{
 	char name[20];
@@ -13,12 +14,12 @@ typedef struct player{
 	//Money!
 	int funds;
 
-	//Array that contains the bet corresponding to each hand
-	int bets[MAXAMOUNTOFSPLITS];
+	//Array that contains the bet corresponding to each hand + Insurance
+	int bets[MAXAMOUNTOFSPLITS + 1];
 
 	int howManyHands;
 
-	int insuranceBet;
+	/* int insuranceBet; */
 
 	playerHand *playerHands[MAXAMOUNTOFSPLITS];
 
@@ -56,5 +57,13 @@ int getFunds(player *playerPtr);
 void resetPlayer(player *playerPtr);
 
 void askForInsurance(player *playerPtr);
+
+bool didAskForInsurance (player *playerPtr);
+
+void awardInsurance(player *playerPtr, int insuranceBet);
+
+int getInsuranceBet(player *playerPtr);
+
+int loseInsurance(player *playerPtr);
 
 #endif

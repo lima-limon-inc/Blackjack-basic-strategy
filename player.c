@@ -1,5 +1,6 @@
 #include "player.h"
 
+
 player *createPlayer(char *playerName, int initialFunds) {
 	int initialSize;
 	initialSize = sizeof(player);
@@ -13,7 +14,7 @@ player *createPlayer(char *playerName, int initialFunds) {
 	strcpy(blackjackPlayer->name, playerName);
 	blackjackPlayer->funds = initialFunds;
 	blackjackPlayer->howManyHands = 1;
-	blackjackPlayer->insuranceBet = 0;
+	/* blackjackPlayer->insuranceBet = 0; */
 	blackjackPlayer->playerHands[blackjackPlayer->howManyHands - 1] = playersHand;
 	blackjackPlayer->bets[0] = 0;
 
@@ -143,7 +144,7 @@ void resetPlayer(player *playerPtr) {
 	}
 
 	playerPtr->howManyHands = 1;
-	playerPtr->insuranceBet = 0;
+	/* playerPtr->insuranceBet = 0; */
 }
 
 #define MAXINSURANCEDENOMINATOR 2
@@ -152,5 +153,33 @@ void askForInsurance(player *playerPtr) {
 	//Insurance will always be on the first hand's bet
 	originalBet = getBet(playerPtr, 0);
 
-	playerPtr->insuranceBet = originalBet / MAXINSURANCEDENOMINATOR;
+	int newInsuranceBet;
+	newInsuranceBet = originalBet / MAXINSURANCEDENOMINATOR;
+
+	makeABet(playerPtr, newInsuranceBet, INSURANCEBET);
+	/* playerPtr->insuranceBet = newInsuranceBet; */
+	/* playerPtr->funds -= newInsuranceBet; */
+}
+
+int getInsuranceBet(player *playerPtr) {
+	int insuranceBet;
+	insuranceBet = getBet(playerPtr, INSURANCEBET);
+
+	return insuranceBet;
+}
+
+void awardInsurance(player *playerPtr, int insuranceBet) {
+	/* int insuranceBet; */
+	/* insuranceBet = getBet(playerPtr, INSURANCEBET); */
+
+	winBet(playerPtr, insuranceBet, INSURANCEBET);
+}
+
+int loseInsurance(player *playerPtr) {
+	int lostInsuranceBet;
+	lostInsuranceBet = getBet(playerPtr, INSURANCEBET);
+
+	resetBet(playerPtr, INSURANCEBET);
+
+	return lostInsuranceBet;
 }
