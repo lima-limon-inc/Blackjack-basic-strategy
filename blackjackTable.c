@@ -308,7 +308,9 @@ static inline void awardPlayerInsurance(blackjackTable *blackjackTablePtr, bool 
 	}
 }
 
-static inline void insuranceLoop(blackjackTable *blackjackTablePtr, dealer *blackjackDealer) {
+static inline bool insuranceLoop(blackjackTable *blackjackTablePtr, dealer *blackjackDealer) {
+	bool dealerHasBlackjack;
+
 	playerHand *dealersHand;
 	dealersHand = getSpecificHandDealer(blackjackDealer);
 
@@ -320,7 +322,8 @@ static inline void insuranceLoop(blackjackTable *blackjackTablePtr, dealer *blac
 
 	//Insurance is only offered if the dealer has an Ace
 	if (topCardRank != 1) {
-		return;
+		dealerHasBlackjack = false;
+		return dealerHasBlackjack;
 	}
 
 	offerEveryoneInsurance(blackjackTablePtr, blackjackDealer);
@@ -334,7 +337,6 @@ static inline void insuranceLoop(blackjackTable *blackjackTablePtr, dealer *blac
 	int dealersSum;
 	dealersSum = sumCards(dealersCards, amountOfCards);
 
-	bool dealerHasBlackjack;
 	dealerHasBlackjack = isBlackjack(dealersSum, amountOfCards);
 
 	printf("Checking if dealer has Blackjkack\n");
@@ -361,6 +363,7 @@ static inline void insuranceLoop(blackjackTable *blackjackTablePtr, dealer *blac
 	/* } */
 
 	awardPlayerInsurance(blackjackTablePtr, dealerHasBlackjack);
+	return dealerHasBlackjack;
 }
 
 
