@@ -596,6 +596,7 @@ static inline void dealersTurn(blackjackTable *blackjackTablePtr, dealer *blackj
 
 	saveCardSum(dealersHand, dealersSum);
 	printf("\nDealers sum :%d\n", dealersSum);
+	sleep(SLEEPAMOUNT);
 }
 
 typedef enum playerRoundResult {Win, Lost, Tie, Blackjack} playerRoundResult;
@@ -603,24 +604,34 @@ static inline playerRoundResult roundEndedIn(playerHand *activeHand, dealer *dea
 	int playersSum;
 	playersSum = getHandSum(activeHand);
 
+	int playersAmountOfCards;
+	playersAmountOfCards = getAmountOfCards(activeHand);
+
 	playerHand *dealersHand;
 	dealersHand = getSpecificHandDealer(dealerPtr);
 
 	int dealersSum;
 	dealersSum = getHandSum(dealersHand);
 
-	int playersAmountOfCards;
-	playersAmountOfCards = getAmountOfCards(activeHand);
+	int dealerAmountOfCards;
+	dealerAmountOfCards = getAmountOfCards(dealersHand);
 
 	//Player lost, he busted
 	if (playersSum > CARDSUMBEFOREBUST) {
 		return Lost;
 	}
 
-	bool hasBlackjack;
-	hasBlackjack = isBlackjack(playersSum, playersAmountOfCards);
-	if (hasBlackjack == true) {
-		return Blackjack;
+	bool playersHasBlackjack;
+	playersHasBlackjack = isBlackjack(playersSum, playersAmountOfCards);
+
+	bool dealerHasBlackjack;
+	dealerHasBlackjack = isBlackjack(dealersSum, dealerAmountOfCards);
+	if (playersHasBlackjack == true) {
+		if (dealerHasBlackjack == false) {
+			return Blackjack;
+		} else {
+			return Tie;
+		}
 	}
 
 	//The dealer bust, in this case,  all the non busted player win
@@ -654,6 +665,9 @@ static inline void losersAndWiners(blackjackTable *blackjackTablePtr, dealer *de
 		activePlayer = blackjackTablePtr->players[i];
 
 		for (int currentHand = 0; currentHand < getNumberOfHands(activePlayer); currentHand++) {
+			system("clear");
+			printVisualRepresentation(activePlayer, currentHand, dealerPtr, true);
+
 			playerHand *playersHand;
 			playersHand = getSpecificHand(activePlayer, currentHand);
 
@@ -695,10 +709,14 @@ static inline void losersAndWiners(blackjackTable *blackjackTablePtr, dealer *de
 					winBet(activePlayer, BlackjackMoney, currentHand);
 					break;
 			}
+
+		printf("Press any key to continue");
+		getchar();
 		}
 	}
-	printf("Press any key to continue");
-	getchar();
+	sleep(SLEEPAMOUNT);
+	/* printf("Press any key to continue"); */
+	/* getchar(); */
 
 
 	printf("\n");
@@ -735,13 +753,16 @@ void blackjackRound(blackjackTable *blackjackTablePtr) {
 	/* for (int i = 0; i < 2; i++) { */
 	dealer *blackjackDealer = getDealer(blackjackTablePtr);
 	while (blackjackTablePtr->playerAmount > 0) {
+		bool dealerHasBlackjack;
 
 		showMoney(blackjackTablePtr);
 		asksPlayerForBet(blackjackTablePtr);
 		dealInitialCards(blackjackTablePtr, INITIALCARDCOUNT, blackjackDealer);
-		insuranceLoop(blackjackTablePtr, blackjackDealer);
-		playersTurns(blackjackTablePtr, blackjackDealer);
-		dealersTurn(blackjackTablePtr, blackjackDealer);
+		dealerHasBlackjack = insuranceLoop(blackjackTablePtr, blackjackDealer);
+		if (dealerHasBlackjack == false) {
+			playersTurns(blackjackTablePtr, blackjackDealer);
+			dealersTurn(blackjackTablePtr, blackjackDealer);
+		} 
 		losersAndWiners(blackjackTablePtr, blackjackDealer);
 		resetPlayers(blackjackTablePtr, blackjackDealer);
 	}
