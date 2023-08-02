@@ -437,9 +437,6 @@ static inline bool processPlayerMove(player *activePlayer, int currentHand, play
 			receiveCard(activePlayer, topCard, getNumberOfHands(activePlayer) - 1);
 			playersTurnContinues = true;
 			break;
-		case Insurance:
-			playersTurnContinues = false;
-			break;
 	}
 
 	return playersTurnContinues;

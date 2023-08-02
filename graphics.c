@@ -254,12 +254,6 @@ void printCorrectOrNot(bool isCorrect, playerDecision correctDecision) {
 		case Split:
 			strcpy(message, "Split");
 			break;
-		//This will never be reached as Insurance is never the optimal
-		//option
-		case Insurance:
-			strcpy(message, "Insurance");
-			abort();
-			break;
 	}
 
 	if (isCorrect == true) {
