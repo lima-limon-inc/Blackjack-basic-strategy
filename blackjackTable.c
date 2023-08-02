@@ -281,7 +281,7 @@ static inline void offerEveryoneInsurance(blackjackTable *blackjackTablePtr, dea
 	}
 }
 
-static inline void awardPlayerInsurance(blackjackTable *blackjackTablePtr, bool dealerHadBlackjack) {
+static inline void awardPlayerInsurance(blackjackTable *blackjackTablePtr, bool dealerHasBlackjack) {
 	for (int i = 0; i < blackjackTablePtr->playerAmount; i++) {
 		player *activePlayer;
 		activePlayer = blackjackTablePtr->players[i];
@@ -297,7 +297,7 @@ static inline void awardPlayerInsurance(blackjackTable *blackjackTablePtr, bool 
 			return;
 		}
 		
-		if (dealerHadBlackjack == true) {
+		if (dealerHasBlackjack == true) {
 			insuranceBetAmount *= 2;
 			winBet(activePlayer, insuranceBetAmount, insurancePosition);
 		} else {
@@ -336,6 +336,25 @@ static inline void insuranceLoop(blackjackTable *blackjackTablePtr, dealer *blac
 
 	bool dealerHasBlackjack;
 	dealerHasBlackjack = isBlackjack(dealersSum, amountOfCards);
+
+	printf("Checking if dealer has Blackjkack\n");
+	printf(".");
+	/* sleep(SLEEPAMOUNT); */
+	printf(".");
+	printf(".");
+	sleep(SLEEPAMOUNT);
+	printf("\n");
+	sleep(SLEEPAMOUNT);
+
+	if (dealerHasBlackjack == true) {
+		printf("Dealer HAS Blackjkack\n");
+	} else {
+		printf("Dealer does not have Blackjkack\n");
+	}
+	/* sleep(SLEEPAMOUNT); */
+	printf("\n");
+	printf("Press any key to continue");
+	getchar();
 
 	/* if (dealerHasBlackjack == false) { */
 	/* 	return; */
