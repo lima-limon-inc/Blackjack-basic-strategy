@@ -160,19 +160,19 @@ static inline playerDecision askForDecision(player *activePlayer, int currentHan
 		scanf("%s", userInput);
 		FLUSHSTDIN;
 
-		if (strcmp(userInput, "H") == 0) {
+		if (strcmp(userInput, "H") == 0 || strcmp(userInput, "h") == 0) {
 			playersDecision = Hit;
 			validAnswer = true;
 		}
-		else if (strcmp(userInput, "S") == 0) {
+		else if (strcmp(userInput, "S") == 0 || strcmp(userInput, "s") == 0) {
 			playersDecision = Stand;
 			validAnswer = true;
 		}
-		else if (canDoubleDown == true && strcmp(userInput, "D") == 0) {
+		else if ((canDoubleDown == true && strcmp(userInput, "D") == 0) || (canDoubleDown == true && strcmp(userInput, "d") == 0)) {
 			playersDecision = DoubleDown;
 			validAnswer = true;
 		}
-		else if (canSplit == true && strcmp(userInput, "P") == 0) {
+		else if ((canSplit == true && strcmp(userInput, "P") == 0) || (canSplit == true && strcmp(userInput, "p") == 0)) {
 			playersDecision = Split;
 			validAnswer = true;
 		}
