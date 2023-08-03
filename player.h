@@ -60,4 +60,6 @@ void askForInsurance(player *playerPtr);
 
 int getInsurancePosition();
 
+bool isBroke(player *playerPtr);
+
 #endif

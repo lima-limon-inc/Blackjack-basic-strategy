@@ -220,6 +220,16 @@ static inline void asksPlayerForBet(blackjackTable *blackjackTablePtr) {
 		player *activePlayer;
 		activePlayer = getPlayerAtPosition(blackjackTablePtr, position);
 
+		bool playerIsBroke;
+		playerIsBroke = isBroke(activePlayer);
+		if (playerIsBroke == true) {
+			printf("%s, you have no money left \n", activePlayer->name);
+			printf("You are removed from the casino\n");
+			removePlayer(blackjackTablePtr, position);
+			position--;
+			continue;
+		}
+
 		//This could and possibly should be its own function. However,
 		//it would be annoying to ask ALL players each time if they
 		//want to exit the table

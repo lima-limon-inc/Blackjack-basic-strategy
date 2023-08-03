@@ -151,6 +151,13 @@ void resetPlayer(player *playerPtr) {
 	/* playerPtr->insuranceBet = 0; */
 }
 
+bool isBroke(player *playerPtr) {
+	bool actuallyBroke;
+
+	actuallyBroke = (playerPtr->funds <= 0);
+	return actuallyBroke;
+}
+
 #define MAXINSURANCEDENOMINATOR 2
 void askForInsurance(player *playerPtr) {
 	int originalBet;
