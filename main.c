@@ -28,7 +28,7 @@ int main()
 		if (strcmp(name,ENOUGHSYMBOLSTRING) == ENOUGHSYMBOL) {
 			break;
 		}
-		newBlackjackTable = addPlayer(newBlackjackTable, name, 100);
+		newBlackjackTable = addPlayer(newBlackjackTable, name, 1000);
 	}
 
 	blackjackRound(newBlackjackTable);
