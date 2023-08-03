@@ -118,10 +118,21 @@ static inline char *askForPlayerMessage(bool canDoubleDown, bool canSplit) {
 	return message;
 }
 
-static inline playerDecision askForDecision(playerHand *activePlayerHand, int howManyHands) {
+static inline playerDecision askForDecision(player *activePlayer, int currentHand, playerHand *activePlayerHand, int howManyHands) {
+	int currentBet;
+	currentBet = getBet(activePlayer, currentHand);
+
+	bool canAffordMove;
+	canAffordMove = canMakeABet(activePlayer, currentBet);
+
 	bool canSplit;
 	if (howManyHands < MAXAMOUNTOFSPLITS) {
 		canSplit = checkForSplit(getCards(activePlayerHand), getAmountOfCards(activePlayerHand));
+
+		// The split is only valid IF you can make it AND you can 
+		// afford it
+		canSplit = (canSplit && canAffordMove);
+
 	}
 	else {
 		//If the player has exceeded the amount of valid splits, then
@@ -131,6 +142,7 @@ static inline playerDecision askForDecision(playerHand *activePlayerHand, int ho
 
 	bool canDoubleDown;
 	canDoubleDown = checkForDoubleDown(getAmountOfCards(activePlayerHand));
+	canDoubleDown = (canDoubleDown && canAffordMove);
 
 	char userInput[10];
 
@@ -484,7 +496,7 @@ static inline int mainPlayerActionLoop(player *activePlayer, dealer *blackjackDe
 			break;
 		}
 
-		playersDecision = askForDecision(activePlayerHand, getNumberOfHands(activePlayer));
+		playersDecision = askForDecision(activePlayer, currentHand, activePlayerHand, getNumberOfHands(activePlayer));
 
 		card *dealersCard;
 		dealersCard = getCards(getSpecificHandDealer(blackjackDealer))[0];
