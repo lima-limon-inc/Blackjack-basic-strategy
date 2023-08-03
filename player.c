@@ -30,14 +30,18 @@ void killPlayer(player *playerPtr){
 }
 
 
-void receiveCard(player *playerPtr, card *newCard, int whichHand) {
+void giveCardTo(player *playerPtr, card *newCard, int whichHand) {
 	playerHand *activePlayerHand = getSpecificHand(playerPtr, whichHand);
 
-	activePlayerHand = resizeHand(activePlayerHand);
+	activePlayerHand = receiveCard(activePlayerHand, newCard);
+
+	/* activePlayerHand = resizeHand(activePlayerHand); */
 	playerPtr->playerHands[whichHand] = activePlayerHand;
 
-	activePlayerHand->hand[activePlayerHand->cardsInHand] = newCard;
-	activePlayerHand->cardsInHand += 1;
+	/* playerPtr->playerHands[whichHand] = activePlayerHand; */
+
+	/* activePlayerHand->hand[activePlayerHand->cardsInHand] = newCard; */
+	/* activePlayerHand->cardsInHand += 1; */
 }
 
 
@@ -118,7 +122,7 @@ void splitCards(player *playerPtr, int whichHand) {
 	cardForNextHand = removeSpecificCard(handToRemoveFrom, whichHand);
 
 	playerPtr->playerHands[playerPtr->howManyHands] = newHand;
-	receiveCard(playerPtr, cardForNextHand, playerPtr->howManyHands);
+	giveCardTo(playerPtr, cardForNextHand, playerPtr->howManyHands);
 
 	playerPtr->howManyHands += 1;
 }

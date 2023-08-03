@@ -1,4 +1,5 @@
 #include "playerHand.h"
+#include "blackjackRules.h"
 
 //The amount of cards a player has in their hand will vary. According to this
 //very scientific website: https://www.blackjackincolor.com/cardsperround.htm
@@ -92,9 +93,31 @@ card *removeSpecificCard(playerHand *playerHandPtr, int whichPosition) {
 	return removedCard;
 }
 
+playerHand *receiveCard(playerHand *playerHandPtr, card *newCard) {
+	playerHand *newHand;
+
+	newHand = resizeHand(playerHandPtr);
+	newHand->hand[newHand->cardsInHand] = newCard;
+	newHand->cardsInHand += 1;
+
+	//TODO: Move to saveCardSum
+	card **cards;
+	cards = getCards(newHand);
+
+	int amountOfCards;
+	amountOfCards = getAmountOfCards(newHand);
+
+	int cardSum;
+	cardSum = sumCards(cards, amountOfCards);
+
+	saveCardSum(newHand, cardSum);
+
+	return newHand;
+}
+
 static inline void resetIndex(playerHand *playerHandPtr) {
 	//We simply move the index. The pointer will simply get removed by
-	//the receiveCard function (it will overwrite the value)
+	//the giveCardTo function (it will overwrite the value)
 	playerHandPtr->cardsInHand = 0;
 }
 

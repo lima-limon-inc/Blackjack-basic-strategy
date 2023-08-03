@@ -83,7 +83,7 @@ static inline void dealInitialCards(blackjackTable *blackjackTablePtr, int initi
 			card *topCard = dealACard(blackjackDealer);
 
 			//0 Because it's the initial hand
-			receiveCard(activePlayer,  topCard, 0);
+			giveCardTo(activePlayer,  topCard, 0);
 		}
 		card *dealersCard = dealACard(blackjackDealer);
 
@@ -294,16 +294,18 @@ static inline void awardPlayerInsurance(blackjackTable *blackjackTablePtr, bool 
 
 		//Did not ask for insurance, we skip it
 		if (insuranceBetAmount == 0) {
-			return;
+			continue;
 		}
 		
 		if (dealerHasBlackjack == true) {
 			insuranceBetAmount *= 2;
 			winBet(activePlayer, insuranceBetAmount, insurancePosition);
+			printf("%s won the insurance bet\n", activePlayer->name);
 		} else {
 			int lostMoney;
 			lostMoney = loseBet(activePlayer, insurancePosition);
 			takeMoney(blackjackTablePtr->blackjackDealer, lostMoney);
+			printf("%s lost the insurance bet\n", activePlayer->name);
 		}
 	}
 }
@@ -354,15 +356,17 @@ static inline bool insuranceLoop(blackjackTable *blackjackTablePtr, dealer *blac
 		printf("Dealer does not have Blackjkack\n");
 	}
 	/* sleep(SLEEPAMOUNT); */
-	printf("\n");
-	printf("Press any key to continue");
-	getchar();
 
 	/* if (dealerHasBlackjack == false) { */
 	/* 	return; */
 	/* } */
 
 	awardPlayerInsurance(blackjackTablePtr, dealerHasBlackjack);
+
+	printf("\n");
+	printf("Press any key to continue");
+	getchar();
+
 	return dealerHasBlackjack;
 }
 
@@ -412,7 +416,7 @@ static inline bool processPlayerMove(player *activePlayer, int currentHand, play
 		case Hit:
 			topCard = dealACard(blackjackDealer);
 
-			receiveCard(activePlayer, topCard, currentHand);
+			giveCardTo(activePlayer, topCard, currentHand);
 			playersTurnContinues = true;
 			break;
 		case Stand:
@@ -426,7 +430,7 @@ static inline bool processPlayerMove(player *activePlayer, int currentHand, play
 			//only get one more card, so we deal a card and 
 			//exit the loop
 			topCard = dealACard(blackjackDealer);
-			receiveCard(activePlayer, topCard, currentHand);
+			giveCardTo(activePlayer, topCard, currentHand);
 			playersTurnContinues = false;
 			break;
 		case Split:
@@ -434,10 +438,10 @@ static inline bool processPlayerMove(player *activePlayer, int currentHand, play
 			//We deal an addtional to the newly
 			//created hand
 			topCard = dealACard(blackjackDealer);
-			receiveCard(activePlayer, topCard, currentHand);
+			giveCardTo(activePlayer, topCard, currentHand);
 
 			topCard = dealACard(blackjackDealer);
-			receiveCard(activePlayer, topCard, getNumberOfHands(activePlayer) - 1);
+			giveCardTo(activePlayer, topCard, getNumberOfHands(activePlayer) - 1);
 			playersTurnContinues = true;
 			break;
 	}
@@ -445,14 +449,14 @@ static inline bool processPlayerMove(player *activePlayer, int currentHand, play
 	return playersTurnContinues;
 }
 
-static void endPlayerTurn(player *activePlayer, int currentHand, dealer *blackjackDealer, int playersSum) {
-	playerHand *activePlayerHand;
-	activePlayerHand = getSpecificHand(activePlayer, currentHand);
+static void endPlayerTurn(player *activePlayer, int currentHand, dealer *blackjackDealer) {
+	/* playerHand *activePlayerHand; */
+	/* activePlayerHand = getSpecificHand(activePlayer, currentHand); */
 
 	system("clear");
 	printVisualRepresentation(activePlayer, currentHand, blackjackDealer, false);
 	sleep(SLEEPAMOUNT);
-	saveCardSum(activePlayerHand, playersSum);
+	/* saveCardSum(activePlayerHand, playersSum); */
 }
 
 static inline int mainPlayerActionLoop(player *activePlayer, dealer *blackjackDealer, int currentHand, int initialSum) {
@@ -524,7 +528,7 @@ static inline void activePlayerTurn(player *activePlayer, dealer *blackjackDeale
 			bool hasBlackjack;
 			hasBlackjack = isBlackjack(playersSum, amountOfCards);
 			if (hasBlackjack == true) {
-				endPlayerTurn(activePlayer, currentHand, blackjackDealer, playersSum);
+				endPlayerTurn(activePlayer, currentHand, blackjackDealer);
 				break;
 			}
 		}
@@ -533,7 +537,7 @@ static inline void activePlayerTurn(player *activePlayer, dealer *blackjackDeale
 		//This will over write the value everytime. This is fine (I think)
 		firstHand = false;
 
-		endPlayerTurn(activePlayer, currentHand, blackjackDealer, playersSum);
+		endPlayerTurn(activePlayer, currentHand, blackjackDealer);
 	}
 }
 
@@ -567,10 +571,7 @@ static inline void dealersTurn(blackjackTable *blackjackTablePtr, dealer *blackj
 	playerHand *dealersHand;
 	dealersHand = getSpecificHandDealer(blackjackDealer);
 
-	int howManyCardsDealer;
-	howManyCardsDealer= getAmountOfCards(dealersHand);
-
-	dealersSum = sumCards(getCards(dealersHand), howManyCardsDealer);
+	dealersSum = getHandSum(dealersHand);
 
 	system("clear");
 	showPlayersSums(blackjackTablePtr);
@@ -587,14 +588,14 @@ static inline void dealersTurn(blackjackTable *blackjackTablePtr, dealer *blackj
 		//the dealDealersHand function, that's why we have to
 		//redefine it
 		dealersHand = getSpecificHandDealer(blackjackDealer);
-		howManyCardsDealer= getAmountOfCards(dealersHand);
 
-		dealersSum = sumCards(getCards(dealersHand), howManyCardsDealer);
+		dealersSum = getHandSum(dealersHand);
+		/* dealersSum = sumCards(getCards(dealersHand), howManyCardsDealer); */
 		printDealersCards(blackjackDealer, true);
 		sleep(SLEEPAMOUNT);
 	}
 
-	saveCardSum(dealersHand, dealersSum);
+	/* saveCardSum(dealersHand, dealersSum); */
 	printf("\nDealers sum :%d\n", dealersSum);
 	sleep(SLEEPAMOUNT);
 }
@@ -737,7 +738,7 @@ static inline void showMoney(blackjackTable *blackjackTablePtr) {
 	printf("\n");
 }
 
-static inline void resetPlayers(blackjackTable *blackjackTablePtr, dealer *dealerPtr) {
+static inline void resetPlayersAndDealer(blackjackTable *blackjackTablePtr, dealer *dealerPtr) {
 	for (int i = 0; i < blackjackTablePtr->playerAmount; i++) {
 		player *activePlayer;
 		activePlayer = blackjackTablePtr->players[i];
@@ -764,6 +765,6 @@ void blackjackRound(blackjackTable *blackjackTablePtr) {
 			dealersTurn(blackjackTablePtr, blackjackDealer);
 		} 
 		losersAndWiners(blackjackTablePtr, blackjackDealer);
-		resetPlayers(blackjackTablePtr, blackjackDealer);
+		resetPlayersAndDealer(blackjackTablePtr, blackjackDealer);
 	}
 }

@@ -29,7 +29,7 @@ player *createPlayer(char *playerName, int initialFunds);
 
 void killPlayer(player *playerPtr);
 
-void receiveCard(player *playerPtr, card *newCard, int whichHand);
+void giveCardTo(player *playerPtr, card *newCard, int whichHand);
 
 void printCards(player *playerPtr, int whichHand);
 

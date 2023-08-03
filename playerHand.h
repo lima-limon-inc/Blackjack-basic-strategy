@@ -24,7 +24,7 @@ playerHand *resizeHand(playerHand *playerHandPtr);
 
 void removeHand(playerHand *playerHandPtr);
 
-void saveCardSum(playerHand *playersHand, int newSum);
+/* void saveCardSum(playerHand *playersHand, int newSum); */
  
 card **getCards(playerHand *playersHand);
 
@@ -35,5 +35,7 @@ int getHandSum(playerHand *playersHand);
 card *removeSpecificCard(playerHand *playerHandPtr, int whichPosition);
 
 playerHand *resetHand(playerHand *playerHandPtr);
+
+playerHand *receiveCard(playerHand *playerHandPtr, card *newCard);
 
 #endif

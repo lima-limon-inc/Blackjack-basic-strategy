@@ -20,6 +20,10 @@ dealer *createDealer(int initialFunds) {
 	return newDealer;
 }
 
+playerHand *getSpecificHandDealer(dealer *dealersPtr) {
+	return dealersPtr->dealersHand;
+}
+
 void killDealer(dealer *dealerPtr){
 	destroyShoe(dealerPtr->blackjackShoe);
 	removeHand(getSpecificHandDealer(dealerPtr));
@@ -37,12 +41,17 @@ static playerHand *getDealersHand(dealer *dealerPtr) {
 
 void dealDealersHand(dealer *dealerPtr, card *newCard) {
 	playerHand *newDealersHand = getDealersHand(dealerPtr);
-	newDealersHand = resizeHand(newDealersHand);
-
-	newDealersHand->hand[newDealersHand->cardsInHand] = newCard;
-	newDealersHand->cardsInHand += 1;
+	
+	newDealersHand = receiveCard(newDealersHand, newCard);
 
 	dealerPtr->dealersHand = newDealersHand;
+
+	/* newDealersHand = resizeHand(newDealersHand); */
+
+	/* newDealersHand->hand[newDealersHand->cardsInHand] = newCard; */
+	/* newDealersHand->cardsInHand += 1; */
+
+	/* dealerPtr->dealersHand = newDealersHand; */
 }
 
 void takeMoney(dealer *dealerPtr, int money) {
@@ -51,10 +60,6 @@ void takeMoney(dealer *dealerPtr, int money) {
 
 void removeMoneyFromFunds(dealer *dealerPtr, int moneyToPlayer) {
 	dealerPtr->funds -= moneyToPlayer;
-}
-
-playerHand *getSpecificHandDealer(dealer *dealersPtr) {
-	return dealersPtr->dealersHand;
 }
 
 void resetDealer(dealer *dealersPtr) {
