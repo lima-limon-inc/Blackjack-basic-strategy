@@ -283,6 +283,18 @@ static inline void offerEveryoneInsurance(blackjackTable *blackjackTablePtr) {
 		player *activePlayer;
 		activePlayer = blackjackTablePtr->players[i];
 
+		int originalBet;
+		originalBet = getBet(activePlayer, 0);
+		originalBet /= 2;
+
+		bool canAffordMove;
+		canAffordMove = canMakeABet(activePlayer, originalBet);
+
+		if (canAffordMove == false) {
+			printf("%s can't afford  insurance\n", activePlayer->name);
+			continue;
+		}
+
 		bool wantsInsurance;
 		wantsInsurance = offerPlayerForInsurance(activePlayer);
 		if (wantsInsurance == true) {
@@ -330,7 +342,7 @@ static inline bool insuranceLoop(blackjackTable *blackjackTablePtr, dealer *blac
 	dealerTopCard = getCards(dealersHand)[0];
 
 	int topCardRank;
-	topCardRank = getRank(dealerTopCard);
+	topCardRank = getBlackjackValue(dealerTopCard);
 
 	//Insurance is only offered if the dealer has an Ace
 	if (topCardRank != 1 && topCardRank != 10) {
@@ -367,6 +379,7 @@ static inline bool insuranceLoop(blackjackTable *blackjackTablePtr, dealer *blac
 
 	if (dealerHasBlackjack == true) {
 		printf("Dealer HAS Blackjkack\n");
+		awardPlayerInsurance(blackjackTablePtr, dealerHasBlackjack);
 	} else {
 		printf("Dealer does not have Blackjkack\n");
 	}
@@ -376,7 +389,6 @@ static inline bool insuranceLoop(blackjackTable *blackjackTablePtr, dealer *blac
 	/* 	return; */
 	/* } */
 
-	awardPlayerInsurance(blackjackTablePtr, dealerHasBlackjack);
 
 	printf("\n");
 	printf("Press any key to continue");
