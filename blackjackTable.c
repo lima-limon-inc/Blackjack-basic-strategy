@@ -266,9 +266,7 @@ static inline bool offerPlayerForInsurance(player *activePlayer) {
 	return wantsInsurance;
 }
 
-static inline void offerEveryoneInsurance(blackjackTable *blackjackTablePtr, dealer *blackjackDealer) {
-	system("clear");
-	printDealersCards(blackjackDealer, false);
+static inline void offerEveryoneInsurance(blackjackTable *blackjackTablePtr) {
 	for (int i = 0; i < blackjackTablePtr->playerAmount; i++) {
 		player *activePlayer;
 		activePlayer = blackjackTablePtr->players[i];
@@ -323,12 +321,17 @@ static inline bool insuranceLoop(blackjackTable *blackjackTablePtr, dealer *blac
 	topCardRank = getRank(dealerTopCard);
 
 	//Insurance is only offered if the dealer has an Ace
-	if (topCardRank != 1) {
+	if (topCardRank != 1 && topCardRank != 10) {
 		dealerHasBlackjack = false;
 		return dealerHasBlackjack;
 	}
 
-	offerEveryoneInsurance(blackjackTablePtr, blackjackDealer);
+	system("clear");
+	printDealersCards(blackjackDealer, false);
+
+	if (topCardRank == 1) {
+		offerEveryoneInsurance(blackjackTablePtr);
+	}
 
 	int amountOfCards;
 	amountOfCards = getAmountOfCards(dealersHand);
