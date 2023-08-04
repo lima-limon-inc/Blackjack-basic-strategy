@@ -8,10 +8,10 @@ Each time a move is made, the program will let you know if the decision you made
 
 ### Demonstration
 Basic round:
-![basicRound.gif](demo.gif)
+![demo.gif](basicRound.gif)
 
 Just like in real life, you can split your cards:
-![splitting.gif](demo2.gif)
+![demo2.gif](splitting.gif)
 
 ## Blackjack rules
 - You can hit and stand as long as you haven't bust
