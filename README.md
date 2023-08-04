@@ -6,8 +6,18 @@ Play Blackjack with your friends (locally) right on the terminal!
 
 Each time a move is made, the program will let you know if the decision you made is the correct one, according to the Blackjack Basic Strategy chart.
 
+## Blackjack rules
+- You can hit and stand as long as you haven't bust
+- You can double down only in your first hand
+- You can split your cards (4 splits max [This is fairly standard])
+- Dealer stops at soft 17
+- You can ask for insurance if the dealer has an ace (No insurance is offered with a 10)
+    - Insurance is worth half your bet
+- If the dealer has Blackjack, play is suspended (If a player did ask for insurance, they'll be rewarded)
+- There's no surrender (Although it could be implemented)
+
 ## How to install
-Just clone the repository and type in:
+Just clone the repository and run:
 ```sh
 make
 ```
@@ -66,6 +76,6 @@ make
 - [ ] Make it so that the program takes into account the running/true count, in order to practice [Card Counting](https://en.wikipedia.org/wiki/Card_counting)
     - This shouldn't be too hard to do
 
-
 ## Asterisks:
-1: Or so it seems!
+1: This is the first time I write anything in C. The code isn't the cleanest. I'll probably refactor stuff later on.
+There are messy things in the source code. I just wanted to finish it
