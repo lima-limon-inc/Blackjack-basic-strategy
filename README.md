@@ -26,50 +26,49 @@ make
 ### Hard Hands
 |    |  2 | 3  | 4  | 5  | 6  | 7  | 8  | 9  | 10 | A  |
 |----|----|----|----|----|----|----|----|----|----|----|
-| 5  | HT | HT | HT | HT | HT | HT | HT | HT | HT | HT |
-| 6  | HT | HT | HT | HT | HT | HT | HT | HT | HT | HT |
-| 7  | HT | HT | HT | HT | HT | HT | HT | HT | HT | HT |
-| 8  | HT | HT | HT | HT | HT | HT | HT | HT | HT | HT |
-| 9  | HT | DD | DD | DD | DD | HT | HT | HT | HT | HT |
-|10  | DD | DD | DD | DD | DD | DD | DD | DD | HT | HT |
-|11  | DD | DD | DD | DD | DD | DD | DD | DD | DD | DD |
-|12  | HT | HT | ST | ST | ST | HT | HT | HT | HT | HT |
-|13  | ST | ST | ST | ST | ST | HT | HT | HT | HT | HT |
-|14  | ST | ST | ST | ST | ST | HT | HT | HT | HT | HT |
-|15  | ST | ST | ST | ST | ST | HT | HT | HT | HT | HT |
-|16  | ST | ST | ST | ST | ST | HT | HT | HT | HT | HT |
-|17  | ST | ST | ST | ST | ST | ST | ST | ST | ST | ST |
-|18  | ST | ST | ST | ST | ST | ST | ST | ST | ST | ST |
-|19  | ST | ST | ST | ST | ST | ST | ST | ST | ST | ST |
-|20  | ST | ST | ST | ST | ST | ST | ST | ST | ST | ST |
-|21  | ST | ST | ST | ST | ST | ST | ST | ST | ST | ST |
+| 5  | Hit | Hit | Hit | Hit | Hit | Hit | Hit | Hit | Hit | Hit |
+| 6  | Hit | Hit | Hit | Hit | Hit | Hit | Hit | Hit | Hit | Hit |
+| 7  | Hit | Hit | Hit | Hit | Hit | Hit | Hit | Hit | Hit | Hit |
+| 8  | Hit | Hit | Hit | Hit | Hit | Hit | Hit | Hit | Hit | Hit |
+| 9  | Hit | Double Down | Double Down | Double Down | Double Down | Hit | Hit | Hit | Hit | Hit |
+|10  | Double Down | Double Down | Double Down | Double Down | Double Down | Double Down | Double Down | Double Down | Hit | Hit |
+|11  | Double Down | Double Down | Double Down | Double Down | Double Down | Double Down | Double Down | Double Down | Double Down | Double Down |
+|12  | Hit | Hit | Stand | Stand | Stand | Hit | Hit | Hit | Hit | Hit |
+|13  | Stand | Stand | Stand | Stand | Stand | Hit | Hit | Hit | Hit | Hit |
+|14  | Stand | Stand | Stand | Stand | Stand | Hit | Hit | Hit | Hit | Hit |
+|15  | Stand | Stand | Stand | Stand | Stand | Hit | Hit | Hit | Hit | Hit |
+|16  | Stand | Stand | Stand | Stand | Stand | Hit | Hit | Hit | Hit | Hit |
+|17  | Stand | Stand | Stand | Stand | Stand | Stand | Stand | Stand | Stand | Stand |
+|18  | Stand | Stand | Stand | Stand | Stand | Stand | Stand | Stand | Stand | Stand |
+|19  | Stand | Stand | Stand | Stand | Stand | Stand | Stand | Stand | Stand | Stand |
+|20  | Stand | Stand | Stand | Stand | Stand | Stand | Stand | Stand | Stand | Stand |
+|21  | Stand | Stand | Stand | Stand | Stand | Stand | Stand | Stand | Stand | Stand |
 
 ### Soft Hands
 |   |  2 |  3 |  4 |  5 |  6 |  7 |  8 |  9 | 10 | A  |
 |---|----|----|----|----|----|----|----|----|----|----|
-|A,2| HT | HT | HT | DD | DD | HT | HT | HT | HT | HT |
-|A,3| HT | HT | HT | DD | DD | HT | HT | HT | HT | HT |
-|A,4| HT | HT | DD | DD | DD | HT | HT | HT | HT | HT |
-|A,5| HT | HT | DD | DD | DD | HT | HT | HT | HT | HT |
-|A,6| HT | DD | DD | DD | DD | HT | HT | HT | HT | HT |
-|A,7| ST | DD | DD | DD | DD | ST | ST | HT | HT | HT |
-|A,8| ST | ST | ST | ST | ST | ST | ST | ST | ST | ST |
-|A,9| ST | ST | ST | ST | ST | ST | ST | ST | ST | ST |
+|A,2| Hit | Hit | Hit | Double Down | Double Down | Hit | Hit | Hit | Hit | Hit |
+|A,3| Hit | Hit | Hit | Double Down | Double Down | Hit | Hit | Hit | Hit | Hit |
+|A,4| Hit | Hit | Double Down | Double Down | Double Down | Hit | Hit | Hit | Hit | Hit |
+|A,5| Hit | Hit | Double Down | Double Down | Double Down | Hit | Hit | Hit | Hit | Hit |
+|A,6| Hit | Double Down | Double Down | Double Down | Double Down | Hit | Hit | Hit | Hit | Hit |
+|A,7| Stand | Double Down | Double Down | Double Down | Double Down | Stand | Stand | Hit | Hit | Hit |
+|A,8| Stand | Stand | Stand | Stand | Stand | Stand | Stand | Stand | Stand | Stand |
+|A,9| Stand | Stand | Stand | Stand | Stand | Stand | Stand | Stand | Stand | Stand |
 
 ### Split hands
 |     | 2  |3   |4   |5   |6   |7   |8   |9   |10  |A  |
 |-----|----|----|----|----|----|----|----|----|----|---|
-| 2,2 | SP | SP | SP | SP | SP | SP | HT | HT | HT | HT|
-| 3,3 | SP | SP | SP | SP | SP | SP | HT | HT | HT | HT|
-| 4,4 | HT | HT | HT | SP | SP | HT | HT | HT | HT | HT|
-| 5,5 | DD | DD | DD | DD | DD | DD | DD | DD | HT | HT|
-| 6,6 | SP | SP | SP | SP | SP | HT | HT | HT | HT | HT|
-| 7,7 | SP | SP | SP | SP | SP | SP | HT | HT | HT | HT|
-| 8,8 | SP | SP | SP | SP | SP | SP | SP | SP | SP | SP|
-| 9,9 | SP | SP | SP | SP | SP | ST | SP | SP | SP | SP|
-| T,T | ST | ST | ST | ST | ST | ST | ST | ST | ST | ST|
-| A,A | SP | SP | SP | SP | SP | SP | SP | SP | SP | SP|
-};
+| 2,2 | Split | Split | Split | Split | Split | Split | Hit | Hit | Hit | Hit|
+| 3,3 | Split | Split | Split | Split | Split | Split | Hit | Hit | Hit | Hit|
+| 4,4 | Hit | Hit | Hit | Split | Split | Hit | Hit | Hit | Hit | Hit|
+| 5,5 | Double Down | Double Down | Double Down | Double Down | Double Down | Double Down | Double Down | Double Down | Hit | Hit|
+| 6,6 | Split | Split | Split | Split | Split | Hit | Hit | Hit | Hit | Hit|
+| 7,7 | Split | Split | Split | Split | Split | Split | Hit | Hit | Hit | Hit|
+| 8,8 | Split | Split | Split | Split | Split | Split | Split | Split | Split | Split|
+| 9,9 | Split | Split | Split | Split | Split | Stand | Split | Split | Split | Split|
+| T,T | Stand | Stand | Stand | Stand | Stand | Stand | Stand | Stand | Stand | Stand|
+| A,A | Split | Split | Split | Split | Split | Split | Split | Split | Split | Split|
 
 
 ## TODO:
