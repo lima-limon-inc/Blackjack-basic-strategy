@@ -85,4 +85,5 @@ make
 ## Asterisks:
 1: This is the first time I write anything in C. The code isn't the cleanest. I'll probably refactor stuff later on.
 There are messy things in the source code. I just wanted to finish it
+
 2. Enjoy ^_^
