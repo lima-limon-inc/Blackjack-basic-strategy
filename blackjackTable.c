@@ -496,6 +496,16 @@ static void endPlayerTurn(player *activePlayer, int currentHand, dealer *blackja
 	/* saveCardSum(activePlayerHand, playersSum); */
 }
 
+static inline void isItCorrectChoice(playerHand *playerHandPtr, card *dealersCard, playerDecision playersDecision) {
+	playerDecision correctDecision;
+	correctDecision = getCorrectChoice(playerHandPtr, dealersCard);
+
+	bool isItCorrectChoice;
+	isItCorrectChoice = (correctDecision == playersDecision);
+
+	printCorrectOrNot(isItCorrectChoice, correctDecision);
+}
+
 static inline int mainPlayerActionLoop(player *activePlayer, dealer *blackjackDealer, int currentHand, int initialSum) {
 	int playersSum;
 	playersSum = initialSum;
@@ -523,15 +533,17 @@ static inline int mainPlayerActionLoop(player *activePlayer, dealer *blackjackDe
 		card *dealersCard;
 		dealersCard = getCards(getSpecificHandDealer(blackjackDealer))[0];
 
-		playerDecision correctDecision;
-		correctDecision = getCorrectChoice(activePlayerHand, dealersCard);
+		/* playerDecision correctDecision; */
+		/* correctDecision = getCorrectChoice(activePlayerHand, dealersCard); */
 
-		bool isItCorrectChoice;
-		isItCorrectChoice = (correctDecision == playersDecision);
+		/* bool isItCorrectChoice; */
+		/* isItCorrectChoice = (correctDecision == playersDecision); */
+
+		isItCorrectChoice(activePlayerHand, dealersCard, playersDecision);
 
 		playersTurnContinues = processPlayerMove(activePlayer, currentHand, playersDecision, blackjackDealer);
 
-		printCorrectOrNot(isItCorrectChoice, correctDecision);
+		/* printCorrectOrNot(isItCorrectChoice, correctDecision); */
 		sleep(SLEEPAMOUNT);
 
 
