@@ -6,6 +6,13 @@ Play Blackjack with your friends (locally) right on the terminal!
 
 Each time a move is made, the program will let you know if the decision you made is the correct one, according to the Blackjack Basic Strategy chart.
 
+### Demonstration
+Basic round:
+![basicRound.gif](demo.gif)
+
+Just like in real life, you can split your cards:
+![splitting.gif](demo2.gif)
+
 ## Blackjack rules
 - You can hit and stand as long as you haven't bust
 - You can double down only in your first hand
